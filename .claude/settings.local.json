@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Read(//c/Users/Zhizhe Liu/Documents/CDP/**)",
+      "Bash(npx create-next-app@latest haptic-atlas-temp --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(printf \"n\\\\n\")",
+      "Bash(printf \"n\\\\nn\\\\n\")",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
