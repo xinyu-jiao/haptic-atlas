@@ -1,10 +1,9 @@
 export default function IterationsPage() {
   const iterations = [
     {
-      version: "v0.1",
-      label: "Initial Concept",
-      date: "Jan 2026",
-      status: "archived",
+      version: "01",
+      label: "Early Hardware Demo",
+      date: "January 2026",
       notes: [
         "Single vibration motor proof-of-concept",
         "Arduino-based prototype wired directly to belt",
@@ -12,10 +11,9 @@ export default function IterationsPage() {
       ],
     },
     {
-      version: "v0.2",
-      label: "Dual Motor",
-      date: "Feb 2026",
-      status: "archived",
+      version: "02",
+      label: "Circuit + Control Testing",
+      date: "February 2026",
       notes: [
         "Left/right differentiation added",
         "First BLE pairing attempt with iOS app",
@@ -23,36 +21,27 @@ export default function IterationsPage() {
       ],
     },
     {
-      version: "v0.3",
-      label: "Controller + Web",
-      date: "Mar 2026",
-      status: "current",
+      version: "03",
+      label: "Wearable Scenario Exploration",
+      date: "March 2026",
       notes: [
         "Handheld controller replaces phone as Guide interface",
-        "Web platform launched as documentation and evidence layer",
-        "Session flow: Level → Role → Setup → Active → Result",
-        "Web Bluetooth API integration",
+        "Multi-scenario testing in indoor and outdoor environments",
+        "Iterative refinement of motor placement and signal patterns",
       ],
     },
     {
-      version: "v1.0",
-      label: "Final Review",
-      date: "Apr 2026",
-      status: "planned",
+      version: "04",
+      label: "System Reframing: Controller + Web Layer",
+      date: "Late March 2026",
       notes: [
-        "Refined hardware form factor",
-        "Additional test scenarios",
-        "Expanded data visualization",
-        "User testing with external participants",
+        "Web platform launched as documentation and evidence layer",
+        "Session flow: Level → Role → Setup → Active → Result",
+        "Web Bluetooth API integration",
+        "Walk trace recording with Geolocation API",
       ],
     },
   ];
-
-  const STATUS_LABELS: Record<string, string> = {
-    archived: "ARCHIVED",
-    current: "CURRENT",
-    planned: "PLANNED",
-  };
 
   return (
     <div className="dash-page">
@@ -74,16 +63,16 @@ export default function IterationsPage() {
           />
 
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-            {iterations.map((iter) => (
+            {iterations.map((iter, i) => (
               <div key={iter.version} style={{ display: "flex", gap: "1.75rem", alignItems: "flex-start" }}>
                 {/* Node */}
                 <div
                   style={{
                     width: 15,
                     height: 15,
-                    background: iter.status === "current" ? "#fff" : iter.status === "archived" ? "#333" : "transparent",
+                    background: i === iterations.length - 1 ? "#fff" : "#333",
                     border: "1px solid",
-                    borderColor: iter.status === "current" ? "#fff" : "var(--dash-border)",
+                    borderColor: i === iterations.length - 1 ? "#fff" : "var(--dash-border)",
                     borderRadius: "50%",
                     flexShrink: 0,
                     marginTop: "1.5rem",
@@ -102,17 +91,9 @@ export default function IterationsPage() {
                         {iter.label}
                       </span>
                     </div>
-                    <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.7rem", color: "var(--dash-text-muted)" }}>
-                        {iter.date}
-                      </span>
-                      <span className="dash-badge" style={{
-                        borderColor: iter.status === "current" ? "#555" : "var(--dash-border)",
-                        color: iter.status === "current" ? "#fff" : "var(--dash-text-muted)",
-                      }}>
-                        {STATUS_LABELS[iter.status]}
-                      </span>
-                    </div>
+                    <span style={{ fontSize: "0.7rem", color: "var(--dash-text-muted)" }}>
+                      {iter.date}
+                    </span>
                   </div>
                   {iter.notes.map((note) => (
                     <div key={note} className="dash-list-item">
