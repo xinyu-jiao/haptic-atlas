@@ -12,15 +12,13 @@ export default function CodePage() {
               name: "haptic-atlas",
               desc: "Web platform — Next.js, Tailwind, Web Bluetooth API, Leaflet, Recharts",
               tag: "WEB",
-              url: "https://github.com/xinyu-jiao/haptic-atlas",
             },
             {
               name: "haptic-atlas-hardware",
               desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
               tag: "HARDWARE",
-              url: null as string | null,
             },
-          ].map(({ name, desc, tag, url }) => (
+          ].map(({ name, desc, tag }) => (
             <div key={name} style={{ background: "var(--dash-bg)", padding: "1.75rem 1.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.75rem" }}>
                 <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fff" }}>
@@ -33,32 +31,15 @@ export default function CodePage() {
               </div>
               <div
                 style={{
+                  fontSize: "0.8rem",
+                  color: "var(--dash-text-muted)",
                   borderTop: "1px solid var(--dash-border)",
                   paddingTop: "0.75rem",
+                  fontFamily: "monospace",
+                  letterSpacing: "0.02em",
                 }}
               >
-                {url ? (
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "var(--dash-text-secondary)",
-                      fontFamily: "monospace",
-                      letterSpacing: "0.02em",
-                      textDecoration: "none",
-                      borderBottom: "1px solid var(--dash-border)",
-                      paddingBottom: "0.15rem",
-                    }}
-                  >
-                    {url.replace("https://", "")}
-                  </a>
-                ) : (
-                  <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)", fontFamily: "monospace" }}>
-                    Private repository
-                  </span>
-                )}
+                github.com/[username]/{name}
               </div>
             </div>
           ))}
