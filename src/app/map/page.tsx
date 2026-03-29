@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { loadTraces, saveTrace, deleteTrace, formatDuration } from "@/lib/session-storage";
+import { formatDuration } from "@/lib/session-storage";
+import { saveTraceToCloud, loadTracesFromCloud, deleteTraceFromCloud } from "@/lib/firestore-traces";
 import type { TraceRecord, TracePosition } from "@/lib/types";
 
 const MapView = dynamic(() => import("@/components/map/TraceMap"), { ssr: false });
@@ -33,6 +34,7 @@ export default function MapPage() {
   const [traces, setTraces] = useState<TraceRecord[]>([]);
   const [viewing, setViewing] = useState<TraceRecord | null>(null);
   const [justSaved, setJustSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const watchIdRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -40,8 +42,16 @@ export default function MapPage() {
 
   const totalDistance = calcDistance(positions);
 
+  async function refreshTraces() {
+    const cloud = await loadTracesFromCloud();
+    setTraces(cloud);
+  }
+
   useEffect(() => {
-    setTraces(loadTraces());
+    loadTracesFromCloud().then((cloud) => {
+      setTraces(cloud);
+      setLoading(false);
+    });
   }, []);
 
   const startTracking = useCallback(() => {
@@ -100,8 +110,7 @@ export default function MapPage() {
           points: cur.length,
           positions: cur,
         };
-        saveTrace(record);
-        setTraces(loadTraces());
+        saveTraceToCloud(record).then(() => refreshTraces());
         setJustSaved(true);
       }
       return cur;
@@ -125,9 +134,9 @@ export default function MapPage() {
     }
   }
 
-  function handleDelete(id: string) {
-    deleteTrace(id);
-    setTraces(loadTraces());
+  async function handleDelete(id: string) {
+    await deleteTraceFromCloud(id);
+    await refreshTraces();
     if (viewing?.id === id) {
       setViewing(null);
       setPositions([]);
@@ -182,7 +191,7 @@ export default function MapPage() {
         {justSaved && !tracking && !viewing && (
           <div className="dash-card" style={{ marginBottom: "1.5rem", padding: "0.75rem 1.5rem", borderColor: "#333" }}>
             <span style={{ fontSize: "0.8rem", color: "var(--dash-text-secondary)" }}>
-              Trace saved to history.
+              Trace saved to cloud.
             </span>
           </div>
         )}
@@ -258,7 +267,11 @@ export default function MapPage() {
         <div className="dash-divider" />
         <div className="dash-section-label">Trace History</div>
 
-        {traces.length === 0 ? (
+        {loading ? (
+          <div style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)", padding: "1rem 0" }}>
+            Loading traces...
+          </div>
+        ) : traces.length === 0 ? (
           <div style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)", padding: "1rem 0" }}>
             No traces recorded yet. Complete a walk to see it here.
           </div>

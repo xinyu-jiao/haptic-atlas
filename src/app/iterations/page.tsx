@@ -1,9 +1,10 @@
 export default function IterationsPage() {
-  const iterations = [
+  const iterations: { version: string; label: string; date: string; images?: string[]; notes: string[] }[] = [
     {
       version: "01",
       label: "Early Hardware Demo",
       date: "January 2026",
+      images: ["/images/1.png", "/images/3.png"],
       notes: [
         "Single vibration motor proof-of-concept",
         "Arduino-based prototype wired directly to belt",
@@ -14,6 +15,7 @@ export default function IterationsPage() {
       version: "02",
       label: "Circuit + Control Testing",
       date: "February 2026",
+      images: ["/images/2.png", "/images/4.png", "/images/9.png", "/images/10.JPG"],
       notes: [
         "Left/right differentiation added",
         "First BLE pairing attempt with iOS app",
@@ -24,6 +26,7 @@ export default function IterationsPage() {
       version: "03",
       label: "Wearable Scenario Exploration",
       date: "March 2026",
+      images: ["/images/5.png", "/images/6.png", "/images/7.png", "/images/8.png"],
       notes: [
         "Handheld controller replaces phone as Guide interface",
         "Multi-scenario testing in indoor and outdoor environments",
@@ -101,6 +104,19 @@ export default function IterationsPage() {
                       <span className="dash-list-text">{note}</span>
                     </div>
                   ))}
+                  {iter.images && iter.images.length > 0 && (
+                    <div style={{ display: "flex", gap: "0.5rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
+                      {iter.images.map((src) => (
+                        <div key={src} style={{ width: 180, height: 180, border: "1px solid var(--dash-border)", overflow: "hidden", flexShrink: 0 }}>
+                          <img
+                            src={src}
+                            alt=""
+                            style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
