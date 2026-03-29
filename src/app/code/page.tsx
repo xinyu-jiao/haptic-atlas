@@ -18,7 +18,7 @@ export default function CodePage() {
               name: "haptic-atlas-hardware",
               desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
               tag: "HARDWARE",
-              url: null,
+              url: null as string | null,
             },
           ].map(({ name, desc, tag, url }) => (
             <div key={name} style={{ background: "var(--dash-bg)", padding: "1.75rem 1.5rem" }}>
@@ -50,15 +50,12 @@ export default function CodePage() {
                       textDecoration: "none",
                       borderBottom: "1px solid var(--dash-border)",
                       paddingBottom: "0.15rem",
-                      transition: "color 0.15s, border-color 0.15s",
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderColor = "#555"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "var(--dash-text-secondary)"; e.currentTarget.style.borderColor = "var(--dash-border)"; }}
                   >
                     {url.replace("https://", "")}
                   </a>
                 ) : (
-                  <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)", fontFamily: "monospace", letterSpacing: "0.02em" }}>
+                  <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)", fontFamily: "monospace" }}>
                     Private repository
                   </span>
                 )}

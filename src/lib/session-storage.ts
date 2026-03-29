@@ -1,4 +1,4 @@
-import type { SessionResult, TraceRecord } from "./types";
+import type { SessionResult } from "./types";
 
 const STORAGE_KEY = "haptic_atlas_sessions";
 
@@ -56,31 +56,6 @@ export function groupSessionsByDate(
     groups[key].push(s);
   }
   return groups;
-}
-
-// ── Trace Records ──
-
-const TRACE_KEY = "haptic_atlas_traces";
-
-export function loadTraces(): TraceRecord[] {
-  try {
-    const raw = localStorage.getItem(TRACE_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw) as TraceRecord[];
-  } catch {
-    return [];
-  }
-}
-
-export function saveTrace(record: TraceRecord): void {
-  const traces = loadTraces();
-  traces.unshift(record);
-  localStorage.setItem(TRACE_KEY, JSON.stringify(traces));
-}
-
-export function deleteTrace(id: string): void {
-  const traces = loadTraces().filter((t) => t.id !== id);
-  localStorage.setItem(TRACE_KEY, JSON.stringify(traces));
 }
 
 export function computeBadges(result: Omit<SessionResult, "badges" | "id" | "date" | "timestamp">): string[] {
