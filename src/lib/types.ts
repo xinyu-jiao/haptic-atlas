@@ -49,6 +49,22 @@ export interface SessionResult {
   badges: string[];
 }
 
+export interface TracePosition {
+  lat: number;
+  lng: number;
+  ts: number;
+}
+
+export interface TraceRecord {
+  id: string;
+  timestamp: number;
+  date: string;
+  duration: number;
+  distance: number;
+  points: number;
+  positions: TracePosition[];
+}
+
 export const LEVELS: LevelInfo[] = [
   {
     id: "straight",
