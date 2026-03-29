@@ -1,3 +1,5 @@
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function IterationsPage() {
   const iterations: { version: string; label: string; date: string; images?: string[]; notes: string[] }[] = [
     {
@@ -109,7 +111,7 @@ export default function IterationsPage() {
                       {iter.images.map((src) => (
                         <div key={src} style={{ width: 180, height: 180, border: "1px solid var(--dash-border)", overflow: "hidden", flexShrink: 0 }}>
                           <img
-                            src={src}
+                            src={`${BASE}${src}`}
                             alt=""
                             style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
                           />
