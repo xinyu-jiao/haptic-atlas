@@ -2,8 +2,8 @@ export default function IterationsPage() {
   const iterations = [
     {
       version: "v0.1",
-      label: "INITIAL CONCEPT",
-      date: "JAN 2026",
+      label: "Initial Concept",
+      date: "Jan 2026",
       status: "archived",
       notes: [
         "Single vibration motor proof-of-concept",
@@ -13,8 +13,8 @@ export default function IterationsPage() {
     },
     {
       version: "v0.2",
-      label: "DUAL MOTOR",
-      date: "FEB 2026",
+      label: "Dual Motor",
+      date: "Feb 2026",
       status: "archived",
       notes: [
         "Left/right differentiation added",
@@ -24,8 +24,8 @@ export default function IterationsPage() {
     },
     {
       version: "v0.3",
-      label: "CONTROLLER + WEB",
-      date: "MAR 2026",
+      label: "Controller + Web",
+      date: "Mar 2026",
       status: "current",
       notes: [
         "Handheld controller replaces phone as Guide interface",
@@ -36,8 +36,8 @@ export default function IterationsPage() {
     },
     {
       version: "v1.0",
-      label: "FINAL REVIEW",
-      date: "APR 2026",
+      label: "Final Review",
+      date: "Apr 2026",
       status: "planned",
       notes: [
         "Refined hardware form factor",
@@ -48,98 +48,82 @@ export default function IterationsPage() {
     },
   ];
 
-  const STATUS_COLORS: Record<string, string> = {
-    archived: "var(--dark3)",
-    current: "var(--purple)",
-    planned: "transparent",
-  };
-
-  const STATUS_TEXT: Record<string, string> = {
+  const STATUS_LABELS: Record<string, string> = {
     archived: "ARCHIVED",
     current: "CURRENT",
     planned: "PLANNED",
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1.25rem" }}>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.9rem", marginBottom: "0.5rem" }}>
-        ITERATION PROCESS
-      </div>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.45rem", opacity: 0.6, marginBottom: "2rem" }}>
-        DEVELOPMENT ARCHIVE
-      </div>
+    <div className="dash-page">
+      <div className="dash-container">
+        <h1 className="dash-title">Iteration Process</h1>
+        <div className="dash-subtitle">Development Archive</div>
 
-      <div style={{ position: "relative" }}>
-        {/* Timeline line */}
-        <div
-          style={{
-            position: "absolute",
-            left: 28,
-            top: 0,
-            bottom: 0,
-            width: 3,
-            background: "var(--dark)",
-          }}
-        />
+        <div style={{ position: "relative" }}>
+          {/* Timeline line */}
+          <div
+            style={{
+              position: "absolute",
+              left: 7,
+              top: 12,
+              bottom: 12,
+              width: 1,
+              background: "var(--dash-border)",
+            }}
+          />
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          {iterations.map((iter) => (
-            <div key={iter.version} style={{ display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
-              {/* Node */}
-              <div
-                style={{
-                  width: 20,
-                  height: 20,
-                  background: STATUS_COLORS[iter.status] || "var(--dark2)",
-                  border: "3px solid var(--dark)",
-                  boxShadow: "2px 2px 0 var(--dark)",
-                  flexShrink: 0,
-                  marginTop: "0.75rem",
-                  zIndex: 1,
-                  marginLeft: 18,
-                }}
-              />
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {iterations.map((iter) => (
+              <div key={iter.version} style={{ display: "flex", gap: "1.75rem", alignItems: "flex-start" }}>
+                {/* Node */}
+                <div
+                  style={{
+                    width: 15,
+                    height: 15,
+                    background: iter.status === "current" ? "#fff" : iter.status === "archived" ? "#333" : "transparent",
+                    border: "1px solid",
+                    borderColor: iter.status === "current" ? "#fff" : "var(--dash-border)",
+                    borderRadius: "50%",
+                    flexShrink: 0,
+                    marginTop: "1.5rem",
+                    zIndex: 1,
+                  }}
+                />
 
-              {/* Card */}
-              <div className="pixel-card" style={{ padding: "1rem", flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.6rem", flexWrap: "wrap", gap: "0.5rem" }}>
-                  <div>
-                    <span style={{ fontFamily: '"Press Start 2P"', fontSize: "0.45rem", color: "var(--pink)", marginRight: "0.6rem" }}>
-                      {iter.version}
-                    </span>
-                    <span style={{ fontFamily: '"Press Start 2P"', fontSize: "0.65rem", color: "white" }}>
-                      {iter.label}
-                    </span>
+                {/* Card */}
+                <div className="dash-card" style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem", flexWrap: "wrap", gap: "0.75rem" }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem" }}>
+                      <span style={{ fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--dash-text-muted)" }}>
+                        {iter.version}
+                      </span>
+                      <span style={{ fontSize: "1rem", fontWeight: 600, color: "#fff" }}>
+                        {iter.label}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+                      <span style={{ fontSize: "0.7rem", color: "var(--dash-text-muted)" }}>
+                        {iter.date}
+                      </span>
+                      <span className="dash-badge" style={{
+                        borderColor: iter.status === "current" ? "#555" : "var(--dash-border)",
+                        color: iter.status === "current" ? "#fff" : "var(--dash-text-muted)",
+                      }}>
+                        {STATUS_LABELS[iter.status]}
+                      </span>
+                    </div>
                   </div>
-                  <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                    <span style={{ fontFamily: '"Press Start 2P"', fontSize: "0.35rem", color: "rgba(255,255,255,0.4)" }}>
-                      {iter.date}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: '"Press Start 2P"',
-                        fontSize: "0.35rem",
-                        color: iter.status === "current" ? "var(--bg)" : "rgba(255,255,255,0.5)",
-                        background: STATUS_COLORS[iter.status],
-                        border: "2px solid var(--dark)",
-                        padding: "0.2rem 0.4rem",
-                      }}
-                    >
-                      {STATUS_TEXT[iter.status]}
-                    </span>
-                  </div>
+                  {iter.notes.map((note) => (
+                    <div key={note} className="dash-list-item">
+                      <span className="dash-list-bullet">—</span>
+                      <span className="dash-list-text">{note}</span>
+                    </div>
+                  ))}
                 </div>
-                {iter.notes.map((note) => (
-                  <div key={note} style={{ display: "flex", gap: "0.5rem", marginBottom: "0.3rem" }}>
-                    <span style={{ color: "var(--purple)", fontSize: "0.5rem", flexShrink: 0 }}>▸</span>
-                    <span style={{ fontFamily: '"Press Start 2P"', fontSize: "0.4rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.9 }}>
-                      {note}
-                    </span>
-                  </div>
-                ))}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

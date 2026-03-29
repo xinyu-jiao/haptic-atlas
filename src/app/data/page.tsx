@@ -8,7 +8,6 @@ import {
 import { loadSessions, formatDuration } from "@/lib/session-storage";
 import type { SessionResult } from "@/lib/types";
 
-// Fallback sample data shown when no sessions exist
 const SAMPLE_DATA: SessionResult[] = [
   { id: "s1", date: "Mar 20", timestamp: Date.now() - 6*86400000, level: "straight", levelName: "STRAIGHT LINE", role: "seeker", environment: "indoor", duration: 83, corrections: 4, helpCount: 0, consistency: 91, responseTime: 0.6, badges: ["SMOOTH NAV","FAST FINDER","STEADY STEPS"] },
   { id: "s2", date: "Mar 21", timestamp: Date.now() - 5*86400000, level: "corner", levelName: "CORNER TURN", role: "guide", environment: "indoor", duration: 154, corrections: 12, helpCount: 2, consistency: 78, responseTime: 0.9, badges: [] },
@@ -17,10 +16,6 @@ const SAMPLE_DATA: SessionResult[] = [
   { id: "s5", date: "Mar 24", timestamp: Date.now() - 2*86400000, level: "corner", levelName: "CORNER TURN", role: "seeker", environment: "indoor", duration: 138, corrections: 8, helpCount: 1, consistency: 85, responseTime: 0.8, badges: ["STEADY STEPS"] },
   { id: "s6", date: "Mar 25", timestamp: Date.now() - 1*86400000, level: "straight", levelName: "STRAIGHT LINE", role: "seeker", environment: "indoor", duration: 62, corrections: 2, helpCount: 0, consistency: 96, responseTime: 0.4, badges: ["SMOOTH NAV","FAST FINDER","STEADY STEPS","CLEAN RUN"] },
 ];
-
-const PINK = "#E84DC0";
-const PURPLE = "#7B52CC";
-const BLUE = "#4A6AE8";
 
 export default function DataPage() {
   const [sessions, setSessions] = useState<SessionResult[]>([]);
@@ -54,101 +49,90 @@ export default function DataPage() {
     : 0;
   const totalBadges = sessions.reduce((a, s) => a + s.badges.length, 0);
 
+  const chartFont = { fontFamily: '"Inter", system-ui, sans-serif', fontSize: 10, fill: "#555" };
+  const tooltipStyle = { background: "#111", border: "1px solid #222", fontFamily: '"Inter", system-ui, sans-serif', fontSize: 11, color: "#fff" };
+
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 1.25rem" }}>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.9rem", marginBottom: "0.5rem" }}>
-        DATA
-      </div>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.45rem", opacity: 0.6, marginBottom: "1.5rem" }}>
-        TRAINING VISUALIZATION
-      </div>
+    <div className="dash-page">
+      <div className="dash-container">
+        <h1 className="dash-title">Data</h1>
+        <div className="dash-subtitle">Training Visualization</div>
 
-      {isSample && (
-        <div
-          className="pixel-card"
-          style={{ padding: "0.6rem 1rem", marginBottom: "1.25rem", background: "var(--dark3)" }}
-        >
-          <span style={{ fontFamily: '"Press Start 2P"', fontSize: "0.4rem", color: "rgba(255,255,255,0.5)" }}>
-            ○ SHOWING SAMPLE DATA — COMPLETE SESSIONS TO SEE YOUR DATA
-          </span>
-        </div>
-      )}
-
-      {/* Summary stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.5rem", marginBottom: "1.5rem" }}>
-        {[
-          { label: "SESSIONS", value: totalSessions },
-          { label: "AVG CONSIST", value: `${avgConsistency}%` },
-          { label: "BEST TIME", value: formatDuration(bestTime) },
-          { label: "BADGES", value: totalBadges },
-        ].map(({ label, value }) => (
-          <div key={label} className="pixel-card" style={{ padding: "0.75rem 0.5rem", textAlign: "center" }}>
-            <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.35rem", color: "rgba(255,255,255,0.4)", marginBottom: "0.4rem" }}>
-              {label}
-            </div>
-            <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.8rem", color: "white" }}>
-              {value}
-            </div>
+        {isSample && (
+          <div
+            className="dash-card"
+            style={{ marginBottom: "2rem", padding: "1rem 1.5rem" }}
+          >
+            <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)" }}>
+              Showing sample data — complete sessions to see your data.
+            </span>
           </div>
-        ))}
+        )}
+
+        {/* Summary stats */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", marginBottom: "2.5rem", background: "var(--dash-border)" }}>
+          {[
+            { label: "SESSIONS", value: totalSessions },
+            { label: "AVG CONSISTENCY", value: `${avgConsistency}%` },
+            { label: "BEST TIME", value: formatDuration(bestTime) },
+            { label: "BADGES", value: totalBadges },
+          ].map(({ label, value }) => (
+            <div key={label} className="dash-stat-card" style={{ background: "var(--dash-bg)" }}>
+              <div className="label">{label}</div>
+              <div className="value">{value}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Consistency over time */}
+        <ChartBlock title="Consistency Over Time">
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a" />
+              <XAxis dataKey="name" tick={chartFont} axisLine={{ stroke: "#222" }} tickLine={{ stroke: "#222" }} />
+              <YAxis domain={[0, 100]} tick={chartFont} axisLine={{ stroke: "#222" }} tickLine={{ stroke: "#222" }} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: "#888" }} />
+              <Line type="monotone" dataKey="consistency" stroke="#fff" strokeWidth={1.5} dot={{ fill: "#fff", r: 3, stroke: "#fff" }} name="Consistency %" />
+            </LineChart>
+          </ResponsiveContainer>
+        </ChartBlock>
+
+        {/* Duration comparison */}
+        <ChartBlock title="Session Duration (s)">
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a" />
+              <XAxis dataKey="name" tick={chartFont} axisLine={{ stroke: "#222" }} tickLine={{ stroke: "#222" }} />
+              <YAxis tick={chartFont} axisLine={{ stroke: "#222" }} tickLine={{ stroke: "#222" }} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: "#888" }} />
+              <Bar dataKey="time" fill="#444" name="Duration (s)" />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartBlock>
+
+        {/* Corrections + Help */}
+        <ChartBlock title="Corrections vs Help Requests">
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a" />
+              <XAxis dataKey="name" tick={chartFont} axisLine={{ stroke: "#222" }} tickLine={{ stroke: "#222" }} />
+              <YAxis tick={chartFont} axisLine={{ stroke: "#222" }} tickLine={{ stroke: "#222" }} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Legend wrapperStyle={{ fontFamily: '"Inter", system-ui, sans-serif', fontSize: 11, color: "#888" }} />
+              <Bar dataKey="corrections" fill="#666" name="Corrections" />
+              <Bar dataKey="help" fill="#333" name="Help Requests" />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartBlock>
       </div>
-
-      {/* Consistency over time */}
-      <ChartBlock title="CONSISTENCY OVER TIME">
-        <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 2" stroke="#2A2A2A" />
-            <XAxis dataKey="name" tick={{ fontFamily: '"Press Start 2P"', fontSize: 8, fill: "#888" }} />
-            <YAxis domain={[0, 100]} tick={{ fontFamily: '"Press Start 2P"', fontSize: 8, fill: "#888" }} />
-            <Tooltip
-              contentStyle={{ background: "#1E1E1E", border: "2px solid #0F0F0F", fontFamily: '"Press Start 2P"', fontSize: 8 }}
-              labelStyle={{ color: "#E84DC0" }}
-            />
-            <Line type="monotone" dataKey="consistency" stroke={PINK} strokeWidth={2} dot={{ fill: PINK, r: 4 }} name="Consistency %" />
-          </LineChart>
-        </ResponsiveContainer>
-      </ChartBlock>
-
-      {/* Duration comparison */}
-      <ChartBlock title="SESSION DURATION (S)">
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 2" stroke="#2A2A2A" />
-            <XAxis dataKey="name" tick={{ fontFamily: '"Press Start 2P"', fontSize: 8, fill: "#888" }} />
-            <YAxis tick={{ fontFamily: '"Press Start 2P"', fontSize: 8, fill: "#888" }} />
-            <Tooltip
-              contentStyle={{ background: "#1E1E1E", border: "2px solid #0F0F0F", fontFamily: '"Press Start 2P"', fontSize: 8 }}
-              labelStyle={{ color: "#7B52CC" }}
-            />
-            <Bar dataKey="time" fill={PURPLE} name="Duration (s)" />
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartBlock>
-
-      {/* Corrections + Help */}
-      <ChartBlock title="CORRECTIONS vs HELP">
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 2" stroke="#2A2A2A" />
-            <XAxis dataKey="name" tick={{ fontFamily: '"Press Start 2P"', fontSize: 8, fill: "#888" }} />
-            <YAxis tick={{ fontFamily: '"Press Start 2P"', fontSize: 8, fill: "#888" }} />
-            <Tooltip
-              contentStyle={{ background: "#1E1E1E", border: "2px solid #0F0F0F", fontFamily: '"Press Start 2P"', fontSize: 8 }}
-            />
-            <Legend wrapperStyle={{ fontFamily: '"Press Start 2P"', fontSize: 8 }} />
-            <Bar dataKey="corrections" fill={PINK} name="Corrections" />
-            <Bar dataKey="help" fill={BLUE} name="Help Requests" />
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartBlock>
     </div>
   );
 }
 
 function ChartBlock({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="pixel-card" style={{ padding: "1.25rem 1rem", marginBottom: "1rem" }}>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.5rem", color: "rgba(255,255,255,0.6)", marginBottom: "1rem" }}>
+    <div className="dash-card" style={{ marginBottom: "1.5rem" }}>
+      <div style={{ fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--dash-text-muted)", marginBottom: "1.25rem" }}>
         {title}
       </div>
       {children}

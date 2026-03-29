@@ -1,94 +1,82 @@
 export default function CodePage() {
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1.25rem" }}>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.9rem", marginBottom: "0.5rem" }}>
-        CODE / GITHUB
-      </div>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.45rem", opacity: 0.6, marginBottom: "2rem" }}>
-        TECHNICAL ACCESS
-      </div>
+    <div className="dash-page">
+      <div className="dash-container">
+        <h1 className="dash-title">Code / GitHub</h1>
+        <div className="dash-subtitle">Technical Access</div>
 
-      {/* Repo cards */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
-        {[
-          {
-            name: "haptic-atlas",
-            desc: "Web platform — Next.js, Tailwind, Web Bluetooth API, Leaflet, Recharts",
-            tag: "WEB",
-            color: "var(--purple)",
-          },
-          {
-            name: "haptic-atlas-hardware",
-            desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
-            tag: "HARDWARE",
-            color: "var(--pink)",
-          },
-        ].map(({ name, desc, tag, color }) => (
-          <div key={name} className="pixel-card" style={{ padding: "1.25rem 1rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.6rem", flexWrap: "wrap", gap: "0.5rem" }}>
-              <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.65rem", color: "white" }}>
-                {name}
+        {/* Repo cards */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "1px", marginBottom: "2.5rem", background: "var(--dash-border)" }}>
+          {[
+            {
+              name: "haptic-atlas",
+              desc: "Web platform — Next.js, Tailwind, Web Bluetooth API, Leaflet, Recharts",
+              tag: "WEB",
+            },
+            {
+              name: "haptic-atlas-hardware",
+              desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
+              tag: "HARDWARE",
+            },
+          ].map(({ name, desc, tag }) => (
+            <div key={name} style={{ background: "var(--dash-bg)", padding: "1.75rem 1.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.75rem" }}>
+                <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fff" }}>
+                  {name}
+                </div>
+                <span className="dash-badge">{tag}</span>
               </div>
-              <span
+              <div style={{ fontSize: "0.85rem", color: "var(--dash-text-secondary)", lineHeight: 1.7, marginBottom: "1.25rem" }}>
+                {desc}
+              </div>
+              <div
                 style={{
-                  fontFamily: '"Press Start 2P"', fontSize: "0.38rem",
-                  background: color, color: "white",
-                  border: "2px solid var(--dark)",
-                  padding: "0.2rem 0.5rem",
+                  fontSize: "0.8rem",
+                  color: "var(--dash-text-muted)",
+                  borderTop: "1px solid var(--dash-border)",
+                  paddingTop: "0.75rem",
+                  fontFamily: "monospace",
+                  letterSpacing: "0.02em",
                 }}
               >
-                {tag}
-              </span>
-            </div>
-            <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.4rem", color: "rgba(255,255,255,0.55)", lineHeight: 2, marginBottom: "1rem" }}>
-              {desc}
-            </div>
-            <div
-              style={{
-                fontFamily: '"Press Start 2P"', fontSize: "0.4rem",
-                color: "rgba(255,255,255,0.3)",
-                border: "2px dashed var(--dark3)",
-                padding: "0.5rem 0.75rem",
-              }}
-            >
-              github.com/[username]/{name}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Stack */}
-      <div className="pixel-card" style={{ padding: "1.25rem 1rem" }}>
-        <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.55rem", color: "white", marginBottom: "1rem" }}>
-          TECH STACK
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "0.5rem" }}>
-          {[
-            ["NEXT.JS 16", "Framework"],
-            ["REACT 19", "UI"],
-            ["TAILWIND CSS", "Styling"],
-            ["WEB BLUETOOTH", "BLE hardware"],
-            ["LEAFLET", "Map / traces"],
-            ["RECHARTS", "Data charts"],
-            ["GEOLOCATION API", "Route tracking"],
-            ["LOCALSTORAGE", "Session data"],
-          ].map(([tech, role]) => (
-            <div
-              key={tech}
-              style={{
-                background: "var(--dark3)",
-                border: "2px solid var(--dark)",
-                padding: "0.5rem 0.6rem",
-              }}
-            >
-              <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.4rem", color: "var(--pink)", marginBottom: "0.3rem" }}>
-                {tech}
-              </div>
-              <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.35rem", color: "rgba(255,255,255,0.4)" }}>
-                {role}
+                github.com/[username]/{name}
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Stack */}
+        <div className="dash-card">
+          <div style={{ fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--dash-text-muted)", marginBottom: "1.5rem" }}>
+            Tech Stack
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "1px", background: "var(--dash-border)", margin: "-1.5rem", marginTop: 0 }}>
+            {[
+              ["Next.js 16", "Framework"],
+              ["React 19", "UI"],
+              ["Tailwind CSS", "Styling"],
+              ["Web Bluetooth", "BLE Hardware"],
+              ["Leaflet", "Map / Traces"],
+              ["Recharts", "Data Charts"],
+              ["Geolocation API", "Route Tracking"],
+              ["LocalStorage", "Session Data"],
+            ].map(([tech, role]) => (
+              <div
+                key={tech}
+                style={{
+                  background: "var(--dash-bg)",
+                  padding: "1rem 1.25rem",
+                }}
+              >
+                <div style={{ fontSize: "0.85rem", fontWeight: 500, color: "#fff", marginBottom: "0.3rem" }}>
+                  {tech}
+                </div>
+                <div style={{ fontSize: "0.75rem", color: "var(--dash-text-muted)" }}>
+                  {role}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

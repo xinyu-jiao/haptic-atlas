@@ -12,10 +12,8 @@ const NAV_LINKS = [
   { href: "/data", label: "DATA" },
   { href: "/iterations", label: "PROCESS" },
   { href: "/code", label: "CODE" },
-  { href: "/missing", label: "MISSING" },
 ];
 
-// Hide nav during the active session flow
 const SESSION_PATHS = [
   "/session/level",
   "/session/role",
@@ -34,41 +32,42 @@ export default function NavBar() {
   return (
     <nav
       style={{
-        background: "var(--dark)",
-        borderBottom: "3px solid var(--dark)",
+        background: "#0a0a0a",
+        borderBottom: "1px solid #222",
         position: "sticky",
         top: 0,
         zIndex: 100,
+        fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
       }}
     >
       <div
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "0.6rem 1rem",
+          padding: "0.75rem 1.5rem",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
-        {/* Logo */}
         <Link
           href="/"
           style={{
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: "0.6rem",
-            color: "var(--pink)",
+            fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            color: "#fff",
             textDecoration: "none",
-            letterSpacing: "0.1em",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
           }}
         >
-          ◈ HAPTIC ATLAS
+          HAPTIC ATLAS
         </Link>
 
-        {/* Desktop links */}
         <div
           className="hidden md:flex"
-          style={{ gap: "0.25rem", alignItems: "center" }}
+          style={{ gap: "0.15rem", alignItems: "center" }}
         >
           {NAV_LINKS.map((link) => (
             <Link
@@ -76,11 +75,7 @@ export default function NavBar() {
               href={link.href}
               className="nav-link"
               style={{
-                color:
-                  pathname === link.href
-                    ? "var(--bg)"
-                    : "rgba(195,168,212,0.8)",
-                background: pathname === link.href ? "var(--pink)" : undefined,
+                color: pathname === link.href ? "#fff" : undefined,
               }}
             >
               {link.label}
@@ -88,7 +83,6 @@ export default function NavBar() {
           ))}
         </div>
 
-        {/* Mobile hamburger */}
         <button
           className="md:hidden"
           onClick={() => setOpen(!open)}
@@ -96,24 +90,24 @@ export default function NavBar() {
             background: "none",
             border: "none",
             cursor: "pointer",
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: "0.6rem",
-            color: "var(--pink)",
+            fontFamily: '"Inter", system-ui, sans-serif',
+            fontSize: "1.2rem",
+            color: "#888",
+            padding: "0.25rem",
           }}
         >
           {open ? "✕" : "≡"}
         </button>
       </div>
 
-      {/* Mobile menu */}
       {open && (
         <div
           style={{
-            borderTop: "2px solid var(--dark3)",
-            padding: "0.5rem",
+            borderTop: "1px solid #222",
+            padding: "0.5rem 1rem",
             display: "flex",
             flexDirection: "column",
-            gap: "0.25rem",
+            gap: "0.15rem",
           }}
         >
           {NAV_LINKS.map((link) => (
@@ -123,10 +117,9 @@ export default function NavBar() {
               className="nav-link"
               onClick={() => setOpen(false)}
               style={{
-                color:
-                  pathname === link.href ? "var(--bg)" : "rgba(195,168,212,0.8)",
-                background: pathname === link.href ? "var(--pink)" : undefined,
+                color: pathname === link.href ? "#fff" : undefined,
                 display: "block",
+                padding: "0.6rem 0.7rem",
               }}
             >
               {link.label}
