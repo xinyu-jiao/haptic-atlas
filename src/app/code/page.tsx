@@ -12,13 +12,15 @@ export default function CodePage() {
               name: "haptic-atlas",
               desc: "Web platform — Next.js, Tailwind, Web Bluetooth API, Leaflet, Recharts",
               tag: "WEB",
+              url: "https://github.com/xinyu-jiao/haptic-atlas",
             },
             {
               name: "haptic-atlas-hardware",
               desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
               tag: "HARDWARE",
+              url: null,
             },
-          ].map(({ name, desc, tag }) => (
+          ].map(({ name, desc, tag, url }) => (
             <div key={name} style={{ background: "var(--dash-bg)", padding: "1.75rem 1.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.75rem" }}>
                 <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fff" }}>
@@ -31,15 +33,35 @@ export default function CodePage() {
               </div>
               <div
                 style={{
-                  fontSize: "0.8rem",
-                  color: "var(--dash-text-muted)",
                   borderTop: "1px solid var(--dash-border)",
                   paddingTop: "0.75rem",
-                  fontFamily: "monospace",
-                  letterSpacing: "0.02em",
                 }}
               >
-                github.com/[username]/{name}
+                {url ? (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "var(--dash-text-secondary)",
+                      fontFamily: "monospace",
+                      letterSpacing: "0.02em",
+                      textDecoration: "none",
+                      borderBottom: "1px solid var(--dash-border)",
+                      paddingBottom: "0.15rem",
+                      transition: "color 0.15s, border-color 0.15s",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderColor = "#555"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "var(--dash-text-secondary)"; e.currentTarget.style.borderColor = "var(--dash-border)"; }}
+                  >
+                    {url.replace("https://", "")}
+                  </a>
+                ) : (
+                  <span style={{ fontSize: "0.8rem", color: "var(--dash-text-muted)", fontFamily: "monospace", letterSpacing: "0.02em" }}>
+                    Private repository
+                  </span>
+                )}
               </div>
             </div>
           ))}
