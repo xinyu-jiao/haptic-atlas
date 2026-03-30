@@ -9,13 +9,23 @@ import { db } from "./firebase";
 import type { SessionResult } from "./types";
 
 const COLLECTION = "sessions";
+const TIMEOUT_MS = 6000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("Firestore timeout")), ms)
+    ),
+  ]);
+}
 
 export async function saveSessionToCloud(result: SessionResult): Promise<void> {
   try {
-    await addDoc(collection(db, COLLECTION), {
-      ...result,
-      createdAt: Date.now(),
-    });
+    await withTimeout(
+      addDoc(collection(db, COLLECTION), { ...result, createdAt: Date.now() }),
+      TIMEOUT_MS
+    );
   } catch (err) {
     console.warn("Failed to save session to Firestore:", err);
   }
@@ -24,7 +34,7 @@ export async function saveSessionToCloud(result: SessionResult): Promise<void> {
 export async function loadSessionsFromCloud(): Promise<SessionResult[]> {
   try {
     const q = query(collection(db, COLLECTION), orderBy("timestamp", "desc"));
-    const snapshot = await getDocs(q);
+    const snapshot = await withTimeout(getDocs(q), TIMEOUT_MS);
     return snapshot.docs.map((d) => {
       const data = d.data();
       return {
