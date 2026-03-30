@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { formatDuration } from "@/lib/session-storage";
+import { formatDuration, loadTraces, saveTrace, deleteTrace } from "@/lib/session-storage";
 import { saveTraceToCloud, loadTracesFromCloud, deleteTraceFromCloud } from "@/lib/firestore-traces";
 import type { TraceRecord, TracePosition } from "@/lib/types";
 
@@ -43,15 +43,29 @@ export default function MapPage() {
   const totalDistance = calcDistance(positions);
 
   async function refreshTraces() {
-    const cloud = await loadTracesFromCloud();
-    setTraces(cloud);
+    try {
+      const cloud = await loadTracesFromCloud();
+      if (cloud.length > 0) {
+        setTraces(cloud);
+        return;
+      }
+    } catch { /* fall through */ }
+    setTraces(loadTraces());
   }
 
   useEffect(() => {
-    loadTracesFromCloud().then((cloud) => {
-      setTraces(cloud);
-      setLoading(false);
-    });
+    loadTracesFromCloud()
+      .then((cloud) => {
+        if (cloud.length > 0) {
+          setTraces(cloud);
+        } else {
+          setTraces(loadTraces());
+        }
+      })
+      .catch(() => {
+        setTraces(loadTraces());
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const startTracking = useCallback(() => {
@@ -110,7 +124,8 @@ export default function MapPage() {
           points: cur.length,
           positions: cur,
         };
-        saveTraceToCloud(record).then(() => refreshTraces());
+        saveTrace(record);
+        saveTraceToCloud(record).then(() => refreshTraces()).catch(() => refreshTraces());
         setJustSaved(true);
       }
       return cur;
@@ -135,6 +150,7 @@ export default function MapPage() {
   }
 
   async function handleDelete(id: string) {
+    deleteTrace(id);
     await deleteTraceFromCloud(id);
     await refreshTraces();
     if (viewing?.id === id) {
