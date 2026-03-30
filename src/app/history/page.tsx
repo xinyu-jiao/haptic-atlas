@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { groupSessionsByDate, formatDuration } from "@/lib/session-storage";
+import { loadSessions, groupSessionsByDate, formatDuration } from "@/lib/session-storage";
 import { loadSessionsFromCloud } from "@/lib/firestore-sessions";
 import type { SessionResult } from "@/lib/types";
 import { LEVELS } from "@/lib/types";
@@ -13,14 +13,28 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadSessionsFromCloud().then((sessions) => {
-      if (sessions.length === 0) {
-        setEmpty(true);
-      } else {
-        setGroups(groupSessionsByDate(sessions));
-      }
-      setLoading(false);
-    });
+    loadSessionsFromCloud()
+      .then((sessions) => {
+        if (sessions.length > 0) {
+          setGroups(groupSessionsByDate(sessions));
+        } else {
+          const local = loadSessions();
+          if (local.length > 0) {
+            setGroups(groupSessionsByDate(local));
+          } else {
+            setEmpty(true);
+          }
+        }
+      })
+      .catch(() => {
+        const local = loadSessions();
+        if (local.length > 0) {
+          setGroups(groupSessionsByDate(local));
+        } else {
+          setEmpty(true);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -35,7 +49,11 @@ export default function HistoryPage() {
           <h1 className="dash-title" style={{ marginBottom: 0 }}>Session History</h1>
         </div>
 
-        {empty ? (
+        {loading ? (
+          <div className="dash-card" style={{ padding: "3rem 2rem", textAlign: "center" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)" }}>Loading sessions…</span>
+          </div>
+        ) : empty ? (
           <div className="dash-card" style={{ padding: "3rem 2rem", textAlign: "center" }}>
             <div style={{ fontSize: "0.9rem", color: "var(--dash-text-muted)", lineHeight: 1.8, marginBottom: "1.5rem" }}>
               No sessions yet.

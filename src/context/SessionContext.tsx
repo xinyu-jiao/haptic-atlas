@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useReducer, useCallback } from "react";
+import React, { createContext, useContext, useReducer, useCallback, useEffect, useRef } from "react";
 import type { SessionConfig, ActiveSessionState, SessionResult, Level, Role } from "@/lib/types";
 import { LEVELS } from "@/lib/types";
 import { saveSession, computeBadges, formatDuration } from "@/lib/session-storage";
@@ -133,7 +133,6 @@ function reducer(state: SessionCtxState, action: Action): SessionCtxState {
         badges,
       };
       saveSession(result);
-      saveSessionToCloud(result);
       return {
         ...state,
         active: { ...a, status: "complete" },
@@ -173,6 +172,14 @@ const Ctx = createContext<SessionCtx | null>(null);
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const lastSavedIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (state.lastResult && state.lastResult.id !== lastSavedIdRef.current) {
+      lastSavedIdRef.current = state.lastResult.id;
+      saveSessionToCloud(state.lastResult).catch(() => {});
+    }
+  }, [state.lastResult]);
 
   const setLevel = useCallback((level: Level) => dispatch({ type: "SET_LEVEL", level }), []);
   const setRole = useCallback((role: Role) => dispatch({ type: "SET_ROLE", role }), []);

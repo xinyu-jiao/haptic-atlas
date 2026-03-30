@@ -5,7 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Legend,
 } from "recharts";
-import { formatDuration } from "@/lib/session-storage";
+import { loadSessions, formatDuration } from "@/lib/session-storage";
 import { loadSessionsFromCloud } from "@/lib/firestore-sessions";
 import type { SessionResult } from "@/lib/types";
 
@@ -24,15 +24,30 @@ export default function DataPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadSessionsFromCloud().then((cloud) => {
-      if (cloud.length > 0) {
-        setSessions(cloud);
-      } else {
-        setSessions(SAMPLE_DATA);
-        setIsSample(true);
-      }
-      setLoading(false);
-    });
+    loadSessionsFromCloud()
+      .then((cloud) => {
+        if (cloud.length > 0) {
+          setSessions(cloud);
+        } else {
+          const local = loadSessions();
+          if (local.length > 0) {
+            setSessions(local);
+          } else {
+            setSessions(SAMPLE_DATA);
+            setIsSample(true);
+          }
+        }
+      })
+      .catch(() => {
+        const local = loadSessions();
+        if (local.length > 0) {
+          setSessions(local);
+        } else {
+          setSessions(SAMPLE_DATA);
+          setIsSample(true);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const chartData = sessions.slice().reverse().map((s, i) => ({
@@ -62,7 +77,13 @@ export default function DataPage() {
         <h1 className="dash-title">Data</h1>
         <div className="dash-subtitle">Training Visualization</div>
 
-        {isSample && (
+        {loading && (
+          <div className="dash-card" style={{ padding: "3rem 2rem", textAlign: "center" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)" }}>Loading data…</span>
+          </div>
+        )}
+
+        {!loading && isSample && (
           <div
             className="dash-card"
             style={{ marginBottom: "2rem", padding: "1rem 1.5rem" }}
