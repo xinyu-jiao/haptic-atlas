@@ -4,6 +4,7 @@ import React, { createContext, useContext, useReducer, useCallback } from "react
 import type { SessionConfig, ActiveSessionState, SessionResult, Level, Role } from "@/lib/types";
 import { LEVELS } from "@/lib/types";
 import { saveSession, computeBadges, formatDuration } from "@/lib/session-storage";
+import { saveSessionToCloud } from "@/lib/firestore-sessions";
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -132,6 +133,7 @@ function reducer(state: SessionCtxState, action: Action): SessionCtxState {
         badges,
       };
       saveSession(result);
+      saveSessionToCloud(result);
       return {
         ...state,
         active: { ...a, status: "complete" },

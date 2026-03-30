@@ -5,7 +5,8 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Legend,
 } from "recharts";
-import { loadSessions, formatDuration } from "@/lib/session-storage";
+import { formatDuration } from "@/lib/session-storage";
+import { loadSessionsFromCloud } from "@/lib/firestore-sessions";
 import type { SessionResult } from "@/lib/types";
 
 const SAMPLE_DATA: SessionResult[] = [
@@ -20,15 +21,18 @@ const SAMPLE_DATA: SessionResult[] = [
 export default function DataPage() {
   const [sessions, setSessions] = useState<SessionResult[]>([]);
   const [isSample, setIsSample] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loaded = loadSessions();
-    if (loaded.length > 0) {
-      setSessions(loaded);
-    } else {
-      setSessions(SAMPLE_DATA);
-      setIsSample(true);
-    }
+    loadSessionsFromCloud().then((cloud) => {
+      if (cloud.length > 0) {
+        setSessions(cloud);
+      } else {
+        setSessions(SAMPLE_DATA);
+        setIsSample(true);
+      }
+      setLoading(false);
+    });
   }, []);
 
   const chartData = sessions.slice().reverse().map((s, i) => ({

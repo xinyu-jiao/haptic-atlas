@@ -2,21 +2,25 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { loadSessions, groupSessionsByDate, formatDuration } from "@/lib/session-storage";
+import { groupSessionsByDate, formatDuration } from "@/lib/session-storage";
+import { loadSessionsFromCloud } from "@/lib/firestore-sessions";
 import type { SessionResult } from "@/lib/types";
 import { LEVELS } from "@/lib/types";
 
 export default function HistoryPage() {
   const [groups, setGroups] = useState<Record<string, SessionResult[]>>({});
   const [empty, setEmpty] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const sessions = loadSessions();
-    if (sessions.length === 0) {
-      setEmpty(true);
-      return;
-    }
-    setGroups(groupSessionsByDate(sessions));
+    loadSessionsFromCloud().then((sessions) => {
+      if (sessions.length === 0) {
+        setEmpty(true);
+      } else {
+        setGroups(groupSessionsByDate(sessions));
+      }
+      setLoading(false);
+    });
   }, []);
 
   return (
