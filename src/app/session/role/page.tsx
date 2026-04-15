@@ -5,7 +5,7 @@ import { useSession } from "@/context/SessionContext";
 import type { Role } from "@/lib/types";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
-import VoiceMicButton from "@/components/VoiceMicButton";
+import VoiceScreen from "@/components/VoiceScreen";
 import { useEffect } from "react";
 
 export default function RolePage() {
@@ -48,6 +48,7 @@ export default function RolePage() {
   ];
 
   return (
+    <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
     <div className="screen">
       <button
         onClick={() => { speak("Back"); router.back(); }}
@@ -128,7 +129,7 @@ export default function RolePage() {
         · READY
       </button>
 
-      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
+    </VoiceScreen>
   );
 }

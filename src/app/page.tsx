@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
-import VoiceMicButton from "@/components/VoiceMicButton";
+import VoiceScreen from "@/components/VoiceScreen";
 
 export default function HomePage() {
   const router = useRouter();
@@ -28,6 +28,7 @@ export default function HomePage() {
   });
 
   return (
+    <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
     <div className="screen" style={{ paddingTop: "2rem" }}>
       {/* Hero pixel art area */}
       <div
@@ -94,7 +95,7 @@ export default function HomePage() {
         </Link>
       </div>
 
-      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
+    </VoiceScreen>
   );
 }

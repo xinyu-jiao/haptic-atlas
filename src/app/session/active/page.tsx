@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
-import VoiceMicButton from "@/components/VoiceMicButton";
+import VoiceScreen from "@/components/VoiceScreen";
 import {
   generateLiveId,
   updateLiveLocation,
@@ -207,6 +207,7 @@ export default function ActivePage() {
     const isOnTrack = active.consistency >= 65;
 
     return (
+      <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
       <div className="screen" style={{ paddingTop: "1.25rem" }}>
         {/* Top bar */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
@@ -362,13 +363,14 @@ export default function ActivePage() {
           · END SESSION
         </button>
 
-        <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
       </div>
+      </VoiceScreen>
     );
   }
 
   // ── GUIDE VIEW ───────────────────────────────────────────────────────────────
   return (
+    <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
     <div className="screen" style={{ paddingTop: "1.25rem" }}>
       {/* Top bar */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
@@ -524,7 +526,7 @@ export default function ActivePage() {
         ■ END
       </button>
 
-      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
+    </VoiceScreen>
   );
 }

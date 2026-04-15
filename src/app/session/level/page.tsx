@@ -5,7 +5,7 @@ import { useSession } from "@/context/SessionContext";
 import { LEVELS, type Level } from "@/lib/types";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
-import VoiceMicButton from "@/components/VoiceMicButton";
+import VoiceScreen from "@/components/VoiceScreen";
 
 export default function LevelPage() {
   const router = useRouter();
@@ -35,6 +35,7 @@ export default function LevelPage() {
   };
 
   return (
+    <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
     <div className="screen">
       {/* Back */}
       <button
@@ -104,7 +105,7 @@ export default function LevelPage() {
         ))}
       </div>
 
-      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
+    </VoiceScreen>
   );
 }

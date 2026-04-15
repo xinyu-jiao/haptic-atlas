@@ -7,7 +7,7 @@ import { useSession } from "@/context/SessionContext";
 import { formatDuration } from "@/lib/session-storage";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
-import VoiceMicButton from "@/components/VoiceMicButton";
+import VoiceScreen from "@/components/VoiceScreen";
 
 const BADGE_ICONS: Record<string, string> = {
   "SMOOTH NAV": "◈",
@@ -42,6 +42,7 @@ export default function CompletePage() {
   const durationStr = formatDuration(result.duration);
 
   return (
+    <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
     <div className="screen" style={{ paddingTop: "1.5rem" }}>
       <div style={{ fontFamily: '"Press Start 2P"', fontSize: "1.25rem", marginBottom: "0.4rem" }}>
         COMPLETE!
@@ -159,7 +160,7 @@ export default function CompletePage() {
         </Link>
       </div>
 
-      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
+    </VoiceScreen>
   );
 }
