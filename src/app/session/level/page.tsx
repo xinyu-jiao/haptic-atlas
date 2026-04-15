@@ -3,12 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { LEVELS, type Level } from "@/lib/types";
+import { speak } from "@/lib/speak";
 
 export default function LevelPage() {
   const router = useRouter();
   const { setLevel } = useSession();
 
   function handleSelect(id: Level) {
+    const info = LEVELS.find((l) => l.id === id);
+    speak(`${info?.name ?? id} selected. Choose your role.`);
     setLevel(id);
     router.push("/session/role");
   }
@@ -23,7 +26,7 @@ export default function LevelPage() {
     <div className="screen">
       {/* Back */}
       <button
-        onClick={() => router.push("/")}
+        onClick={() => { speak("Back to home"); router.push("/"); }}
         style={{
           background: "var(--dark2)",
           color: "white",

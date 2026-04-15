@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
 import type { Environment, HapticIntensity, SessionConfig } from "@/lib/types";
+import { speak } from "@/lib/speak";
 
 export default function SetupPage() {
   const router = useRouter();
@@ -24,8 +25,8 @@ export default function SetupPage() {
   }, [state.config.level, state.config.role, router]);
 
   async function handleHapticTest(dir: "left" | "right") {
+    speak(`Testing ${dir}`);
     if (!bleService.connected) {
-      // Auto-start sim mode
       const result = await bleService.connect();
       if (result.success) setBleReady(true);
     }
@@ -36,6 +37,7 @@ export default function SetupPage() {
   }
 
   async function handleBegin() {
+    speak("Session starting. Begin walking.");
     let ble = bleReady;
     if (!ble) {
       const result = await bleService.connect();
@@ -60,7 +62,7 @@ export default function SetupPage() {
   return (
     <div className="screen">
       <button
-        onClick={() => router.back()}
+        onClick={() => { speak("Back"); router.back(); }}
         style={{
           background: "var(--dark2)", color: "white",
           border: "2px solid var(--dark)", fontFamily: '"Press Start 2P"',
@@ -85,7 +87,7 @@ export default function SetupPage() {
           {(["indoor", "outdoor"] as Environment[]).map((env) => (
             <button
               key={env}
-              onClick={() => setEnvironment(env)}
+              onClick={() => { setEnvironment(env); speak(`${env} selected`); }}
               style={{
                 fontFamily: '"Press Start 2P"', fontSize: "0.6rem",
                 padding: "0.75rem",
@@ -114,7 +116,7 @@ export default function SetupPage() {
           max={50}
           step={5}
           value={distance}
-          onChange={(e) => setDistance(Number(e.target.value))}
+          onChange={(e) => { const d = Number(e.target.value); setDistance(d); speak(`${d} meters`); }}
           style={{ width: "100%" }}
         />
       </div>
@@ -131,7 +133,7 @@ export default function SetupPage() {
             </div>
           </div>
           <button
-            onClick={() => setGoalConfirmed(!goalConfirmed)}
+            onClick={() => { setGoalConfirmed(!goalConfirmed); speak(goalConfirmed ? "Goal confirm off" : "Goal confirm on"); }}
             style={{
               width: 20, height: 20,
               background: goalConfirmed ? "var(--pink)" : "var(--dark3)",
@@ -177,7 +179,7 @@ export default function SetupPage() {
             {intensitySteps.map((step) => (
               <button
                 key={step}
-                onClick={() => setIntensity(step)}
+                onClick={() => { setIntensity(step); speak(`Intensity ${step}`); }}
                 style={{
                   fontFamily: '"Press Start 2P"', fontSize: "0.4rem",
                   padding: "0.25rem 0.5rem",

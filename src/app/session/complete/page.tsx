@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { formatDuration } from "@/lib/session-storage";
+import { speak } from "@/lib/speak";
 
 const BADGE_ICONS: Record<string, string> = {
   "SMOOTH NAV": "◈",
@@ -19,7 +20,12 @@ export default function CompletePage() {
   const result = state.lastResult;
 
   useEffect(() => {
-    if (!result) router.replace("/");
+    if (!result) {
+      router.replace("/");
+      return;
+    }
+    const dur = formatDuration(result.duration);
+    speak(`Session complete. Time: ${dur}. Consistency: ${result.consistency} percent. ${result.badges.length} badges earned.`);
   }, [result, router]);
 
   if (!result) return null;
@@ -118,7 +124,7 @@ export default function CompletePage() {
       </div>
 
       {/* Actions */}
-      <Link href="/history" style={{ textDecoration: "none", display: "block", marginBottom: "0.75rem" }}>
+      <Link href="/history" style={{ textDecoration: "none", display: "block", marginBottom: "0.75rem" }} onClick={() => speak("Opening session history")}>
         <button
           className="pixel-btn"
           style={{ width: "100%", background: "var(--pink)", color: "white", fontSize: "0.7rem", padding: "1rem" }}
@@ -128,7 +134,7 @@ export default function CompletePage() {
       </Link>
 
       <button
-        onClick={() => { reset(); router.push("/session/level"); }}
+        onClick={() => { speak("Starting new session"); reset(); router.push("/session/level"); }}
         className="pixel-btn"
         style={{ width: "100%", background: "var(--dark2)", color: "white", fontSize: "0.55rem", padding: "0.75rem" }}
       >
@@ -138,7 +144,7 @@ export default function CompletePage() {
       <div style={{ textAlign: "center", marginTop: "1rem" }}>
         <Link href="/"
           style={{ fontFamily: '"Press Start 2P"', fontSize: "0.45rem", color: "var(--dark)", opacity: 0.5, textDecoration: "none" }}
-          onClick={() => reset()}
+          onClick={() => { speak("Back to home"); reset(); }}
         >
           HOME
         </Link>

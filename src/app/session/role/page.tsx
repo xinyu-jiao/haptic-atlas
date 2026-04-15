@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import type { Role } from "@/lib/types";
+import { speak } from "@/lib/speak";
 import { useEffect } from "react";
 
 export default function RolePage() {
@@ -15,6 +16,7 @@ export default function RolePage() {
   }, [state.config.level, router]);
 
   function handleSelect(role: Role) {
+    speak(`${role} selected`);
     setRole(role);
     router.push("/session/setup");
   }
@@ -39,7 +41,7 @@ export default function RolePage() {
   return (
     <div className="screen">
       <button
-        onClick={() => router.back()}
+        onClick={() => { speak("Back"); router.back(); }}
         style={{
           background: "var(--dark2)", color: "white",
           border: "2px solid var(--dark)", fontFamily: '"Press Start 2P"',
@@ -103,7 +105,7 @@ export default function RolePage() {
       </div>
 
       <button
-        onClick={() => state.config.role && router.push("/session/setup")}
+        onClick={() => { if (state.config.role) { speak("Ready. Configure session."); router.push("/session/setup"); } }}
         disabled={!state.config.role}
         className="pixel-btn"
         style={{

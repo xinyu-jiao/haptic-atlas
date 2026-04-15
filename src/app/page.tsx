@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
+import { speak } from "@/lib/speak";
 
 export default function HomePage() {
   const { reset } = useSession();
@@ -17,27 +18,39 @@ export default function HomePage() {
 
   async function handleConnect() {
     setConnecting(true);
+    speak("Scanning for haptic belt");
     const result = await bleService.connect();
     if (result.success) {
       if (result.sim) {
         setBleStatus("sim");
         setBleLabel("SIM MODE");
+        speak("Simulation mode activated");
       } else {
         setBleStatus("connected");
         setBleLabel("CONNECTED · 100%");
+        speak("Belt connected successfully");
       }
     } else {
       setBleStatus("disconnected");
       setBleLabel("SCAN CANCELLED");
+      speak("Connection cancelled");
     }
     setConnecting(false);
   }
 
   async function handleTest() {
     if (bleStatus === "disconnected") return;
+    speak("Testing. Left");
     await bleService.sendLeft();
-    setTimeout(() => bleService.sendRight(), 600);
+    setTimeout(() => {
+      speak("Right");
+      bleService.sendRight();
+    }, 600);
   }
+
+  const handleStart = useCallback(() => {
+    speak("Starting session. Select your level.");
+  }, []);
 
   return (
     <div className="screen" style={{ paddingTop: "2rem" }}>
@@ -127,7 +140,7 @@ export default function HomePage() {
       </button>
 
       {/* START */}
-      <Link href="/session/level" style={{ textDecoration: "none" }}>
+      <Link href="/session/level" style={{ textDecoration: "none" }} onClick={handleStart}>
         <button
           className="pixel-btn"
           style={{
@@ -145,6 +158,7 @@ export default function HomePage() {
       {/* History link */}
       <div style={{ textAlign: "center", marginTop: "1.25rem" }}>
         <Link href="/history"
+          onClick={() => speak("Opening session history")}
           style={{
             fontFamily: '"Press Start 2P"', fontSize: "0.5rem",
             color: "var(--dark)", opacity: 0.6, textDecoration: "none",

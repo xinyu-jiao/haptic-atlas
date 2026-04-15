@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
+import { speak } from "@/lib/speak";
 
 // Simulates consistency score drift (Seeker only)
 function driftConsistency(current: number): number {
@@ -55,9 +56,11 @@ export default function ActivePage() {
 
   const handlePause = useCallback(() => {
     if (active?.status === "running") {
+      speak("Paused");
       pause();
       pauseStartRef.current = Date.now();
     } else if (active?.status === "paused") {
+      speak("Resumed");
       if (pauseStartRef.current) {
         pausedRef.current += Date.now() - pauseStartRef.current;
         pauseStartRef.current = null;
@@ -67,6 +70,7 @@ export default function ActivePage() {
   }, [active?.status, pause, resume]);
 
   async function handleHapticDir(dir: "left" | "right") {
+    speak(dir);
     setHapticFlash(dir);
     if (dir === "left") await bleService.sendLeft();
     else await bleService.sendRight();
@@ -75,11 +79,13 @@ export default function ActivePage() {
   }
 
   async function handleHelp() {
+    speak("Help requested");
     addHelp();
     await bleService.sendArrived();
   }
 
   function handleEnd() {
+    speak("Session complete");
     if (intervalRef.current) clearInterval(intervalRef.current);
     endSession();
     router.push("/session/complete");
