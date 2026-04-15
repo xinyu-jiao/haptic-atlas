@@ -24,19 +24,34 @@ function LiveContent() {
       return;
     }
 
+    let firstSnapshot = true;
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+
     const unsub = subscribeLiveLocation(liveId, (loc) => {
-      setLoading(false);
-      setData(loc);
-      if (loc && loc.status === "active" && loc.timestamp !== lastTsRef.current) {
-        lastTsRef.current = loc.timestamp;
-        setPositions((prev) => [
-          ...prev,
-          { lat: loc.lat, lng: loc.lng, ts: loc.timestamp },
-        ]);
+      if (loc) {
+        setLoading(false);
+        setData(loc);
+        if (loc.status === "active" && loc.timestamp !== lastTsRef.current) {
+          lastTsRef.current = loc.timestamp;
+          setPositions((prev) => [
+            ...prev,
+            { lat: loc.lat, lng: loc.lng, ts: loc.timestamp },
+          ]);
+        }
+      } else if (firstSnapshot) {
+        // Document may not exist yet — wait before showing "not found"
+        retryTimer = setTimeout(() => setLoading(false), 8000);
+      } else {
+        setLoading(false);
+        setData(null);
       }
+      firstSnapshot = false;
     });
 
-    return () => unsub();
+    return () => {
+      unsub();
+      if (retryTimer) clearTimeout(retryTimer);
+    };
   }, [liveId]);
 
   const elapsed = data?.elapsed ?? 0;

@@ -94,6 +94,17 @@ export default function ActivePage() {
     setShareUrl(url);
     speak("Location sharing started");
 
+    const last = positions.length > 0 ? positions[positions.length - 1] : null;
+    updateLiveLocation(id, {
+      lat: last?.lat ?? 0,
+      lng: last?.lng ?? 0,
+      timestamp: Date.now(),
+      elapsed: active?.elapsed ?? 0,
+      status: "active",
+      userName: "Haptic Atlas User",
+      startedAt: startRef.current,
+    });
+
     if (navigator.share) {
       navigator.share({ title: "Track my location", url }).catch(() => {});
     }
