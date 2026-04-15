@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
-import { bleService } from "@/lib/ble";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
 import VoiceMicButton from "@/components/VoiceMicButton";
@@ -154,19 +153,16 @@ export default function ActivePage() {
     }
   }, [active?.status, pause, resume]);
 
-  async function handleHapticDir(dir: "left" | "right") {
+  function handleHapticDir(dir: "left" | "right") {
     speak(dir);
     setHapticFlash(dir);
-    if (dir === "left") await bleService.sendLeft();
-    else await bleService.sendRight();
     addCorrection();
     setTimeout(() => setHapticFlash(null), 400);
   }
 
-  async function handleHelp() {
+  function handleHelp() {
     speak("Help requested");
     addHelp();
-    await bleService.sendArrived();
   }
 
   function handleEnd() {
