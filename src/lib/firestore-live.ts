@@ -29,11 +29,13 @@ export function generateLiveId(): string {
 export async function updateLiveLocation(
   liveId: string,
   data: LiveLocation
-): Promise<void> {
+): Promise<boolean> {
   try {
     await setDoc(doc(db, COLLECTION, liveId), data);
+    return true;
   } catch (err) {
-    console.warn("Failed to update live location:", err);
+    console.error("Failed to update live location:", err);
+    return false;
   }
 }
 
@@ -52,7 +54,8 @@ export async function getLiveLocation(
 
 export function subscribeLiveLocation(
   liveId: string,
-  callback: (data: LiveLocation | null) => void
+  callback: (data: LiveLocation | null) => void,
+  onError?: (err: Error) => void
 ): Unsubscribe {
   return onSnapshot(
     doc(db, COLLECTION, liveId),
@@ -64,7 +67,8 @@ export function subscribeLiveLocation(
       }
     },
     (err) => {
-      console.warn("Live location subscription error:", err);
+      console.error("Live location subscription error:", err);
+      if (onError) onError(err as Error);
       callback(null);
     }
   );

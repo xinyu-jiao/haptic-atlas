@@ -15,6 +15,7 @@ function LiveContent() {
 
   const [data, setData] = useState<LiveLocation | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [positions, setPositions] = useState<TracePosition[]>([]);
   const lastTsRef = useRef(0);
 
@@ -27,26 +28,33 @@ function LiveContent() {
     let firstSnapshot = true;
     let retryTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const unsub = subscribeLiveLocation(liveId, (loc) => {
-      if (loc) {
-        setLoading(false);
-        setData(loc);
-        if (loc.status === "active" && loc.timestamp !== lastTsRef.current) {
-          lastTsRef.current = loc.timestamp;
-          setPositions((prev) => [
-            ...prev,
-            { lat: loc.lat, lng: loc.lng, ts: loc.timestamp },
-          ]);
+    const unsub = subscribeLiveLocation(
+      liveId,
+      (loc) => {
+        if (loc) {
+          setLoading(false);
+          setError(null);
+          setData(loc);
+          if (loc.status === "active" && loc.timestamp !== lastTsRef.current) {
+            lastTsRef.current = loc.timestamp;
+            setPositions((prev) => [
+              ...prev,
+              { lat: loc.lat, lng: loc.lng, ts: loc.timestamp },
+            ]);
+          }
+        } else if (firstSnapshot) {
+          retryTimer = setTimeout(() => setLoading(false), 8000);
+        } else {
+          setLoading(false);
+          setData(null);
         }
-      } else if (firstSnapshot) {
-        // Document may not exist yet — wait before showing "not found"
-        retryTimer = setTimeout(() => setLoading(false), 8000);
-      } else {
+        firstSnapshot = false;
+      },
+      (err) => {
         setLoading(false);
-        setData(null);
+        setError(err.message || "Unknown error");
       }
-      firstSnapshot = false;
-    });
+    );
 
     return () => {
       unsub();
@@ -126,9 +134,16 @@ function LiveContent() {
         </div>
       ) : !data ? (
         <div style={{ padding: "4rem 2rem", textAlign: "center" }}>
-          <div style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem" }}>Session Not Found</div>
+          <div style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem" }}>
+            {error ? "Connection Error" : "Session Not Found"}
+          </div>
           <div style={{ fontSize: "0.85rem", color: "#888" }}>
-            This live session link is invalid or has expired.
+            {error
+              ? `Firestore error: ${error}`
+              : "This live session link is invalid or has expired."}
+          </div>
+          <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "1rem" }}>
+            Session ID: {liveId}
           </div>
         </div>
       ) : (

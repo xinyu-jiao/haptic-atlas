@@ -85,16 +85,15 @@ export default function ActivePage() {
     });
   }, [positions, liveId, active]);
 
-  function handleShare() {
+  async function handleShare() {
     const id = generateLiveId();
     setLiveId(id);
     const base = window.location.origin + (process.env.NEXT_PUBLIC_BASE_PATH ?? "");
-    const url = `${base}/live?id=${id}`;
+    const url = `${base}/live/?id=${id}`;
     setShareUrl(url);
-    speak("Location sharing started");
 
     const last = positions.length > 0 ? positions[positions.length - 1] : null;
-    updateLiveLocation(id, {
+    const ok = await updateLiveLocation(id, {
       lat: last?.lat ?? 0,
       lng: last?.lng ?? 0,
       timestamp: Date.now(),
@@ -103,6 +102,12 @@ export default function ActivePage() {
       userName: "Haptic Atlas User",
       startedAt: startRef.current,
     });
+
+    if (ok) {
+      speak("Location sharing started");
+    } else {
+      speak("Failed to start sharing. Check Firestore rules.");
+    }
 
     if (navigator.share) {
       navigator.share({ title: "Track my location", url }).catch(() => {});
