@@ -2,15 +2,16 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { subscribeLiveLocation, type LiveLocation } from "@/lib/firestore-live";
 import type { TracePosition } from "@/lib/types";
 
 const MapView = dynamic(() => import("@/components/map/TraceMap"), { ssr: false });
 
-export default function LivePage() {
-  const params = useParams();
-  const liveId = params.id as string;
+function LiveContent() {
+  const searchParams = useSearchParams();
+  const liveId = searchParams.get("id") ?? "";
 
   const [data, setData] = useState<LiveLocation | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,10 @@ export default function LivePage() {
   const lastTsRef = useRef(0);
 
   useEffect(() => {
-    if (!liveId) return;
+    if (!liveId) {
+      setLoading(false);
+      return;
+    }
 
     const unsub = subscribeLiveLocation(liveId, (loc) => {
       setLoading(false);
@@ -44,6 +48,21 @@ export default function LivePage() {
     ? new Date(data.timestamp).toLocaleTimeString()
     : "--";
 
+  if (!liveId) {
+    return (
+      <div style={{
+        minHeight: "100vh", background: "#0a0a0a", color: "#fff",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
+      }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem" }}>No Session ID</div>
+          <div style={{ fontSize: "0.85rem", color: "#888" }}>Please use a valid live tracking link.</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -51,7 +70,6 @@ export default function LivePage() {
       color: "#fff",
       fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
     }}>
-      {/* Header */}
       <div style={{
         padding: "1.25rem 1.5rem",
         borderBottom: "1px solid #222",
@@ -100,14 +118,11 @@ export default function LivePage() {
         </div>
       ) : (
         <>
-          {/* Map */}
           <div style={{ height: "55vh", borderBottom: "1px solid #222" }}>
             <MapView positions={positions} tracking={isActive} />
           </div>
 
-          {/* Info */}
           <div style={{ padding: "1.5rem" }}>
-            {/* Stats */}
             <div style={{
               display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
               gap: "1px", background: "#222", marginBottom: "1.5rem",
@@ -118,7 +133,6 @@ export default function LivePage() {
               <StatCard label="LAST UPDATE" value={lastUpdate} />
             </div>
 
-            {/* User info */}
             <div style={{
               border: "1px solid #222", padding: "1rem 1.25rem",
               display: "flex", alignItems: "center", gap: "1rem",
@@ -171,5 +185,20 @@ function StatCard({ label, value }: { label: string; value: string }) {
       </div>
       <div style={{ fontSize: "1rem", fontWeight: 600 }}>{value}</div>
     </div>
+  );
+}
+
+export default function LivePage() {
+  return (
+    <Suspense fallback={
+      <div style={{
+        minHeight: "100vh", background: "#0a0a0a", color: "#888",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        Loading...
+      </div>
+    }>
+      <LiveContent />
+    </Suspense>
   );
 }

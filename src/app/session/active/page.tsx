@@ -90,7 +90,7 @@ export default function ActivePage() {
     const id = generateLiveId();
     setLiveId(id);
     const base = window.location.origin + (process.env.NEXT_PUBLIC_BASE_PATH ?? "");
-    const url = `${base}/live/${id}/`;
+    const url = `${base}/live?id=${id}`;
     setShareUrl(url);
     speak("Location sharing started");
 

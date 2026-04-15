@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
-import { bleService } from "@/lib/ble";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
 import VoiceMicButton from "@/components/VoiceMicButton";
@@ -12,45 +11,10 @@ import VoiceMicButton from "@/components/VoiceMicButton";
 export default function HomePage() {
   const router = useRouter();
   const { reset } = useSession();
-  const [bleStatus, setBleStatus] = useState<"disconnected" | "connected" | "sim">("disconnected");
-  const [bleLabel, setBleLabel] = useState("NOT CONNECTED");
-  const [connecting, setConnecting] = useState(false);
 
   useEffect(() => {
     reset();
   }, [reset]);
-
-  async function handleConnect() {
-    setConnecting(true);
-    speak("Scanning for haptic belt");
-    const result = await bleService.connect();
-    if (result.success) {
-      if (result.sim) {
-        setBleStatus("sim");
-        setBleLabel("SIM MODE");
-        speak("Simulation mode activated");
-      } else {
-        setBleStatus("connected");
-        setBleLabel("CONNECTED · 100%");
-        speak("Belt connected successfully");
-      }
-    } else {
-      setBleStatus("disconnected");
-      setBleLabel("SCAN CANCELLED");
-      speak("Connection cancelled");
-    }
-    setConnecting(false);
-  }
-
-  async function handleTest() {
-    if (bleStatus === "disconnected") return;
-    speak("Testing. Left");
-    await bleService.sendLeft();
-    setTimeout(() => {
-      speak("Right");
-      bleService.sendRight();
-    }, 600);
-  }
 
   const handleStart = useCallback(() => {
     speak("Starting session. Select your level.");
@@ -58,8 +22,6 @@ export default function HomePage() {
   }, [router]);
 
   const voice = useVoiceCommands({
-    connect: handleConnect,
-    test: handleTest,
     start: handleStart,
     begin: handleStart,
     history: () => { speak("Opening session history"); router.push("/history"); },
@@ -101,56 +63,6 @@ export default function HomePage() {
       <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.55rem", color: "var(--dark)", marginBottom: "2rem", letterSpacing: "0.1em" }}>
         HAPTIC NAV TRAINING
       </div>
-
-      {/* BLE status card */}
-      <div className="pixel-card" style={{ padding: "0.75rem 1rem", marginBottom: "0.75rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <span style={{ fontSize: "0.8rem" }}>⬡</span>
-            <span style={{ fontFamily: '"Press Start 2P"', fontSize: "0.55rem", color: "white" }}>BELT</span>
-          </div>
-          <button
-            onClick={handleConnect}
-            disabled={connecting || bleStatus === "connected"}
-            style={{
-              fontFamily: '"Press Start 2P"', fontSize: "0.45rem",
-              background: bleStatus === "connected" ? "var(--blue)"
-                : bleStatus === "sim" ? "var(--purple)"
-                : "var(--dark3)",
-              color: "white",
-              border: "2px solid var(--dark)",
-              padding: "0.3rem 0.6rem",
-              cursor: bleStatus === "connected" ? "default" : "pointer",
-              display: "flex", alignItems: "center", gap: "0.4rem",
-            }}
-          >
-            {bleStatus === "connected" || bleStatus === "sim" ? (
-              <>
-                <span className="pulse-dot" style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--px-green, #44CC88)", display: "inline-block" }} />
-                {bleLabel}
-              </>
-            ) : (
-              connecting ? "SCANNING..." : "TAP TO CONNECT"
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* TEST button */}
-      <button
-        onClick={handleTest}
-        disabled={bleStatus === "disconnected"}
-        className="pixel-btn"
-        style={{
-          width: "100%",
-          marginBottom: "1.5rem",
-          background: "var(--dark2)",
-          color: bleStatus !== "disconnected" ? "white" : "#666",
-          fontSize: "0.65rem",
-        }}
-      >
-        TEST
-      </button>
 
       {/* START */}
       <Link href="/session/level" style={{ textDecoration: "none" }} onClick={handleStart}>

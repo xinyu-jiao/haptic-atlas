@@ -4,28 +4,29 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 type CommandMap = Record<string, () => void>;
 
-const SpeechRecognition =
-  typeof window !== "undefined"
-    ? (window as unknown as { SpeechRecognition?: typeof window.SpeechRecognition; webkitSpeechRecognition?: typeof window.SpeechRecognition })
-        .SpeechRecognition ??
-      (window as unknown as { webkitSpeechRecognition?: typeof window.SpeechRecognition })
-        .webkitSpeechRecognition ??
-      null
-    : null;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type SpeechRecognitionCtor = new () => any;
+
+function getSpeechRecognition(): SpeechRecognitionCtor | null {
+  if (typeof window === "undefined") return null;
+  const w = window as any;
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
 
 export function useVoiceCommands(commands: CommandMap) {
   const [listening, setListening] = useState(false);
   const [lastHeard, setLastHeard] = useState<string | null>(null);
-  const recognitionRef = useRef<InstanceType<NonNullable<typeof SpeechRecognition>> | null>(null);
+  const recognitionRef = useRef<any>(null);
   const commandsRef = useRef(commands);
   commandsRef.current = commands;
 
-  const supported = SpeechRecognition !== null;
+  const supported = getSpeechRecognition() !== null;
 
   const start = useCallback(() => {
-    if (!SpeechRecognition || recognitionRef.current) return;
+    const Ctor = getSpeechRecognition();
+    if (!Ctor || recognitionRef.current) return;
 
-    const recognition = new SpeechRecognition();
+    const recognition = new Ctor();
     recognition.lang = "en-US";
     recognition.continuous = true;
     recognition.interimResults = false;
