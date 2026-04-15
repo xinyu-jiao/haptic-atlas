@@ -18,7 +18,7 @@ export default function CodePage() {
               name: "haptic-atlas-hardware",
               desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
               tag: "HARDWARE",
-              url: "" as string,
+              url: "https://github.com/Jerry6063/vibe-belt",
             },
           ].map(({ name, desc, tag, url }) => (
             <div key={name} style={{ background: "var(--dash-bg)", padding: "1.75rem 1.5rem" }}>

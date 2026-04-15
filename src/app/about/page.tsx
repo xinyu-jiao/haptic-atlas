@@ -66,52 +66,6 @@ export default function AboutPage() {
           </div>
         </Section>
 
-        <div className="dash-divider" />
-
-        <Section>
-          <div className="dash-section-label">04 / Vertical Slice — Milestone 2</div>
-
-          <div className="dash-card" style={{ marginBottom: "1.5rem" }}>
-            <div style={{ fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.1em", color: "#fff", marginBottom: "1.25rem", textTransform: "uppercase" }}>
-              Functioning Now
-            </div>
-            {[
-              "Complete session flow: Level → Role → Setup → Active → Result",
-              "Real-time timer and state updates",
-              "BLE haptic belt connection (Web Bluetooth API)",
-              "Simulation mode fallback for demo contexts",
-              "Guide view: mark corrections and assistance in real-time",
-              "Seeker view: live consistency score, haptic direction feedback",
-              "Session results saved to localStorage",
-              "Session history with grouping by date",
-              "Walk trace map with Geolocation API tracking",
-            ].map((item) => (
-              <div key={item} className="dash-list-item">
-                <span className="dash-list-bullet">—</span>
-                <span className="dash-list-text">{item}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="dash-card">
-            <div style={{ fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.1em", color: "var(--dash-text-muted)", marginBottom: "1.25rem", textTransform: "uppercase" }}>
-              Still Incomplete
-            </div>
-            {[
-              "Physical hardware form factor refinement",
-              "More levels and route scenarios",
-              "Real BLE pairing with physical belt (requires hardware present)",
-              "Multi-session analytics and comparisons",
-              "Additional test scenarios and external user testing",
-              "Expanded data visualization and export capabilities",
-            ].map((item) => (
-              <div key={item} className="dash-list-item">
-                <span className="dash-list-bullet" style={{ color: "#333" }}>—</span>
-                <span className="dash-list-text" style={{ color: "var(--dash-text-muted)" }}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </Section>
       </div>
     </div>
   );
