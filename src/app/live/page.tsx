@@ -1,10 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { subscribeLiveLocation, type LiveLocation } from "@/lib/firestore-live";
+import { getLiveLocation, type LiveLocation } from "@/lib/firestore-live";
 import type { TracePosition } from "@/lib/types";
 
 const MapView = dynamic(() => import("@/components/map/TraceMap"), { ssr: false });
@@ -18,6 +18,36 @@ function LiveContent() {
   const [error, setError] = useState<string | null>(null);
   const [positions, setPositions] = useState<TracePosition[]>([]);
   const lastTsRef = useRef(0);
+  const retriesRef = useRef(0);
+
+  const poll = useCallback(async () => {
+    if (!liveId) return;
+    try {
+      const loc = await getLiveLocation(liveId);
+      if (loc) {
+        retriesRef.current = 0;
+        setLoading(false);
+        setError(null);
+        setData(loc);
+        if (loc.status === "active" && loc.timestamp !== lastTsRef.current) {
+          lastTsRef.current = loc.timestamp;
+          setPositions((prev) => [
+            ...prev,
+            { lat: loc.lat, lng: loc.lng, ts: loc.timestamp },
+          ]);
+        }
+      } else {
+        retriesRef.current += 1;
+        if (retriesRef.current >= 5) {
+          setLoading(false);
+          setData(null);
+        }
+      }
+    } catch (err) {
+      setLoading(false);
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  }, [liveId]);
 
   useEffect(() => {
     if (!liveId) {
@@ -25,42 +55,15 @@ function LiveContent() {
       return;
     }
 
-    let firstSnapshot = true;
-    let retryTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const unsub = subscribeLiveLocation(
-      liveId,
-      (loc) => {
-        if (loc) {
-          setLoading(false);
-          setError(null);
-          setData(loc);
-          if (loc.status === "active" && loc.timestamp !== lastTsRef.current) {
-            lastTsRef.current = loc.timestamp;
-            setPositions((prev) => [
-              ...prev,
-              { lat: loc.lat, lng: loc.lng, ts: loc.timestamp },
-            ]);
-          }
-        } else if (firstSnapshot) {
-          retryTimer = setTimeout(() => setLoading(false), 8000);
-        } else {
-          setLoading(false);
-          setData(null);
-        }
-        firstSnapshot = false;
-      },
-      (err) => {
-        setLoading(false);
-        setError(err.message || "Unknown error");
-      }
-    );
+    poll();
+    const interval = setInterval(poll, 3000);
+    const timeout = setTimeout(() => setLoading(false), 15000);
 
     return () => {
-      unsub();
-      if (retryTimer) clearTimeout(retryTimer);
+      clearInterval(interval);
+      clearTimeout(timeout);
     };
-  }, [liveId]);
+  }, [liveId, poll]);
 
   const elapsed = data?.elapsed ?? 0;
   const mm = Math.floor(elapsed / 60).toString().padStart(2, "0");

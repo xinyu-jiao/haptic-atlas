@@ -26,12 +26,21 @@ export function generateLiveId(): string {
   return id;
 }
 
+function withTimeout<T>(promise: Promise<T>, ms = 6000): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("Firestore timeout")), ms)
+    ),
+  ]);
+}
+
 export async function updateLiveLocation(
   liveId: string,
   data: LiveLocation
 ): Promise<boolean> {
   try {
-    await setDoc(doc(db, COLLECTION, liveId), data);
+    await withTimeout(setDoc(doc(db, COLLECTION, liveId), data));
     return true;
   } catch (err) {
     console.error("Failed to update live location:", err);
@@ -43,12 +52,12 @@ export async function getLiveLocation(
   liveId: string
 ): Promise<LiveLocation | null> {
   try {
-    const snap = await getDoc(doc(db, COLLECTION, liveId));
+    const snap = await withTimeout(getDoc(doc(db, COLLECTION, liveId)));
     if (!snap.exists()) return null;
     return snap.data() as LiveLocation;
   } catch (err) {
-    console.warn("Failed to get live location:", err);
-    return null;
+    console.error("Failed to get live location:", err);
+    throw err;
   }
 }
 
