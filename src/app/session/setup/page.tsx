@@ -6,6 +6,8 @@ import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
 import type { Environment, HapticIntensity, SessionConfig } from "@/lib/types";
 import { speak } from "@/lib/speak";
+import { useVoiceCommands } from "@/lib/useVoiceCommands";
+import VoiceMicButton from "@/components/VoiceMicButton";
 
 export default function SetupPage() {
   const router = useRouter();
@@ -35,6 +37,17 @@ export default function SetupPage() {
     else await bleService.sendRight();
     setTimeout(() => setTesting(null), 500);
   }
+
+  const voice = useVoiceCommands({
+    indoor: () => { setEnvironment("indoor"); speak("Indoor selected"); },
+    outdoor: () => { setEnvironment("outdoor"); speak("Outdoor selected"); },
+    low: () => { setIntensity("low"); speak("Intensity low"); },
+    medium: () => { setIntensity("med"); speak("Intensity medium"); },
+    high: () => { setIntensity("high"); speak("Intensity high"); },
+    begin: () => handleBegin(),
+    start: () => handleBegin(),
+    back: () => { speak("Back"); router.back(); },
+  });
 
   async function handleBegin() {
     speak("Session starting. Begin walking.");
@@ -213,6 +226,8 @@ export default function SetupPage() {
       >
         · BEGIN
       </button>
+
+      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
   );
 }

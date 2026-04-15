@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { formatDuration } from "@/lib/session-storage";
 import { speak } from "@/lib/speak";
+import { useVoiceCommands } from "@/lib/useVoiceCommands";
+import VoiceMicButton from "@/components/VoiceMicButton";
 
 const BADGE_ICONS: Record<string, string> = {
   "SMOOTH NAV": "◈",
@@ -27,6 +29,13 @@ export default function CompletePage() {
     const dur = formatDuration(result.duration);
     speak(`Session complete. Time: ${dur}. Consistency: ${result.consistency} percent. ${result.badges.length} badges earned.`);
   }, [result, router]);
+
+  const voice = useVoiceCommands({
+    history: () => { speak("Opening session history"); router.push("/history"); },
+    again: () => { speak("Starting new session"); reset(); router.push("/session/level"); },
+    home: () => { speak("Back to home"); reset(); router.push("/"); },
+    back: () => { speak("Back to home"); reset(); router.push("/"); },
+  });
 
   if (!result) return null;
 
@@ -149,6 +158,8 @@ export default function CompletePage() {
           HOME
         </Link>
       </div>
+
+      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
   );
 }

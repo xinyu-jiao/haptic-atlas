@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
 import { speak } from "@/lib/speak";
+import { useVoiceCommands } from "@/lib/useVoiceCommands";
+import VoiceMicButton from "@/components/VoiceMicButton";
 import {
   generateLiveId,
   updateLiveLocation,
@@ -167,6 +169,17 @@ export default function ActivePage() {
     endSession();
     router.push("/session/complete");
   }
+
+  const voice = useVoiceCommands({
+    left: () => handleHapticDir("left"),
+    right: () => handleHapticDir("right"),
+    pause: () => { if (active?.status === "running") handlePause(); },
+    resume: () => { if (active?.status === "paused") handlePause(); },
+    help: handleHelp,
+    end: handleEnd,
+    stop: handleEnd,
+    share: handleShare,
+  });
 
   if (!active) return null;
 
@@ -336,6 +349,8 @@ export default function ActivePage() {
         >
           · END SESSION
         </button>
+
+        <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
       </div>
     );
   }
@@ -496,6 +511,8 @@ export default function ActivePage() {
       >
         ■ END
       </button>
+
+      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
   );
 }

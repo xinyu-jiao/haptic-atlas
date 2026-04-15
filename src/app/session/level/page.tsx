@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { LEVELS, type Level } from "@/lib/types";
 import { speak } from "@/lib/speak";
+import { useVoiceCommands } from "@/lib/useVoiceCommands";
+import VoiceMicButton from "@/components/VoiceMicButton";
 
 export default function LevelPage() {
   const router = useRouter();
@@ -15,6 +17,16 @@ export default function LevelPage() {
     setLevel(id);
     router.push("/session/role");
   }
+
+  const voice = useVoiceCommands({
+    straight: () => handleSelect("straight"),
+    easy: () => handleSelect("straight"),
+    corner: () => handleSelect("corner"),
+    medium: () => handleSelect("corner"),
+    obstacle: () => handleSelect("obstacle"),
+    hard: () => handleSelect("obstacle"),
+    back: () => { speak("Back to home"); router.push("/"); },
+  });
 
   const COLOR_MAP: Record<Level, string> = {
     straight: "#7B52CC",
@@ -91,6 +103,8 @@ export default function LevelPage() {
           </button>
         ))}
       </div>
+
+      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
   );
 }

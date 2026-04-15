@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import type { Role } from "@/lib/types";
 import { speak } from "@/lib/speak";
+import { useVoiceCommands } from "@/lib/useVoiceCommands";
+import VoiceMicButton from "@/components/VoiceMicButton";
 import { useEffect } from "react";
 
 export default function RolePage() {
@@ -20,6 +22,13 @@ export default function RolePage() {
     setRole(role);
     router.push("/session/setup");
   }
+
+  const voice = useVoiceCommands({
+    guide: () => handleSelect("guide"),
+    seeker: () => handleSelect("seeker"),
+    ready: () => { if (state.config.role) { speak("Ready. Configure session."); router.push("/session/setup"); } },
+    back: () => { speak("Back"); router.back(); },
+  });
 
   const roles = [
     {
@@ -118,6 +127,8 @@ export default function RolePage() {
       >
         · READY
       </button>
+
+      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
   );
 }

@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
 import { speak } from "@/lib/speak";
+import { useVoiceCommands } from "@/lib/useVoiceCommands";
+import VoiceMicButton from "@/components/VoiceMicButton";
 
 export default function HomePage() {
+  const router = useRouter();
   const { reset } = useSession();
   const [bleStatus, setBleStatus] = useState<"disconnected" | "connected" | "sim">("disconnected");
   const [bleLabel, setBleLabel] = useState("NOT CONNECTED");
@@ -50,7 +54,16 @@ export default function HomePage() {
 
   const handleStart = useCallback(() => {
     speak("Starting session. Select your level.");
-  }, []);
+    router.push("/session/level");
+  }, [router]);
+
+  const voice = useVoiceCommands({
+    connect: handleConnect,
+    test: handleTest,
+    start: handleStart,
+    begin: handleStart,
+    history: () => { speak("Opening session history"); router.push("/history"); },
+  });
 
   return (
     <div className="screen" style={{ paddingTop: "2rem" }}>
@@ -168,6 +181,8 @@ export default function HomePage() {
           · HISTORY ·
         </Link>
       </div>
+
+      <VoiceMicButton listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onToggle={voice.toggle} />
     </div>
   );
 }
