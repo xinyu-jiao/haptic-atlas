@@ -1,12 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import { bleService } from "@/lib/ble";
 import { speak } from "@/lib/speak";
+import {
+  generateLiveId,
+  updateLiveLocation,
+  endLiveSession,
+} from "@/lib/firestore-live";
+import type { TracePosition } from "@/lib/types";
 
-// Simulates consistency score drift (Seeker only)
+const MapView = dynamic(() => import("@/components/map/TraceMap"), { ssr: false });
+
 function driftConsistency(current: number): number {
   const delta = (Math.random() - 0.45) * 2.5;
   return Math.max(20, Math.min(100, current + delta));
@@ -21,6 +29,11 @@ export default function ActivePage() {
   const pauseStartRef = useRef<number | null>(null);
 
   const [hapticFlash, setHapticFlash] = useState<"left" | "right" | null>(null);
+  const [liveId, setLiveId] = useState<string | null>(null);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [positions, setPositions] = useState<TracePosition[]>([]);
+  const geoWatchRef = useRef<number | null>(null);
 
   const active = state.active;
 
@@ -32,6 +45,65 @@ export default function ActivePage() {
     }
     startRef.current = active.startTime;
   }, [active, router]);
+
+  // GPS tracking for mini map
+  useEffect(() => {
+    if (!active || !navigator.geolocation) return;
+
+    geoWatchRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        setPositions((prev) => [
+          ...prev,
+          { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: pos.timestamp },
+        ]);
+      },
+      () => {},
+      { enableHighAccuracy: true, maximumAge: 2000 }
+    );
+
+    return () => {
+      if (geoWatchRef.current !== null) {
+        navigator.geolocation.clearWatch(geoWatchRef.current);
+        geoWatchRef.current = null;
+      }
+    };
+  }, [active]);
+
+  // Live location broadcast
+  useEffect(() => {
+    if (!liveId || positions.length === 0 || !active) return;
+    const last = positions[positions.length - 1];
+    updateLiveLocation(liveId, {
+      lat: last.lat,
+      lng: last.lng,
+      timestamp: Date.now(),
+      elapsed: active.elapsed,
+      status: "active",
+      userName: "Haptic Atlas User",
+      startedAt: startRef.current,
+    });
+  }, [positions, liveId, active]);
+
+  function handleShare() {
+    const id = generateLiveId();
+    setLiveId(id);
+    const base = window.location.origin + (process.env.NEXT_PUBLIC_BASE_PATH ?? "");
+    const url = `${base}/live/${id}/`;
+    setShareUrl(url);
+    speak("Location sharing started");
+
+    if (navigator.share) {
+      navigator.share({ title: "Track my location", url }).catch(() => {});
+    }
+  }
+
+  async function handleCopy() {
+    if (!shareUrl) return;
+    await navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    speak("Link copied");
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   // Timer
   useEffect(() => {
@@ -87,6 +159,11 @@ export default function ActivePage() {
   function handleEnd() {
     speak("Session complete");
     if (intervalRef.current) clearInterval(intervalRef.current);
+    if (geoWatchRef.current !== null) {
+      navigator.geolocation.clearWatch(geoWatchRef.current);
+      geoWatchRef.current = null;
+    }
+    if (liveId) endLiveSession(liveId);
     endSession();
     router.push("/session/complete");
   }
@@ -199,6 +276,51 @@ export default function ActivePage() {
           >
             ⊙ HELP!
           </button>
+        </div>
+
+        {/* Mini Map */}
+        <div
+          className="pixel-card"
+          style={{ marginTop: "0.75rem", padding: 0, overflow: "hidden", height: 160 }}
+        >
+          <MapView positions={positions} tracking={active.status === "running"} />
+        </div>
+
+        {/* Share Location */}
+        <div style={{ marginTop: "0.75rem" }}>
+          {!shareUrl ? (
+            <button
+              onClick={handleShare}
+              className="pixel-btn"
+              style={{ width: "100%", background: "var(--blue)", color: "white", fontSize: "0.5rem", padding: "0.6rem" }}
+            >
+              📍 SHARE MY LOCATION
+            </button>
+          ) : (
+            <div className="pixel-card" style={{ padding: "0.5rem 0.75rem" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
+                <div>
+                  <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.35rem", color: "var(--px-green, #44CC88)", marginBottom: "0.25rem" }}>
+                    ● LIVE SHARING
+                  </div>
+                  <div style={{ fontFamily: "monospace", fontSize: "0.55rem", color: "rgba(255,255,255,0.6)", wordBreak: "break-all" }}>
+                    {shareUrl}
+                  </div>
+                </div>
+                <button
+                  onClick={handleCopy}
+                  style={{
+                    fontFamily: '"Press Start 2P"', fontSize: "0.35rem",
+                    background: "var(--dark3)", color: "white",
+                    border: "2px solid var(--dark)", padding: "0.3rem 0.5rem",
+                    cursor: "pointer", flexShrink: 0,
+                  }}
+                >
+                  {copied ? "COPIED!" : "COPY"}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* END (small, bottom) */}
@@ -315,7 +437,51 @@ export default function ActivePage() {
         </button>
       </div>
 
-      {/* SEEKER / END */}
+      {/* Mini Map */}
+      <div
+        className="pixel-card"
+        style={{ marginBottom: "0.75rem", padding: 0, overflow: "hidden", height: 160 }}
+      >
+        <MapView positions={positions} tracking={active.status === "running"} />
+      </div>
+
+      {/* Share Location */}
+      <div style={{ marginBottom: "0.75rem" }}>
+        {!shareUrl ? (
+          <button
+            onClick={handleShare}
+            className="pixel-btn"
+            style={{ width: "100%", background: "var(--blue)", color: "white", fontSize: "0.5rem", padding: "0.6rem" }}
+          >
+            📍 SHARE MY LOCATION
+          </button>
+        ) : (
+          <div className="pixel-card" style={{ padding: "0.5rem 0.75rem" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
+              <div>
+                <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.35rem", color: "var(--px-green, #44CC88)", marginBottom: "0.25rem" }}>
+                  ● LIVE SHARING
+                </div>
+                <div style={{ fontFamily: "monospace", fontSize: "0.55rem", color: "rgba(255,255,255,0.6)", wordBreak: "break-all" }}>
+                  {shareUrl}
+                </div>
+              </div>
+              <button
+                onClick={handleCopy}
+                style={{
+                  fontFamily: '"Press Start 2P"', fontSize: "0.35rem",
+                  background: "var(--dark3)", color: "white",
+                  border: "2px solid var(--dark)", padding: "0.3rem 0.5rem",
+                  cursor: "pointer", flexShrink: 0,
+                }}
+              >
+                {copied ? "COPIED!" : "COPY"}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       <button
         onClick={handlePause}
         className="pixel-btn"
