@@ -1,8 +1,3 @@
-import Link from "next/link";
-
-const UPSTREAM =
-  "https://github.com/Jerry6063/vibe-belt/blob/master/touch_pad.html";
-
 export default function TouchPadPage() {
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const src = `${base}/hardware/touch-pad.html`;
@@ -49,29 +44,6 @@ export default function TouchPadPage() {
           and tap <strong style={{ color: "#fff", fontWeight: 600 }}>Connect serial</strong> to pair
           your belt. Safari and mobile browsers do not support Web Serial.
         </p>
-
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1.25rem",
-            alignItems: "center",
-            marginTop: "1.5rem",
-          }}
-        >
-          <Link href="/code" className="touch-pad-doc-link">
-            ← Code / GitHub
-          </Link>
-          <a
-            href={UPSTREAM}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="touch-pad-doc-link"
-            style={{ fontFamily: "ui-monospace, monospace", fontSize: "0.72rem" }}
-          >
-            Source: Jerry6063/vibe-belt
-          </a>
-        </div>
       </div>
 
       <div className="touch-pad-band">

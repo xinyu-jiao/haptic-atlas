@@ -1,4 +1,5 @@
 <!-- Synced from https://github.com/Jerry6063/vibe-belt/blob/master/touch_pad.html -->
+<!-- Theme colors: Haptic Atlas dashboard (layout/geometry unchanged from upstream). Re-apply after `npm run sync:touch-pad` if needed. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,28 +7,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Vibe Belt — Touch Pad</title>
 <style>
+  /* Layout matches upstream vibe-belt; colors match Haptic Atlas dashboard */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     height: 100%; overflow: hidden;
-    background: #111; color: #eee;
-    font-family: system-ui, -apple-system, sans-serif;
+    background: #0a0a0a; color: #e8e8e8;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* ── top bar ── */
+  /* ── top bar (same dimensions as upstream) ── */
   .bar {
     display: flex; align-items: center; gap: 10px;
-    padding: 8px 14px; background: #1a1a2e; height: 48px;
+    padding: 8px 14px; background: #111111; height: 48px;
   }
   .bar button {
-    padding: 6px 16px; border: none; border-radius: 6px;
-    background: #0f3460; color: #eee; font-size: 14px; cursor: pointer;
+    padding: 6px 16px; border: 1px solid #333333; border-radius: 6px;
+    background: #141414; color: #e8e8e8; font-size: 14px; cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .bar button:active { background: #e94560; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; background: #444; flex-shrink: 0; }
-  .dot.on { background: #0f0; }
-  .log { flex: 1; font-size: 12px; color: #777; text-align: right; overflow: hidden; white-space: nowrap; }
+  .bar button:hover { background: #1a1a1a; border-color: #444444; }
+  .bar button:active { background: #222222; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #333333; flex-shrink: 0; }
+  .dot.on {
+    background: #5ee4a8;
+    box-shadow: 0 0 8px rgba(94, 228, 168, 0.45);
+  }
+  .log { flex: 1; font-size: 12px; color: #666666; text-align: right; overflow: hidden; white-space: nowrap; }
 
-  /* ── grid ── */
+  /* ── grid (same dimensions as upstream) ── */
   .grid-wrap {
     display: flex; align-items: center; justify-content: center;
     height: calc(100% - 48px); padding: 16px;
@@ -46,7 +54,7 @@
     display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
     font-size: 13px; font-weight: 600;
-    background: #1e3a5f; color: #5a9fd4;
+    background: #161616; color: #888888;
     user-select: none; -webkit-user-select: none;
     transition: background 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
   }
@@ -55,8 +63,9 @@
     pointer-events: none;
   }
   .cell.active {
-    background: #e94560; color: #fff;
-    box-shadow: 0 0 24px 4px rgba(233, 69, 96, 0.6);
+    background: linear-gradient(145deg, #6d48b8 0%, #d04098 100%);
+    color: #fff;
+    box-shadow: 0 0 22px 4px rgba(123, 82, 204, 0.45);
     transition: none;
   }
   .cell.vis {
@@ -64,8 +73,7 @@
     transition: background 0.06s, box-shadow 0.06s;
   }
 
-  /* motor label sub-line */
-  .cell .hw { display: block; font-size: 9px; color: #3a6a9a; margin-top: 1px; }
+  .cell .hw { display: block; font-size: 9px; color: #555555; margin-top: 1px; }
   .cell.active .hw, .cell.vis .hw { color: rgba(255,255,255,0.6); }
 </style>
 </head>
@@ -215,12 +223,12 @@ function applyMotorState(values) {
     if (!cell) continue;
     const rtp = values[i];
     if (rtp > 0) {
-      const t = rtp / 127;  // 0..1
-      const r = Math.round(30 + 203 * t);   // 30→233
-      const g = Math.round(58 - 30 * t);     // 58→28
-      const b = Math.round(95 - 0 * t);      // 95→95
+      const t = rtp / 127;  // 0..1 — Haptic Atlas purple #7b52cc → pink #e84dc0
+      const r = Math.round(123 + (232 - 123) * t);
+      const g = Math.round(82 + (77 - 82) * t);
+      const b = Math.round(204 + (192 - 204) * t);
       cell.style.background = `rgb(${r},${g},${b})`;
-      cell.style.boxShadow = `0 0 ${8 + 20 * t}px ${2 + 4 * t}px rgba(233,69,96,${0.2 + 0.5 * t})`;
+      cell.style.boxShadow = `0 0 ${8 + 20 * t}px ${2 + 4 * t}px rgba(123,82,204,${0.15 + 0.45 * t})`;
       cell.classList.add('vis');
     } else {
       cell.style.background = '';
