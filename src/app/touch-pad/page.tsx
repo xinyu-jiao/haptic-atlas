@@ -8,8 +8,15 @@ export default function TouchPadPage() {
   const src = `${base}/hardware/touch-pad.html`;
 
   return (
-    <div className="dash-page">
-      <div className="dash-container" style={{ paddingBottom: "1.25rem" }}>
+    <div
+      className="dash-page"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
+      <div className="dash-container" style={{ paddingBottom: "1.25rem", flexShrink: 0 }}>
         <div className="dash-section-label" style={{ marginBottom: "1rem" }}>
           Hardware · Web Serial
         </div>
@@ -18,7 +25,7 @@ export default function TouchPadPage() {
           className="dash-subtitle"
           style={{ marginBottom: "1.25rem", maxWidth: "42rem", lineHeight: 1.7 }}
         >
-          14-motor grid · 115200 baud · matches vibe-belt firmware
+          14-motor grid · 115200 baud · same layout as upstream vibe-belt
         </div>
 
         <div
@@ -40,7 +47,7 @@ export default function TouchPadPage() {
         >
           Use <strong style={{ color: "#fff", fontWeight: 600 }}>Chrome or Edge on desktop</strong>{" "}
           and tap <strong style={{ color: "#fff", fontWeight: 600 }}>Connect serial</strong> to pair
-          your belt controller. Safari and mobile browsers do not support Web Serial.
+          your belt. Safari and mobile browsers do not support Web Serial.
         </p>
 
         <div
@@ -73,12 +80,6 @@ export default function TouchPadPage() {
             title="Vibe Belt Touch Pad"
             src={src}
             allow="serial"
-            style={{
-              width: "100%",
-              minHeight: "min(72vh, 680px)",
-              border: "none",
-              background: "var(--dash-bg)",
-            }}
           />
         </div>
       </div>
