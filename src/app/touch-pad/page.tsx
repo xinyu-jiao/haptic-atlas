@@ -8,70 +8,80 @@ export default function TouchPadPage() {
   const src = `${base}/hardware/touch-pad.html`;
 
   return (
-    <div className="dash-page" style={{ padding: 0, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <div
-        className="dash-container"
-        style={{
-          padding: "1.25rem 1.5rem",
-          borderBottom: "1px solid var(--dash-border)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ fontSize: "0.65rem", letterSpacing: "0.12em", color: "var(--dash-text-muted)", marginBottom: "0.5rem", textTransform: "uppercase" }}>
+    <div className="dash-page">
+      <div className="dash-container" style={{ paddingBottom: "1.25rem" }}>
+        <div className="dash-section-label" style={{ marginBottom: "1rem" }}>
           Hardware · Web Serial
         </div>
-        <h1 className="dash-title" style={{ marginBottom: "0.35rem" }}>
-          Vibe Belt Touch Pad
-        </h1>
-        <div className="dash-subtitle" style={{ marginBottom: "0.75rem" }}>
-          14-motor grid — same UI as upstream vibe-belt (serial 115200)
+        <h1 className="dash-title">Vibe Belt Touch Pad</h1>
+        <div
+          className="dash-subtitle"
+          style={{ marginBottom: "1.25rem", maxWidth: "42rem", lineHeight: 1.7 }}
+        >
+          14-motor grid · 115200 baud · matches vibe-belt firmware
         </div>
-        <p style={{ fontSize: "0.8rem", color: "var(--dash-text-secondary)", lineHeight: 1.6, maxWidth: 720, marginBottom: "0.75rem" }}>
-          Use <strong style={{ color: "#fff" }}>Chrome or Edge on desktop</strong> and click <strong style={{ color: "#fff" }}>Connect serial</strong> to pair your Arduino. Web Serial does not work in Safari or on mobile browsers.
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.45rem",
+            marginBottom: "1.35rem",
+          }}
+        >
+          <span className="dash-pill">115200 baud</span>
+          <span className="dash-pill">Desktop Chrome / Edge</span>
+          <span className="dash-pill">Web Serial</span>
+        </div>
+
+        <p
+          className="dash-body"
+          style={{ maxWidth: "40rem", marginBottom: 0, lineHeight: 1.75 }}
+        >
+          Use <strong style={{ color: "#fff", fontWeight: 600 }}>Chrome or Edge on desktop</strong>{" "}
+          and tap <strong style={{ color: "#fff", fontWeight: 600 }}>Connect serial</strong> to pair
+          your belt controller. Safari and mobile browsers do not support Web Serial.
         </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
-          <Link
-            href="/code"
-            style={{
-              fontSize: "0.75rem",
-              color: "var(--dash-text-secondary)",
-              textDecoration: "none",
-              borderBottom: "1px solid var(--dash-border)",
-              paddingBottom: "0.1rem",
-            }}
-          >
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1.25rem",
+            alignItems: "center",
+            marginTop: "1.5rem",
+          }}
+        >
+          <Link href="/code" className="touch-pad-doc-link">
             ← Code / GitHub
           </Link>
           <a
             href={UPSTREAM}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              fontSize: "0.75rem",
-              color: "var(--dash-text-muted)",
-              fontFamily: "monospace",
-              textDecoration: "none",
-              borderBottom: "1px solid var(--dash-border)",
-              paddingBottom: "0.1rem",
-            }}
+            className="touch-pad-doc-link"
+            style={{ fontFamily: "ui-monospace, monospace", fontSize: "0.72rem" }}
           >
             Source: Jerry6063/vibe-belt
           </a>
         </div>
       </div>
 
-      <iframe
-        title="Vibe Belt Touch Pad"
-        src={src}
-        allow="serial"
-        style={{
-          flex: 1,
-          width: "100%",
-          minHeight: "min(70vh, 640px)",
-          border: "none",
-          background: "#111",
-        }}
-      />
+      <div className="touch-pad-band">
+        <div className="touch-pad-iframe-wrap">
+          <iframe
+            title="Vibe Belt Touch Pad"
+            src={src}
+            allow="serial"
+            style={{
+              width: "100%",
+              minHeight: "min(72vh, 680px)",
+              border: "none",
+              background: "var(--dash-bg)",
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
