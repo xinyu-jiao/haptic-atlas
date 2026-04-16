@@ -27,7 +27,7 @@ export default function TouchPadPage() {
           14-motor grid — same UI as upstream vibe-belt (serial 115200)
         </div>
         <p style={{ fontSize: "0.8rem", color: "var(--dash-text-secondary)", lineHeight: 1.6, maxWidth: 720, marginBottom: "0.75rem" }}>
-          Use <strong style={{ color: "#fff" }}>Chrome or Edge on desktop</strong> and click「连接串口」to pair your Arduino. Web Serial does not work in Safari or on mobile browsers.
+          Use <strong style={{ color: "#fff" }}>Chrome or Edge on desktop</strong> and click <strong style={{ color: "#fff" }}>Connect serial</strong> to pair your Arduino. Web Serial does not work in Safari or on mobile browsers.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
           <Link

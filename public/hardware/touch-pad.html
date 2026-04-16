@@ -1,6 +1,6 @@
 <!-- Synced from https://github.com/Jerry6063/vibe-belt/blob/master/touch_pad.html -->
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -72,9 +72,9 @@
 <body>
 
 <div class="bar">
-  <button id="btnConnect">连接串口</button>
+  <button id="btnConnect">Connect serial</button>
   <div class="dot" id="dot"></div>
-  <div class="log" id="log">未连接 — 需要 Chrome / Edge</div>
+  <div class="log" id="log">Not connected — use Chrome or Edge</div>
 </div>
 
 <div class="grid-wrap">
@@ -263,8 +263,8 @@ async function readLoop(readable) {
 function onDisconnect() {
   connected = false; writer = null;
   $('dot').classList.remove('on');
-  $('btnConnect').textContent = '连接串口';
-  log('已断开');
+  $('btnConnect').textContent = 'Connect serial';
+  log('Disconnected');
   try { port.close(); } catch {}
   port = null;
 }
@@ -273,7 +273,7 @@ $('btnConnect').addEventListener('click', async () => {
   if (connected) { onDisconnect(); return; }
 
   if (!('serial' in navigator)) {
-    log('浏览器不支持 Web Serial，请用电脑版 Chrome / Edge');
+    log('Web Serial is not supported. Use Chrome or Edge on desktop.');
     return;
   }
 
@@ -283,11 +283,11 @@ $('btnConnect').addEventListener('click', async () => {
     writer = port.writable.getWriter();
     connected = true;
     $('dot').classList.add('on');
-    $('btnConnect').textContent = '断开';
-    log('已连接');
+    $('btnConnect').textContent = 'Disconnect';
+    log('Connected');
     readLoop(port.readable);
   } catch (e) {
-    log('连接失败: ' + e.message);
+    log('Connect failed: ' + e.message);
     port = null;
   }
 });

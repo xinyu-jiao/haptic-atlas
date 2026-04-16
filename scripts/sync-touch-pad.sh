@@ -9,4 +9,5 @@ curl -fsSL "https://raw.githubusercontent.com/Jerry6063/vibe-belt/master/touch_p
   cat "$TMP"
 } > "$ROOT/public/hardware/touch-pad.html"
 rm "$TMP"
+python3 "$ROOT/scripts/localize-touch-pad.py" "$ROOT/public/hardware/touch-pad.html"
 echo "OK: $ROOT/public/hardware/touch-pad.html"
