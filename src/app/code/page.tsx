@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function CodePage() {
   return (
     <div className="dash-page">
@@ -16,11 +18,15 @@ export default function CodePage() {
             },
             {
               name: "haptic-atlas-hardware",
-              desc: "Belt firmware and controller — Arduino/ESP32, BLE, vibration motor drivers",
+              desc: "14-motor DRV2605 haptic belt — Arduino firmware, serial logger, gamepad controller",
               tag: "HARDWARE",
               url: "https://github.com/Jerry6063/vibe-belt",
+              touchPadHref: "/touch-pad",
             },
-          ].map(({ name, desc, tag, url }) => (
+          ].map((item) => {
+            const { name, desc, tag, url } = item;
+            const touchPadHref = "touchPadHref" in item ? item.touchPadHref : undefined;
+            return (
             <div key={name} style={{ background: "var(--dash-bg)", padding: "1.75rem 1.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.75rem" }}>
                 <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fff" }}>
@@ -54,9 +60,27 @@ export default function CodePage() {
                     Private repository
                   </span>
                 )}
+                {touchPadHref && (
+                  <div style={{ marginTop: "0.85rem" }}>
+                    <Link
+                      href={touchPadHref}
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "#fff",
+                        letterSpacing: "0.06em",
+                        textDecoration: "none",
+                        borderBottom: "1px solid var(--dash-border)",
+                        paddingBottom: "0.15rem",
+                      }}
+                    >
+                      Open Touch Pad (Web Serial) →
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Stack */}

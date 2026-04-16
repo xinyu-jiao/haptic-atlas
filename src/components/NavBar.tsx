@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: "/data", label: "DATA" },
   { href: "/iterations", label: "PROCESS" },
   { href: "/code", label: "CODE" },
+  { href: "/touch-pad", label: "TOUCH" },
 ];
 
 const SESSION_PATHS = [
