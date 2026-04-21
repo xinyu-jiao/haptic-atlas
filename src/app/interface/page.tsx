@@ -90,27 +90,6 @@ export default function InterfacePage() {
           SESSION LAUNCHER · HAPTIC NAV
         </div>
 
-        <p
-          style={{
-            fontFamily: '"Inter", system-ui, sans-serif',
-            fontSize: "0.72rem",
-            lineHeight: 1.55,
-            color: "var(--dark)",
-            opacity: 0.82,
-            textAlign: "center",
-            margin: "0 auto 0.65rem",
-            maxWidth: "19rem",
-          }}
-        >
-          Same{" "}
-          <span style={{ fontWeight: 600, color: "var(--dark)", opacity: 1 }}>Level → Result</span> path as
-          Sessions / History — this screen only starts or reviews runs.{" "}
-          <Link href="/about" style={{ color: "var(--dark)", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: "2px" }}>
-            Context on About
-          </Link>
-          .
-        </p>
-
         {voice.supported ? (
           <p
             style={{
@@ -120,7 +99,7 @@ export default function InterfacePage() {
               color: "var(--dark)",
               opacity: 0.78,
               textAlign: "center",
-              margin: "0 auto 1.35rem",
+              margin: "0.35rem auto 1.35rem",
               maxWidth: "20rem",
             }}
           >
@@ -140,10 +119,10 @@ export default function InterfacePage() {
               color: "var(--dark)",
               opacity: 0.65,
               textAlign: "center",
-              margin: "0 auto 1.35rem",
-              maxWidth: "20rem",
-            }}
-          >
+            margin: "0.35rem auto 1.35rem",
+            maxWidth: "20rem",
+          }}
+        >
             This browser does not expose speech recognition — use{" "}
             <strong style={{ fontWeight: 600, opacity: 0.95 }}>START</strong> and{" "}
             <strong style={{ fontWeight: 600, opacity: 0.95 }}>HISTORY</strong> below.

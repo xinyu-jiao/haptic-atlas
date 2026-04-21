@@ -1,4 +1,3 @@
-import Link from "next/link";
 import IterationProcess from "@/components/IterationProcess";
 
 export default function AboutPage() {
@@ -26,53 +25,80 @@ export default function AboutPage() {
 
         <Section>
           <div className="dash-section-label">02 / Problem and questions</div>
-          <p className="dash-body" style={{ marginBottom: "1rem" }}>
-            Haptic Atlas asks how a small team can hold together{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>training</strong>,{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>recording</strong>, and{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>collaboration / safety</strong> in one loop:
-          </p>
-          <ul
-            style={{
-              margin: "0 0 0 1.1rem",
-              padding: 0,
-              color: "var(--dash-text-secondary)",
-              fontSize: "0.875rem",
-              lineHeight: 1.85,
-            }}
-          >
-            <li>How do you rehearse left/right body-centered cues without overloading hearing?</li>
-            <li>What counts as evidence that a session happened — timers, corrections, traces, sync?</li>
-            <li>When someone is moving outside lab conditions, how might others follow along without treating it as surveillance theater?</li>
-          </ul>
+          <div className="dash-card" style={{ padding: "1.25rem 1.5rem", marginBottom: "1.5rem" }}>
+            <p
+              className="dash-body"
+              style={{
+                margin: "0 0 1rem",
+                fontSize: "0.9375rem",
+                lineHeight: 1.78,
+                color: "rgba(255, 255, 255, 0.92)",
+              }}
+            >
+              Haptic Atlas asks how navigation can be{" "}
+              <strong style={{ color: "#fff", fontWeight: 600 }}>learned, practiced, and documented</strong>{" "}
+              through <strong style={{ color: "#fff", fontWeight: 600 }}>touch rather than vision</strong>.
+            </p>
+            <p
+              className="dash-body"
+              style={{
+                margin: 0,
+                fontSize: "0.9375rem",
+                lineHeight: 1.78,
+                color: "rgba(255, 255, 255, 0.92)",
+              }}
+            >
+              It focuses on how{" "}
+              <strong style={{ color: "#fff", fontWeight: 600 }}>
+                haptic cues, training structure, and session evidence
+              </strong>{" "}
+              can work together as <strong style={{ color: "#fff", fontWeight: 600 }}>one system</strong>.
+            </p>
+          </div>
+          <div className="dash-label" style={{ marginBottom: "0.75rem" }}>
+            Open questions
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <div className="dash-list-item">
+              <span className="dash-list-bullet">—</span>
+              <span className="dash-list-text">
+                How can{" "}
+                <strong style={{ color: "#fff", fontWeight: 600 }}>left/right body-centered cues</strong> be
+                learned without relying on visual maps or{" "}
+                <strong style={{ color: "#fff", fontWeight: 600 }}>constant audio instruction</strong>?
+              </span>
+            </div>
+            <div className="dash-list-item">
+              <span className="dash-list-bullet">—</span>
+              <span className="dash-list-text">
+                What counts as <strong style={{ color: "#fff", fontWeight: 600 }}>evidence</strong> of a
+                navigation session — time, corrections, traces, notes, or{" "}
+                <strong style={{ color: "#fff", fontWeight: 600 }}>repeated performance over time</strong>?
+              </span>
+            </div>
+            <div className="dash-list-item">
+              <span className="dash-list-bullet">—</span>
+              <span className="dash-list-text">
+                How can <strong style={{ color: "#fff", fontWeight: 600 }}>guidance, support, and safety</strong>{" "}
+                be built into the system without turning navigation into{" "}
+                <strong style={{ color: "#fff", fontWeight: 600 }}>surveillance</strong>?
+              </span>
+            </div>
+          </div>
         </Section>
 
         <div className="dash-divider" />
 
         <Section>
           <div className="dash-section-label">03 / Related Work &amp; Method</div>
-          <p className="dash-body" style={{ marginBottom: "1rem" }}>
+          <p className="dash-body" style={{ margin: 0 }}>
             The project sits alongside{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>browser-mediated haptics</strong> (Web APIs as
             bridges to devices), <strong style={{ color: "#fff", fontWeight: 600 }}>wearable tactile displays</strong>{" "}
             (belts, sleeves, arrays), and{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>accessibility-oriented HCI</strong> (participatory
-            design, multimodal redundancy, critical takes on “assistive” tech). Methodologically it is framed
-            as a <strong style={{ color: "#fff", fontWeight: 600 }}>vertical slice</strong>: not every feature
-            of a finished system, but a connected path from hardware intent through software behavior to
-            something you can point at in review.
+            design, multimodal redundancy, critical takes on “assistive” tech).
           </p>
-          <div className="dash-card" style={{ padding: "1.25rem 1.5rem" }}>
-            <p className="dash-body" style={{ margin: 0, lineHeight: 1.8 }}>
-              This site is written for an <strong style={{ color: "#fff", fontWeight: 600 }}>academic</strong>{" "}
-              reader: messy iterations, partial instrumentation, and explicit trade-offs (e.g. Bluetooth
-              removed from the public Interface demo to reduce friction, while belt firmware and a{" "}
-              <Link href="/touch-pad" style={{ color: "var(--dash-text-secondary)", borderBottom: "1px solid var(--dash-border)" }}>
-                Web Serial touch pad
-              </Link>{" "}
-              remain available for hardware-side work). It is not positioned as a product pitch.
-            </p>
-          </div>
         </Section>
 
         <div className="dash-divider" />
