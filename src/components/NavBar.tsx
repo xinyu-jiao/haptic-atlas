@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { href: "/about", label: "ABOUT" },
-  { href: "/", label: "INTERFACE" },
+  { href: "/interface", label: "INTERFACE" },
   { href: "/history", label: "SESSIONS" },
   { href: "/map", label: "MAP" },
   { href: "/data", label: "DATA" },
@@ -73,7 +73,7 @@ export default function NavBar() {
         }}
       >
         <Link
-          href="/"
+          href="/about"
           style={{
             fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
             fontSize: "0.75rem",

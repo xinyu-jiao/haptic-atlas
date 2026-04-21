@@ -11,14 +11,14 @@ export default function AboutPage() {
             Haptic Atlas
           </h1>
           <p className="dash-body">
-            Many people navigate with reduced or no reliance on vision — temporarily (low light, glare,
-            divided attention) or as a stable condition. Training for{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>non-visual spatial movement</strong> is
-            still unevenly supported: audio turn-by-turn competes with environmental sound and social
-            listening load; screen-based maps assume a visual fix.{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>Tactile navigation cues</strong> offer a
-            parallel channel: spatial, discreet, and bodily — but they must be learned, tuned, and
-            evidenced like any other skill.
+            Haptic Atlas explores how navigation can be learned through touch, especially for blind and
+            low-vision users. While most navigation systems depend on vision or audio, this project focuses
+            on{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>haptic cues as a spatial language</strong>{" "}
+            that can be felt on the body. Rather than treating touch as a simple alert, the project asks how
+            tactile feedback can be{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>trained, repeated, and understood</strong> as
+            part of movement through space.
           </p>
         </Section>
 
@@ -81,7 +81,9 @@ export default function AboutPage() {
           <div className="dash-section-label">04 / What This Site Is</div>
           <p className="dash-body">
             A <strong style={{ color: "#fff", fontWeight: 600 }}>documentation and evidence layer</strong>{" "}
-            around a haptic navigation training slice: the Interface flow for structured sessions; Session
+            around a haptic navigation training slice: the Interface session launcher (
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
+            ) for structured runs; Session
             History and Data for aggregates; Walk Trace for geolocated movement; Code and Touch for
             repository access and desk-level serial control of the belt stack. The design–research timeline
             on this page (below) replaces a separate Process route: hardware, control, and web co-evolution in
@@ -154,7 +156,10 @@ export default function AboutPage() {
         <Section>
           <div className="dash-section-label">07 / How to Read What Follows</div>
           <p className="dash-body" style={{ margin: 0 }}>
-            After the Interface hero, the remaining sections move from{" "}
+            After opening <strong style={{ color: "#fff", fontWeight: 600 }}>Interface</strong> (the pixel
+            training launcher at{" "}
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>), the
+            remaining sections move from{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>recorded practice</strong> (sessions, map,
             data) through <strong style={{ color: "#fff", fontWeight: 600 }}>implementation</strong> (touch
             pad, code). A short reflective block sits at the end of the Code page — the natural end of the

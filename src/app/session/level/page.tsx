@@ -25,7 +25,7 @@ export default function LevelPage() {
     medium: () => handleSelect("corner"),
     obstacle: () => handleSelect("obstacle"),
     hard: () => handleSelect("obstacle"),
-    back: () => { speak("Back to home"); router.push("/"); },
+    back: () => { speak("Back to home"); router.push("/about"); },
   });
 
   const COLOR_MAP: Record<Level, string> = {
@@ -39,7 +39,7 @@ export default function LevelPage() {
     <div className="screen">
       {/* Back */}
       <button
-        onClick={() => { speak("Back to home"); router.push("/"); }}
+        onClick={() => { speak("Back to home"); router.push("/about"); }}
         style={{
           background: "var(--dark2)",
           color: "white",

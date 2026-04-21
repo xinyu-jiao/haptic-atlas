@@ -41,7 +41,7 @@ export default function HistoryPage() {
     <div className="dash-page">
       <div className="dash-container">
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginBottom: "2.5rem" }}>
-          <Link href="/" style={{ textDecoration: "none" }}>
+          <Link href="/about" style={{ textDecoration: "none" }}>
             <button className="dash-btn" style={{ padding: "0.5rem 0.75rem", fontSize: "0.85rem" }}>
               ‹
             </button>
@@ -57,10 +57,21 @@ export default function HistoryPage() {
             <strong style={{ color: "#fff", fontWeight: 600 }}>Setup</strong> (environment, distance, intensity) →{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>Active session</strong> (timer, cues, logging) →{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>Result</strong> (summary and badges). History below
-            groups completed runs by date; it is the archive side of the same flow started from Interface.
+            groups completed runs by date; it is the archive side of the same flow started from Interface (
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
+            ).
           </p>
-          <Link href="/session/level" style={{ fontSize: "0.78rem", color: "var(--dash-text-secondary)", textDecoration: "none", borderBottom: "1px solid var(--dash-border)", paddingBottom: "0.1rem" }}>
-            Start a session →
+          <Link
+            href="/interface"
+            style={{
+              fontSize: "0.78rem",
+              color: "var(--dash-text-secondary)",
+              textDecoration: "none",
+              borderBottom: "1px solid var(--dash-border)",
+              paddingBottom: "0.1rem",
+            }}
+          >
+            Open Interface to start →
           </Link>
         </div>
 
@@ -75,9 +86,9 @@ export default function HistoryPage() {
               <br />
               <span style={{ fontSize: "0.8rem" }}>Complete a session to see it here.</span>
             </div>
-            <Link href="/session/level" style={{ textDecoration: "none" }}>
+            <Link href="/interface" style={{ textDecoration: "none" }}>
               <button className="dash-btn-primary dash-btn">
-                Start First Session
+                Open Interface
               </button>
             </Link>
           </div>
