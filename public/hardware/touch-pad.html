@@ -281,7 +281,7 @@ $('btnConnect').addEventListener('click', async () => {
   if (connected) { onDisconnect(); return; }
 
   if (!('serial' in navigator)) {
-    log('Web Serial is not supported. Use Chrome or Edge on desktop.');
+    log('Web Serial is not available in this browser.');
     return;
   }
 

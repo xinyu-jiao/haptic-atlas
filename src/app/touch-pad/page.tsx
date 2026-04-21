@@ -13,14 +13,14 @@ export default function TouchPadPage() {
     >
       <div className="dash-container" style={{ paddingBottom: "1.25rem", flexShrink: 0 }}>
         <div className="dash-section-label" style={{ marginBottom: "1rem" }}>
-          Hardware · Web Serial
+          Hardware · USB serial
         </div>
         <h1 className="dash-title">Vibe Belt Touch Pad</h1>
         <div
           className="dash-subtitle"
           style={{ marginBottom: "1.25rem", maxWidth: "42rem", lineHeight: 1.7 }}
         >
-          14-motor grid · 115200 baud · same layout as upstream vibe-belt
+          14-motor grid · USB serial · same layout as upstream vibe-belt
         </div>
 
         <div
@@ -31,18 +31,16 @@ export default function TouchPadPage() {
             marginBottom: "1.35rem",
           }}
         >
-          <span className="dash-pill">115200 baud</span>
-          <span className="dash-pill">Desktop Chrome / Edge</span>
-          <span className="dash-pill">Web Serial</span>
+          <span className="dash-pill">USB serial</span>
         </div>
 
         <p
           className="dash-body"
           style={{ maxWidth: "40rem", marginBottom: 0, lineHeight: 1.75 }}
         >
-          Use <strong style={{ color: "#fff", fontWeight: 600 }}>Chrome or Edge on desktop</strong>{" "}
-          and tap <strong style={{ color: "#fff", fontWeight: 600 }}>Connect serial</strong> to pair
-          your belt. Safari and mobile browsers do not support Web Serial.
+          In-page touch grid for the belt stack. Plug in USB, then tap{" "}
+          <strong style={{ color: "#fff", fontWeight: 600 }}>Connect serial</strong> inside the panel
+          below to open a USB serial session with the firmware.
         </p>
       </div>
 
