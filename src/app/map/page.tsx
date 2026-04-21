@@ -1,5 +1,7 @@
 "use client";
 
+import AboutCodeSection from "@/components/AboutCodeSection";
+import SiteClosing from "@/components/SiteClosing";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatDuration, loadTraces, saveTrace, deleteTrace } from "@/lib/session-storage";
@@ -167,7 +169,7 @@ export default function MapPage() {
     <div className="dash-page">
       <div className="dash-container">
         <h1 className="dash-title">Walk Trace</h1>
-        <div className="dash-subtitle">Real-time Route Tracking</div>
+        <div className="dash-subtitle">Real-time route tracking · Code &amp; repositories below</div>
 
         <div className="dash-card" style={{ marginBottom: "1.75rem", padding: "1.25rem 1.5rem" }}>
           <p className="dash-body" style={{ margin: 0, lineHeight: 1.8 }}>
@@ -360,6 +362,14 @@ export default function MapPage() {
             ))}
           </div>
         )}
+
+        <div className="dash-divider" style={{ margin: "2.5rem 0 2rem" }} />
+
+        <div className="dash-section-label" style={{ marginBottom: "1rem" }}>
+          Code &amp; repositories
+        </div>
+        <AboutCodeSection />
+        <SiteClosing />
       </div>
     </div>
   );

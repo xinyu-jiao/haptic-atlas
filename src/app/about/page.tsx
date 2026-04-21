@@ -109,11 +109,14 @@ export default function AboutPage() {
             A <strong style={{ color: "#fff", fontWeight: 600 }}>documentation and evidence layer</strong>{" "}
             around a haptic navigation training slice: the Interface session launcher (
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
-            ) for structured runs; Session
-            History and Data for aggregates; Walk Trace for geolocated movement; Code and Touch for
-            repository access and desk-level serial control of the belt stack. The design–research timeline
-            on this page (below) replaces a separate Process route: hardware, control, and web co-evolution in
-            one place.
+            ); Sessions &amp; Data (history + charts on{" "}
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/history</code>
+            ); Walk Trace and <strong style={{ color: "#fff", fontWeight: 600 }}>Code</strong> (repositories,
+            tech stack, closing note) on{" "}
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/map</code>; Touch in
+            the nav for desk serial control. Context and the design–research timeline are consolidated{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>on this page</strong> instead of a separate
+            Process route.
           </p>
         </Section>
 
@@ -182,14 +185,16 @@ export default function AboutPage() {
         <Section>
           <div className="dash-section-label">07 / How to Read What Follows</div>
           <p className="dash-body" style={{ margin: 0 }}>
-            After opening <strong style={{ color: "#fff", fontWeight: 600 }}>Interface</strong> (the pixel
-            training launcher at{" "}
-            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>), the
-            remaining sections move from{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>recorded practice</strong> (sessions, map,
-            data) through <strong style={{ color: "#fff", fontWeight: 600 }}>implementation</strong> (touch
-            pad, code). A short reflective block sits at the end of the Code page — the natural end of the
-            scroll through this slice.
+            Use the nav for the rest of this slice (order matches the bar):{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>Touch</strong> for Web Serial bench control,{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>Interface</strong> (pixel launcher at{" "}
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
+            ), <strong style={{ color: "#fff", fontWeight: 600 }}>Sessions · Data</strong> for grouped history and
+            evidence charts on <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/history</code>
+            , <strong style={{ color: "#fff", fontWeight: 600 }}>Map · Code</strong> for walk traces, saved
+            polylines, repositories, and tech stack (see bottom of{" "}
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/map</code>
+            ). A short closing reflection sits at the end of that page.
           </p>
         </Section>
       </div>

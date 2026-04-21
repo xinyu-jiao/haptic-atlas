@@ -1,5 +1,5 @@
 /**
- * Closing reflection for the narrative arc (appears after Code / technical access).
+ * Closing reflection at the end of the Map page (after Code / repositories).
  * Not labeled as “conclusion” in the UI — reads as a brief vertical-slice takeaway.
  */
 export default function SiteClosing() {
