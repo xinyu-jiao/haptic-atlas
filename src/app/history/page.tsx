@@ -49,6 +49,21 @@ export default function HistoryPage() {
           <h1 className="dash-title" style={{ marginBottom: 0 }}>Session History</h1>
         </div>
 
+        <div className="dash-card" style={{ marginBottom: "2rem", padding: "1.25rem 1.5rem" }}>
+          <div className="dash-section-label" style={{ marginBottom: "0.75rem" }}>Training flow</div>
+          <p className="dash-body" style={{ marginBottom: "0.75rem", lineHeight: 1.8 }}>
+            Each run follows the same staged path: <strong style={{ color: "#fff", fontWeight: 600 }}>Level</strong>{" "}
+            (route difficulty) → <strong style={{ color: "#fff", fontWeight: 600 }}>Role</strong> (Guide or Seeker) →{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>Setup</strong> (environment, distance, intensity) →{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>Active session</strong> (timer, cues, logging) →{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>Result</strong> (summary and badges). History below
+            groups completed runs by date; it is the archive side of the same flow started from Interface.
+          </p>
+          <Link href="/session/level" style={{ fontSize: "0.78rem", color: "var(--dash-text-secondary)", textDecoration: "none", borderBottom: "1px solid var(--dash-border)", paddingBottom: "0.1rem" }}>
+            Start a session →
+          </Link>
+        </div>
+
         {loading ? (
           <div className="dash-card" style={{ padding: "3rem 2rem", textAlign: "center" }}>
             <span style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)" }}>Loading sessions…</span>

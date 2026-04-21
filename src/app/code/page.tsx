@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SiteClosing from "@/components/SiteClosing";
 
 export default function CodePage() {
   return (
@@ -12,7 +13,7 @@ export default function CodePage() {
           {[
             {
               name: "haptic-atlas",
-              desc: "Web platform — Next.js, Tailwind, Web Bluetooth API, Leaflet, Recharts",
+              desc: "Web platform — Next.js, session flow, maps, charts, optional Firestore sync, voice / long-press access, Leaflet, Recharts",
               tag: "WEB",
               url: "https://github.com/xinyu-jiao/haptic-atlas",
             },
@@ -97,7 +98,9 @@ export default function CodePage() {
               ["Leaflet", "Map / Traces"],
               ["Recharts", "Data Charts"],
               ["Geolocation API", "Route Tracking"],
-              ["LocalStorage", "Session Data"],
+              ["Firebase Firestore", "Optional cloud sync"],
+              ["Web Speech API", "Voice prompts / commands"],
+              ["Web Serial", "Touch pad ↔ belt"],
             ].map(([tech, role]) => (
               <div
                 key={tech}
@@ -116,6 +119,8 @@ export default function CodePage() {
             ))}
           </div>
         </div>
+
+        <SiteClosing />
       </div>
     </div>
   );

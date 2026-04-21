@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { href: "/about", label: "ABOUT" },
@@ -10,10 +10,21 @@ const NAV_LINKS = [
   { href: "/history", label: "SESSIONS" },
   { href: "/map", label: "MAP" },
   { href: "/data", label: "DATA" },
-  { href: "/iterations", label: "PROCESS" },
-  { href: "/code", label: "CODE" },
   { href: "/touch-pad", label: "TOUCH" },
+  { href: "/about#iteration-process", label: "PROCESS" },
+  { href: "/code", label: "CODE" },
 ];
+
+function isNavActive(pathname: string, routeHash: string, href: string) {
+  if (href.includes("#")) {
+    const [path, frag] = href.split("#");
+    return pathname === path && routeHash === `#${frag}`;
+  }
+  if (href === "/about") {
+    return pathname === "/about" && routeHash !== "#iteration-process";
+  }
+  return pathname === href;
+}
 
 const SESSION_PATHS = [
   "/session/level",
@@ -26,6 +37,16 @@ const SESSION_PATHS = [
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [routeHash, setRouteHash] = useState(() =>
+    typeof window !== "undefined" ? window.location.hash : "",
+  );
+
+  useEffect(() => {
+    setRouteHash(typeof window !== "undefined" ? window.location.hash : "");
+    const onHashChange = () => setRouteHash(window.location.hash);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, [pathname]);
 
   const isSessionFlow = SESSION_PATHS.some((p) => pathname.startsWith(p));
   if (isSessionFlow) return null;
@@ -76,7 +97,7 @@ export default function NavBar() {
               href={link.href}
               className="nav-link"
               style={{
-                color: pathname === link.href ? "#fff" : undefined,
+                color: isNavActive(pathname, routeHash, link.href) ? "#fff" : undefined,
               }}
             >
               {link.label}
@@ -118,7 +139,7 @@ export default function NavBar() {
               className="nav-link"
               onClick={() => setOpen(false)}
               style={{
-                color: pathname === link.href ? "#fff" : undefined,
+                color: isNavActive(pathname, routeHash, link.href) ? "#fff" : undefined,
                 display: "block",
                 padding: "0.6rem 0.7rem",
               }}

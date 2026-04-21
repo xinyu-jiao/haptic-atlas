@@ -169,6 +169,16 @@ export default function MapPage() {
         <h1 className="dash-title">Walk Trace</h1>
         <div className="dash-subtitle">Real-time Route Tracking</div>
 
+        <div className="dash-card" style={{ marginBottom: "1.75rem", padding: "1.25rem 1.5rem" }}>
+          <p className="dash-body" style={{ margin: 0, lineHeight: 1.8 }}>
+            Walk Trace records a <strong style={{ color: "#fff", fontWeight: 600 }}>polyline</strong> of GNSS
+            fixes while you move, with duration and approximate distance. It is meant as{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>spatial evidence</strong> next to session
+            metrics — not a production mapping product. When no walk has been saved yet, the map area stays
+            idle; the list below shows a neutral placeholder until traces exist.
+          </p>
+        </div>
+
         {/* Status bar */}
         <div
           className="dash-card"
@@ -288,8 +298,21 @@ export default function MapPage() {
             Loading traces...
           </div>
         ) : traces.length === 0 ? (
-          <div style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)", padding: "1rem 0" }}>
-            No traces recorded yet. Complete a walk to see it here.
+          <div
+            className="dash-card"
+            style={{
+              padding: "2.5rem 1.5rem",
+              textAlign: "center",
+              borderStyle: "dashed",
+              borderColor: "#333",
+            }}
+          >
+            <div style={{ fontSize: "0.72rem", letterSpacing: "0.14em", color: "var(--dash-text-muted)", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+              No trace data
+            </div>
+            <div style={{ fontSize: "0.85rem", color: "var(--dash-text-secondary)", lineHeight: 1.75, maxWidth: 420, margin: "0 auto" }}>
+              Start a walk with the controls above. Saved traces will appear here as a list you can replay or delete.
+            </div>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "1px", background: "var(--dash-border)", border: "1px solid var(--dash-border)" }}>

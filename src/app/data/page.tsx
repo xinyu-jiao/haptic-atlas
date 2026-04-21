@@ -77,6 +77,15 @@ export default function DataPage() {
         <h1 className="dash-title">Data</h1>
         <div className="dash-subtitle">Training Visualization</div>
 
+        <div className="dash-card" style={{ marginBottom: "2rem", padding: "1.25rem 1.5rem" }}>
+          <p className="dash-body" style={{ margin: 0, lineHeight: 1.8 }}>
+            These charts are an <strong style={{ color: "#fff", fontWeight: 600 }}>evidence layer</strong> for the
+            training slice: duration, consistency, corrections, and help requests across sessions. When no
+            real sessions exist yet, the page shows <strong style={{ color: "#fff", fontWeight: 600 }}>sample</strong>{" "}
+            series so the layout reads clearly — the banner states when data are synthetic.
+          </p>
+        </div>
+
         {loading && (
           <div className="dash-card" style={{ padding: "3rem 2rem", textAlign: "center" }}>
             <span style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)" }}>Loading data…</span>
