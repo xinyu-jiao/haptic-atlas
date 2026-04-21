@@ -58,7 +58,7 @@ const ITERATIONS: {
     images: ["/images/s1.jpg", "/images/s2.jpg"],
     notes: [
       "Handheld gamepad: the Guide drives body-centered cues through a physical controller while the belt stays the haptic output, keeping live cueing off a phone-first interface.",
-      "Browser touch with live screen feedback: the motor grid is fired from a web touch layout over serial; the active cell is highlighted on the monitor in real time so desk tests show which actuator fired.",
+      "Browser touch with live screen feedback: the motor grid is driven from a web touch layout over serial; the active cell is highlighted on the monitor in real time so desk tests show which motor is actually vibrating.",
     ],
   },
 ];

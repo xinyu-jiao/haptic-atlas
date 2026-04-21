@@ -1,7 +1,6 @@
 "use client";
 
 import AboutCodeSection from "@/components/AboutCodeSection";
-import SiteClosing from "@/components/SiteClosing";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatDuration, loadTraces, saveTrace, deleteTrace } from "@/lib/session-storage";
@@ -369,7 +368,6 @@ export default function MapPage() {
           Code &amp; repositories
         </div>
         <AboutCodeSection />
-        <SiteClosing />
       </div>
     </div>
   );

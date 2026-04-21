@@ -109,10 +109,12 @@ export default function AboutPage() {
             A <strong style={{ color: "#fff", fontWeight: 600 }}>documentation and evidence layer</strong>{" "}
             around a haptic navigation training slice: the Interface session launcher (
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
-            ); Sessions &amp; Data (history + charts on{" "}
+            ); a demo <strong style={{ color: "#fff", fontWeight: 600 }}>video</strong> on{" "}
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/video</code> (between
+            launcher and archive); Sessions &amp; Data (history + charts on{" "}
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/history</code>
-            ); Walk Trace and <strong style={{ color: "#fff", fontWeight: 600 }}>Code</strong> (repositories,
-            tech stack, closing note) on{" "}
+            ); Walk Trace and <strong style={{ color: "#fff", fontWeight: 600 }}>Code</strong> (repositories and
+            tech stack) on{" "}
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/map</code>; Touch in
             the nav for desk serial control. Context and the design–research timeline are consolidated{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>on this page</strong> instead of a separate
@@ -173,9 +175,17 @@ export default function AboutPage() {
 
         <Section>
           <div className="dash-section-label">06 / Design and research path</div>
-          <p className="dash-body" style={{ marginBottom: "1.75rem" }}>
+          <p className="dash-body" style={{ marginBottom: "1rem" }}>
             Iteration process is kept here so context, system overview, and how the slice actually evolved
             stay adjacent — closer to a lab notebook than a detached changelog.
+          </p>
+          <p className="dash-body" style={{ marginBottom: "1.75rem" }}>
+            Recent hardware work includes <strong style={{ color: "#fff", fontWeight: 600 }}>3D-printed shells</strong>{" "}
+            (FDM) for the handheld controller and related parts: printed housings, post-print cleanup, and{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>assembly</strong> passes that check board clearance,
+            cable routing, fasteners, and how the device sits in the hand before longer field-style trials. The
+            timeline below picks up earlier circuit and control milestones; the enclosure thread runs in parallel
+            with those decisions rather than after a “final” PCB.
           </p>
           <IterationProcess />
         </Section>
@@ -189,12 +199,14 @@ export default function AboutPage() {
             <strong style={{ color: "#fff", fontWeight: 600 }}>Touch</strong> for Web Serial bench control,{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>Interface</strong> (pixel launcher at{" "}
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
+            ), <strong style={{ color: "#fff", fontWeight: 600 }}>Video</strong> (
+            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/video</code>
             ), <strong style={{ color: "#fff", fontWeight: 600 }}>Sessions · Data</strong> for grouped history and
             evidence charts on <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/history</code>
             , <strong style={{ color: "#fff", fontWeight: 600 }}>Map · Code</strong> for walk traces, saved
             polylines, repositories, and tech stack (see bottom of{" "}
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/map</code>
-            ). A short closing reflection sits at the end of that page.
+            ).
           </p>
         </Section>
       </div>

@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: "/about", label: "ABOUT" },
   { href: "/touch-pad", label: "TOUCH" },
   { href: "/interface", label: "INTERFACE" },
+  { href: "/video", label: "VIDEO" },
   { href: "/history", label: "SESSIONS · DATA" },
   { href: "/map", label: "MAP · CODE" },
 ];
