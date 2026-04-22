@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="220" viewBox="0 0 1800 220">
+  <rect x="1" y="1" width="1798" height="218" rx="18" fill="#0a0a0a" stroke="#2a2a2a" stroke-width="1"/>
+  <text x="40" y="48" font-family="Inter,Helvetica,Arial,sans-serif" font-size="28" font-weight="700" fill="#666" letter-spacing="1.5">MEANING</text>
+
+  <!-- 1: Dot matrix — col ~1–~410 -->
+  <g transform="translate(112, 92)">
+    <circle cx="0" cy="0" r="10" fill="#9B7BC8"/>
+    <circle cx="28" cy="0" r="10" fill="#8A6ab8"/>
+    <circle cx="0" cy="28" r="10" fill="#B8A0DC"/>
+    <circle cx="28" cy="28" r="10" fill="#A48FD0"/>
+  </g>
+  <text x="200" y="114" font-family="Inter,Helvetica,Arial,sans-serif" font-size="33" font-weight="700" fill="#e8e0f0" letter-spacing="0.45">DOT MATRIX</text>
+  <text x="200" y="150" font-family="Inter,Helvetica,Arial,sans-serif" font-size="27" fill="#a8a0b0" letter-spacing="0.1">Motor array /</text>
+  <text x="200" y="184" font-family="Inter,Helvetica,Arial,sans-serif" font-size="27" fill="#a8a0b0" letter-spacing="0.1">Haptic feedback</text>
+
+  <!-- 2: Direction — V chevron, col ~430–~810 -->
+  <g transform="translate(468, 72)">
+    <path
+      d="M0 0 L32 32 L0 64"
+      fill="none"
+      stroke="#B89BDF"
+      stroke-width="5.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+  <text x="590" y="114" font-family="Inter,Helvetica,Arial,sans-serif" font-size="33" font-weight="700" fill="#e8e0f0" letter-spacing="0.45">DIRECTION</text>
+  <text x="590" y="150" font-family="Inter,Helvetica,Arial,sans-serif" font-size="27" fill="#a8a0b0" letter-spacing="0.1">Guidance /</text>
+  <text x="590" y="184" font-family="Inter,Helvetica,Arial,sans-serif" font-size="27" fill="#a8a0b0" letter-spacing="0.1">Navigation</text>
+
+  <!-- 3: Circle, col ~830–~1200 -->
+  <g transform="translate(900, 106)">
+    <circle cx="0" cy="0" r="34" fill="none" stroke="#8f6fb8" stroke-width="8"/>
+  </g>
+  <text x="970" y="114" font-family="Inter,Helvetica,Arial,sans-serif" font-size="33" font-weight="700" fill="#e8e0f0" letter-spacing="0.45">CIRCLE</text>
+  <text x="970" y="150" font-family="Inter,Helvetica,Arial,sans-serif" font-size="27" fill="#a8a0b0" letter-spacing="0.1">The body /</text>
+  <text x="970" y="184" font-family="Inter,Helvetica,Arial,sans-serif" font-size="27" fill="#a8a0b0" letter-spacing="0.1">Wearable</text>
+
+  <!-- 4: Waves, col ~1230–~end -->
+  <g transform="translate(1240, 108)" stroke="#A883D2" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 -18 C8 -10 8 10 0 18"/>
+    <path d="M18 -32 C31 -18 31 18 18 32"/>
+    <path d="M40 -46 C59 -26 59 26 40 46"/>
+  </g>
+  <text
+    x="1355"
+    y="113"
+    font-family="Inter,Helvetica,Arial,sans-serif"
+    font-size="32"
+    font-weight="700"
+    fill="#e8e0f0"
+    letter-spacing="0.4"
+  >
+    WAVES
+  </text>
+  <text
+    x="1355"
+    y="150"
+    font-family="Inter,Helvetica,Arial,sans-serif"
+    font-size="25"
+    fill="#a8a0b0"
+    letter-spacing="0.2"
+  >
+    Vibration /
+  </text>
+  <text
+    x="1355"
+    y="178"
+    font-family="Inter,Helvetica,Arial,sans-serif"
+    font-size="25"
+    fill="#a8a0b0"
+    letter-spacing="0.2"
+  >
+    Signal
+  </text>
+</svg>

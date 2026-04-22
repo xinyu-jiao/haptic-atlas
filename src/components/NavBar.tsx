@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { assetUrl, LOGO_MARK_PATH } from "@/lib/assetUrl";
 
 const NAV_LINKS = [
   { href: "/about", label: "ABOUT" },
@@ -52,6 +53,9 @@ export default function NavBar() {
         <Link
           href="/about"
           style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
             fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
             fontSize: "0.75rem",
             fontWeight: 600,
@@ -61,6 +65,19 @@ export default function NavBar() {
             textTransform: "uppercase",
           }}
         >
+          <img
+            src={assetUrl(LOGO_MARK_PATH)}
+            alt=""
+            width={40}
+            height={40}
+            style={{
+              display: "block",
+              height: 40,
+              width: 40,
+              objectFit: "contain",
+              filter: "brightness(1.2) contrast(1.04)",
+            }}
+          />
           HAPTIC ATLAS
         </Link>
 

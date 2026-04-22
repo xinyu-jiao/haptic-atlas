@@ -1,4 +1,161 @@
+import type { CSSProperties, ReactNode } from "react";
 import IterationProcess from "@/components/IterationProcess";
+import MeaningStrip from "@/components/MeaningStrip";
+import { assetUrl, LOGO_MARK_PATH, LOGO_MARK_MONO_PATH, MAIN_LOGO_PATH } from "@/lib/assetUrl";
+
+const SPEC_INNER: CSSProperties = {
+  background: "#0a0a0a",
+  flex: 1,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "1.25rem 0.75rem",
+  minHeight: 200,
+};
+
+const SPEC_LABEL: CSSProperties = {
+  textAlign: "center",
+  margin: 0,
+  padding: "0.6rem 0.5rem",
+  color: "var(--dash-text-muted)",
+};
+
+const horizontalLockupDark = (
+  <>
+    <img
+      src={assetUrl(LOGO_MARK_PATH)}
+      alt=""
+      style={{ display: "block", width: 72, height: 72, objectFit: "contain", flexShrink: 0 }}
+    />
+    <div style={{ width: 1, alignSelf: "stretch", minHeight: 64, background: "#4a4a4e", flexShrink: 0 }} aria-hidden />
+    <div>
+      <div
+        style={{
+          fontSize: "0.68rem",
+          fontWeight: 600,
+          letterSpacing: "0.12em",
+          color: "#e8e0f0",
+          lineHeight: 1.2,
+        }}
+      >
+        HAPTIC ATLAS
+      </div>
+      <div
+        style={{
+          fontSize: "0.52rem",
+          fontWeight: 500,
+          letterSpacing: "0.16em",
+          color: "#8f7ba8",
+          marginTop: "0.35rem",
+        }}
+      >
+        NAVIGATE BY FEEL
+      </div>
+    </div>
+  </>
+);
+
+const horizontalLockupOnLight = (
+  <>
+    <img
+      src={assetUrl(LOGO_MARK_PATH)}
+      alt=""
+      style={{ display: "block", width: 64, height: 64, objectFit: "contain", flexShrink: 0 }}
+    />
+    <div style={{ width: 1, alignSelf: "stretch", minHeight: 56, background: "#a89bb5", flexShrink: 0 }} aria-hidden />
+    <div>
+      <div
+        style={{
+          fontSize: "0.6rem",
+          fontWeight: 600,
+          letterSpacing: "0.12em",
+          color: "#1e1625",
+          lineHeight: 1.2,
+        }}
+      >
+        HAPTIC ATLAS
+      </div>
+      <div
+        style={{
+          fontSize: "0.48rem",
+          fontWeight: 500,
+          letterSpacing: "0.16em",
+          color: "#6b5b82",
+          marginTop: "0.3rem",
+        }}
+      >
+        NAVIGATE BY FEEL
+      </div>
+    </div>
+  </>
+);
+
+const SPEC_SUBHEAD: CSSProperties = {
+  fontSize: "0.7rem",
+  fontWeight: 500,
+  letterSpacing: "0.2em",
+  textTransform: "uppercase",
+  color: "var(--dash-text-muted)",
+  margin: "0 0 0.5rem",
+};
+
+const SPEC_VARIATION_INNER: CSSProperties = {
+  background: "#0a0a0a",
+  flex: 1,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "1.25rem 0.75rem",
+  minHeight: 200,
+};
+
+/** Horizontal lockup: mark + rule + HAPTIC / ATLAS + tagline (on black, like Application dark row). */
+const horizontalLockupVariations = (
+  <>
+    <img
+      src={assetUrl(LOGO_MARK_PATH)}
+      alt=""
+      style={{ display: "block", width: 72, height: 72, objectFit: "contain", flexShrink: 0 }}
+    />
+    <div style={{ width: 1, alignSelf: "stretch", minHeight: 88, background: "#4a4a4e", flexShrink: 0 }} aria-hidden />
+    <div>
+      <div
+        style={{
+          fontSize: "0.58rem",
+          fontWeight: 700,
+          letterSpacing: "0.16em",
+          color: "#e8e0f0",
+          lineHeight: 1.1,
+        }}
+      >
+        HAPTIC
+      </div>
+      <div
+        style={{
+          fontSize: "0.58rem",
+          fontWeight: 700,
+          letterSpacing: "0.16em",
+          color: "#e8e0f0",
+          lineHeight: 1.1,
+          marginTop: 2,
+        }}
+      >
+        ATLAS
+      </div>
+      <div
+        style={{
+          fontSize: "0.45rem",
+          fontWeight: 500,
+          letterSpacing: "0.2em",
+          color: "#8f7ba8",
+          marginTop: "0.45rem",
+        }}
+      >
+        NAVIGATE BY FEEL
+      </div>
+    </div>
+  </>
+);
 
 export default function AboutPage() {
   return (
@@ -118,14 +275,232 @@ export default function AboutPage() {
             <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/map</code>; Touch in
             the nav for desk serial control. Context and the design–research timeline are consolidated{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>on this page</strong> instead of a separate
-            Process route.
+            Process route. Visual identity for the same slice is under{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>Logo design</strong> (below).
           </p>
         </Section>
 
         <div className="dash-divider" />
 
         <Section>
-          <div className="dash-section-label">05 / System Components</div>
+          <div className="dash-section-label" id="logo-design">
+            05 / Logo design
+          </div>
+          <p className="dash-body" style={{ marginBottom: "1.5rem" }}>
+            Layout matches the brand card: <strong style={{ color: "#fff", fontWeight: 600 }}>primary lockup</strong>, three lockup
+            types, <strong style={{ color: "#fff", fontWeight: 600 }}>application</strong> (icon / dark / light), then{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>meaning</strong> of the mark
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {/* 1) Hero: full mark + HAPTIC ATLAS + tagline (two text lines) */}
+            <div>
+              <div style={SPEC_SUBHEAD}>Primary lockup</div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  minWidth: 0,
+                  padding: "2rem 0 0",
+                }}
+              >
+                <img
+                  src={assetUrl(MAIN_LOGO_PATH)}
+                  alt="Haptic Atlas: symbol, wordmark HAPTIC ATLAS, and tagline NAVIGATE BY FEEL"
+                  style={{ display: "block", width: "100%", maxWidth: "34rem", height: "auto" }}
+                />
+              </div>
+            </div>
+
+            {/* 2) Lockup variations — black field like Application */}
+            <div>
+              <div style={SPEC_SUBHEAD}>Lockup variations</div>
+              <div
+                className="logo-spec-row"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                  border: "1px solid var(--dash-border)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRight: "1px solid var(--dash-border)",
+                    minWidth: 0,
+                  }}
+                >
+                  <div className="dash-label" style={SPEC_LABEL}>
+                    Icon
+                  </div>
+                  <div style={SPEC_VARIATION_INNER}>
+                    <img
+                      src={assetUrl(LOGO_MARK_PATH)}
+                      alt="Icon: dot matrix and chevron only, full color"
+                      style={{ display: "block", width: "min(100%, 9.5rem)", height: "auto", objectFit: "contain" }}
+                    />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRight: "1px solid var(--dash-border)",
+                    minWidth: 0,
+                  }}
+                >
+                  <div className="dash-label" style={SPEC_LABEL}>
+                    Horizontal lockup
+                  </div>
+                  <div
+                    style={{
+                      ...SPEC_VARIATION_INNER,
+                      flexDirection: "row",
+                      gap: "0.65rem",
+                      padding: "1.25rem 0.5rem",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {horizontalLockupVariations}
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                  <div className="dash-label" style={SPEC_LABEL}>
+                    Symbol (mono)
+                  </div>
+                  <div style={SPEC_VARIATION_INNER}>
+                    <img
+                      src={assetUrl(LOGO_MARK_MONO_PATH)}
+                      alt="One-color (black) mark, inverted for display on black"
+                      style={{
+                        display: "block",
+                        width: "min(100%, 9.5rem)",
+                        height: "auto",
+                        objectFit: "contain",
+                        filter: "invert(1) brightness(1.1)",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 3) Application — dark / contrast contexts */}
+            <div>
+              <div style={SPEC_SUBHEAD}>Application</div>
+              <div
+                className="logo-spec-row"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                  border: "1px solid var(--dash-border)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRight: "1px solid var(--dash-border)",
+                    minWidth: 0,
+                  }}
+                >
+                  <div className="dash-label" style={SPEC_LABEL}>
+                    App icon
+                  </div>
+                  <div style={SPEC_INNER}>
+                    <div
+                      style={{
+                        width: 104,
+                        height: 104,
+                        borderRadius: 24,
+                        background: "linear-gradient(150deg, #5b3d7e 0%, #1a0f2a 55%, #0a040e 100%)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img
+                        src={assetUrl(LOGO_MARK_PATH)}
+                        alt=""
+                        style={{ width: 60, height: 45, objectFit: "contain" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRight: "1px solid var(--dash-border)",
+                    minWidth: 0,
+                  }}
+                >
+                  <div className="dash-label" style={SPEC_LABEL}>
+                    Dark background
+                  </div>
+                  <div style={SPEC_INNER}>
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: 320,
+                        borderRadius: 12,
+                        background: "#0a0a0a",
+                        border: "1px solid #2a2a2a",
+                        padding: "1.15rem 0.9rem",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.6rem",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {horizontalLockupDark}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                  <div className="dash-label" style={SPEC_LABEL}>
+                    Light background
+                  </div>
+                  <div style={SPEC_INNER}>
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: 300,
+                        background: "#fff",
+                        borderRadius: 10,
+                        boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+                        padding: "1.1rem 0.8rem",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.5rem",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {horizontalLockupOnLight}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4) Meaning — four motifs from the brand strip; copy set in layout (MeaningStrip) */}
+            <div>
+              <div style={SPEC_SUBHEAD}>Meaning</div>
+              <MeaningStrip />
+            </div>
+          </div>
+        </Section>
+
+        <div className="dash-divider" />
+
+        <Section>
+          <div className="dash-section-label">06 / System Components</div>
           <div
             style={{
               display: "grid",
@@ -174,7 +549,7 @@ export default function AboutPage() {
         <div className="dash-divider" />
 
         <Section>
-          <div className="dash-section-label">06 / Design and research path</div>
+          <div className="dash-section-label">07 / Design and research path</div>
           <p className="dash-body" style={{ marginBottom: "1rem" }}>
             Iteration process is kept here so context, system overview, and how the slice actually evolved
             stay adjacent — closer to a lab notebook than a detached changelog.
@@ -193,7 +568,7 @@ export default function AboutPage() {
         <div className="dash-divider" />
 
         <Section>
-          <div className="dash-section-label">07 / How to Read What Follows</div>
+          <div className="dash-section-label">08 / How to Read What Follows</div>
           <p className="dash-body" style={{ margin: 0 }}>
             Use the nav for the rest of this slice (order matches the bar):{" "}
             <strong style={{ color: "#fff", fontWeight: 600 }}>Touch</strong> for Web Serial bench control,{" "}
@@ -214,6 +589,6 @@ export default function AboutPage() {
   );
 }
 
-function Section({ children }: { children: React.ReactNode }) {
+function Section({ children }: { children: ReactNode }) {
   return <div style={{ marginBottom: "1rem" }}>{children}</div>;
 }

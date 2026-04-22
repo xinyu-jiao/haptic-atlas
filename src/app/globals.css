@@ -210,6 +210,20 @@ input[type="range"]::-webkit-slider-thumb {
   }
 }
 
+/* About / Logo spec: grid rows stack on narrow viewports */
+@media (max-width: 720px) {
+  .logo-spec-row {
+    grid-template-columns: 1fr !important;
+  }
+  .logo-spec-row > div {
+    border-right: none !important;
+    border-bottom: 1px solid var(--dash-border) !important;
+  }
+  .logo-spec-row > div:last-child {
+    border-bottom: none !important;
+  }
+}
+
 .dash-title {
   font-size: 1.5rem;
   font-weight: 600;
