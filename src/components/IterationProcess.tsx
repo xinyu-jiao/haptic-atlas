@@ -1,4 +1,6 @@
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+/** S3/HTTPS PNG for 3D-printed enclosure (set in .env; optional) */
+const GUIDE_ENCLOSURE_3D_PNG = process.env.NEXT_PUBLIC_GUIDE_CONTROLLER_ENCLOSURE_3D_PNG?.trim() || "";
 
 const ITERATIONS: {
   version: string;
@@ -6,6 +8,7 @@ const ITERATIONS: {
   date: string;
   images?: string[];
   notes: string[];
+  inProgressItem?: { title: string; notes: string[]; imageAlt: string; imageUrl?: string };
 }[] = [
   {
     version: "01",
@@ -60,6 +63,15 @@ const ITERATIONS: {
       "Handheld gamepad: the Guide drives body-centered cues through a physical controller while the belt stays the haptic output, keeping live cueing off a phone-first interface.",
       "Browser touch with live screen feedback: the motor grid is driven from a web touch layout over serial; the active cell is highlighted on the monitor in real time so desk tests show which motor is actually vibrating.",
     ],
+    inProgressItem: {
+      title: "3D-printed enclosure: assembly",
+      notes: [
+        "In progress — not a finished product shot: we’re still aligning print tolerances, shell halves, and cable exit with the two-surface layout.",
+        "Fitting, iteration on FDM part orientation, and final assembly are outstanding; this block will update as the unit stabilizes.",
+      ],
+      imageAlt: "Guide controller: 3D-printed housing assembly (work in progress)",
+      imageUrl: GUIDE_ENCLOSURE_3D_PNG || undefined,
+    },
   },
 ];
 
@@ -157,6 +169,52 @@ export default function IterationProcess({ anchorId = "iteration-process" }: Pro
                         />
                       </div>
                     ))}
+                  </div>
+                )}
+                {iter.inProgressItem && (
+                  <div
+                    style={{
+                      marginTop: "1.5rem",
+                      paddingTop: "1.25rem",
+                      borderTop: "1px solid var(--dash-border)",
+                    }}
+                  >
+                    <div
+                      className="dash-label"
+                      style={{ margin: "0 0 0.6rem", padding: 0, textAlign: "left", color: "var(--dash-text-muted)" }}
+                    >
+                      In progress
+                    </div>
+                    <div style={{ fontSize: "0.95rem", fontWeight: 600, color: "#fff", marginBottom: "0.65rem" }}>
+                      {iter.inProgressItem.title}
+                    </div>
+                    {iter.inProgressItem.notes.map((line) => (
+                      <div key={line} className="dash-list-item">
+                        <span className="dash-list-bullet">—</span>
+                        <span className="dash-list-text">{line}</span>
+                      </div>
+                    ))}
+                    {iter.inProgressItem.imageUrl && (
+                      <div
+                        style={{
+                          maxWidth: 360,
+                          marginTop: "1.1rem",
+                          border: "1px solid var(--dash-border)",
+                          borderRadius: 6,
+                          overflow: "hidden",
+                          lineHeight: 0,
+                        }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element -- remote S3/HTTPS from env */}
+                        <img
+                          src={iter.inProgressItem.imageUrl}
+                          alt={iter.inProgressItem.imageAlt}
+                          width={720}
+                          height={480}
+                          style={{ width: "100%", height: "auto", display: "block" }}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
