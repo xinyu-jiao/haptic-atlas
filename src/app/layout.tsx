@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from "@/context/SessionContext";
 import NavBar from "@/components/NavBar";
-import GlobalCameraDock from "@/components/GlobalCameraDock";
+import GlobalCameraHost from "@/components/GlobalCameraHost";
 
 export const metadata: Metadata = {
   title: "Haptic Atlas",
@@ -20,7 +20,7 @@ export default function RootLayout({
         <SessionProvider>
           <NavBar />
           <main>{children}</main>
-          <GlobalCameraDock />
+          <GlobalCameraHost />
         </SessionProvider>
       </body>
     </html>

@@ -1,6 +1,8 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, useLayoutEffect } from "react";
+import { usePathname } from "next/navigation";
+import { isCameraSessionRoute } from "@/lib/cameraRoutes";
 import type { ObjectDetection, DetectedObject } from "@tensorflow-models/coco-ssd";
 import type { MobileNet } from "@tensorflow-models/mobilenet";
 import { speak } from "@/lib/speak";
@@ -101,12 +103,21 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
   const recRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const mayAutoStartRecording = useRef(true);
+  /** Set after first successful camera+stream; avoids auto re-prompt when user turns Off. */
+  const dataFlowBootCompletedRef = useRef(false);
+  const enableInFlightRef = useRef(false);
+  const phaseRef = useRef<Phase>("idle");
+  const pathname = usePathname();
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [err, setErr] = useState<string | null>(null);
   const [logLines, setLogLines] = useState<string[]>([]);
   const [recOn, setRecOn] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+
+  useLayoutEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   const pushLog = useCallback(
     (line: string) => {
@@ -213,17 +224,12 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
   );
 
   const enable = useCallback(async () => {
+    if (enableInFlightRef.current) return;
+    enableInFlightRef.current = true;
     setErr(null);
     setPhase("loading");
     try {
       await loadModels();
-    } catch (e) {
-      setPhase("error");
-      setErr("Failed to load on-device models. Check network and reload.");
-      console.error(e);
-      return;
-    }
-    try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: { ideal: "environment" }, width: { ideal: 640 } },
         audio: false,
@@ -241,12 +247,37 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
       await v.play();
       clearLoop();
       scheduleLoop(v);
+      if (placement === "fixed") {
+        dataFlowBootCompletedRef.current = true;
+        pushLog("[data] training flow: camera on — continuous capture (detect + WebM) until you tap Off.");
+      }
     } catch (e) {
+      console.error("CameraGuide enable", e);
       setPhase("error");
-      setErr("Camera not available. Allow access or use https / localhost. ");
-      console.error(e);
+      const name = (e as { name?: string })?.name ?? "";
+      if (name === "NotAllowedError" || name === "NotFoundError" || name === "NotReadableError" || /Permission|getUserMedia/i.test(String((e as Error).message || ""))) {
+        setErr("Camera not available. Allow access or use https / localhost.");
+      } else {
+        setErr("Could not start camera or load models. Check network and try again.");
+      }
+    } finally {
+      enableInFlightRef.current = false;
     }
-  }, [loadModels, scheduleLoop, clearLoop]);
+  }, [loadModels, scheduleLoop, clearLoop, placement, pushLog]);
+
+  /** From Interface (START) or any /session/*: auto-open camera once so the same stream+record run through the whole flow. */
+  useEffect(() => {
+    if (placement !== "fixed") return;
+    if (dataFlowBootCompletedRef.current) return;
+    if (!isCameraSessionRoute(pathname)) return;
+    const t = setTimeout(() => {
+      if (dataFlowBootCompletedRef.current) return;
+      if (phaseRef.current !== "idle") return;
+      if (enableInFlightRef.current) return;
+      void enable();
+    }, 900);
+    return () => clearTimeout(t);
+  }, [pathname, placement, enable]);
 
   const startRecord = useCallback(() => {
     const s = streamRef.current;
@@ -457,7 +488,7 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
         }}
       >
         {isFixed
-          ? "All pages: turn Cam on to run detect + record; data lines also saved in this tab. WebM when you turn Off. "
+          ? "仅在 Interface（START）与 /session 流程页显示。进入这些页会尝试自动开摄并持续录制+记检测；点 Off 结束并下载 WebM，Log 导出 JSON。About/Map 等页不显示此条。"
           : "On-device detect (approx.). Turn camera on, then Rec saves WebM. Good light helps."}
       </p>
       {err && <p style={{ fontSize: "0.5rem", color: "#ff9a9a", margin: "0.35rem 0 0" }}>{err}</p>}
