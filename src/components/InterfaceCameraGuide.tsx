@@ -58,7 +58,40 @@ function lineFromImagenet(className: string, p: number): { speak: string | null;
 
 type Phase = "idle" | "loading" | "ready" | "error";
 
-export default function InterfaceCameraGuide() {
+const SESSION_LOG_KEY = "haptic-atlas-cam-log";
+
+function appendSessionLogLine(line: string) {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    const raw = sessionStorage.getItem(SESSION_LOG_KEY);
+    const arr: string[] = raw ? (JSON.parse(raw) as string[]) : [];
+    arr.push(`${new Date().toISOString()}\t${line}`);
+    while (arr.length > 400) arr.shift();
+    sessionStorage.setItem(SESSION_LOG_KEY, JSON.stringify(arr));
+  } catch {
+    /* ignore quota */
+  }
+}
+
+function exportSessionLog() {
+  if (typeof sessionStorage === "undefined") return;
+  const raw = sessionStorage.getItem(SESSION_LOG_KEY);
+  if (!raw) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([raw], { type: "application/json" }));
+  a.download = `haptic-atlas-cam-log-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+export type CameraGuideProps = {
+  /** inline: in page flow. fixed: bottom-right on all routes, single instance (stream survives navigation). */
+  placement?: "inline" | "fixed";
+  /** When fixed: start WebM capture as soon as the stream is ready (stops + saves when you turn camera off or press Stop). */
+  autoStartRecording?: boolean;
+};
+
+export default function InterfaceCameraGuide({ placement = "inline", autoStartRecording = false }: CameraGuideProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const loopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -67,6 +100,7 @@ export default function InterfaceCameraGuide() {
   const tickInFlight = useRef(false);
   const recRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const mayAutoStartRecording = useRef(true);
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [err, setErr] = useState<string | null>(null);
@@ -74,9 +108,13 @@ export default function InterfaceCameraGuide() {
   const [recOn, setRecOn] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
 
-  const pushLog = useCallback((line: string) => {
-    setLogLines((prev) => [line, ...prev].slice(0, 6));
-  }, []);
+  const pushLog = useCallback(
+    (line: string) => {
+      setLogLines((prev) => [line, ...prev].slice(0, placement === "fixed" ? 8 : 6));
+      if (placement === "fixed") appendSessionLogLine(line);
+    },
+    [placement],
+  );
 
   const clearLoop = useCallback(() => {
     if (loopTimerRef.current != null) {
@@ -100,6 +138,7 @@ export default function InterfaceCameraGuide() {
     setRecOn(false);
     setAnalyzing(false);
     setPhase("idle");
+    mayAutoStartRecording.current = true;
   }, [clearLoop]);
 
   const loadModels = useCallback(async () => {
@@ -211,7 +250,9 @@ export default function InterfaceCameraGuide() {
 
   const startRecord = useCallback(() => {
     const s = streamRef.current;
-    if (!s || recOn) return;
+    if (!s) return;
+    if (recRef.current?.state === "recording") return;
+    if (recOn) return;
     const mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
       ? "video/webm;codecs=vp9"
       : MediaRecorder.isTypeSupported("video/webm")
@@ -219,6 +260,9 @@ export default function InterfaceCameraGuide() {
         : "";
     if (!mime) {
       setErr("This browser cannot record webm. ");
+      if (placement === "fixed" && autoStartRecording) {
+        mayAutoStartRecording.current = false;
+      }
       return;
     }
     chunksRef.current = [];
@@ -238,7 +282,10 @@ export default function InterfaceCameraGuide() {
     r.start(400);
     recRef.current = r;
     setRecOn(true);
-  }, [recOn]);
+    if (placement === "fixed" && autoStartRecording) {
+      mayAutoStartRecording.current = false;
+    }
+  }, [recOn, placement, autoStartRecording]);
 
   const stopRecord = useCallback(() => {
     if (recRef.current && recRef.current.state === "recording") {
@@ -246,18 +293,48 @@ export default function InterfaceCameraGuide() {
     }
   }, []);
 
+  const fixedAuto = placement === "fixed" && autoStartRecording;
+  useEffect(() => {
+    if (!fixedAuto) return;
+    if (phase !== "ready" || recOn) return;
+    if (!mayAutoStartRecording.current) return;
+    const t = window.setTimeout(() => {
+      if (recRef.current?.state === "recording") return;
+      if (!streamRef.current) return;
+      startRecord();
+    }, 450);
+    return () => clearTimeout(t);
+  }, [fixedAuto, phase, recOn, startRecord]);
+
   useEffect(() => () => stopStream(), [stopStream]);
 
   const onOff = phase === "ready" ? "Off" : "Camera";
+  const isFixed = placement === "fixed";
 
   return (
     <div
-      style={{
-        margin: "0 0 1.1rem",
-        width: "100%",
-        color: "white",
-        fontFamily: "'Inter', system-ui, sans-serif",
-      }}
+      style={
+        isFixed
+          ? {
+              position: "fixed",
+              zIndex: 10050,
+              bottom: "max(0.4rem, env(safe-area-inset-bottom, 0px))",
+              right: "max(0.4rem, env(safe-area-inset-right, 0px))",
+              maxWidth: "min(100vw - 0.85rem, 19rem)",
+              padding: "0.45rem 0.55rem 0.5rem",
+              background: "rgba(15, 15, 15, 0.95)",
+              border: "2px solid #333",
+              boxShadow: "0 3px 18px rgba(0,0,0,0.45)",
+              color: "white",
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }
+          : {
+              margin: "0 0 1.1rem",
+              width: "100%",
+              color: "white",
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }
+      }
     >
       <div
         style={{
@@ -318,24 +395,28 @@ export default function InterfaceCameraGuide() {
         </div>
         {phase === "ready" && (
           <>
-            <button
-              type="button"
-              className="pixel-btn"
-              disabled={recOn}
-              onClick={startRecord}
-              style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem" }}
-            >
-              Rec
-            </button>
-            <button
-              type="button"
-              className="pixel-btn"
-              disabled={!recOn}
-              onClick={stopRecord}
-              style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem" }}
-            >
-              Stop
-            </button>
+            {!isFixed && (
+              <>
+                <button
+                  type="button"
+                  className="pixel-btn"
+                  disabled={recOn}
+                  onClick={startRecord}
+                  style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem" }}
+                >
+                  Rec
+                </button>
+                <button
+                  type="button"
+                  className="pixel-btn"
+                  disabled={!recOn}
+                  onClick={stopRecord}
+                  style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem" }}
+                >
+                  Stop
+                </button>
+              </>
+            )}
             {recOn && (
               <div
                 style={{
@@ -351,20 +432,33 @@ export default function InterfaceCameraGuide() {
               </div>
             )}
             {analyzing && <span style={{ fontSize: "0.5rem", color: "rgba(200, 190, 220, 0.7)" }}>·</span>}
+            {isFixed && (
+              <button
+                type="button"
+                className="pixel-btn"
+                onClick={exportSessionLog}
+                style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
+                title="Download detection log (JSON, this tab)"
+              >
+                Log
+              </button>
+            )}
           </>
         )}
       </div>
 
       <p
         style={{
-          fontSize: "0.52rem",
+          fontSize: isFixed ? "0.45rem" : "0.52rem",
           lineHeight: 1.45,
           color: "rgba(255,255,255,0.55)",
-          margin: "0.45rem 0 0",
+          margin: isFixed ? "0.35rem 0 0" : "0.45rem 0 0",
           maxWidth: "19rem",
         }}
       >
-        On-device detect (approx.). Turn camera on, then Rec saves WebM. Good light helps.
+        {isFixed
+          ? "All pages: turn Cam on to run detect + record; data lines also saved in this tab. WebM when you turn Off. "
+          : "On-device detect (approx.). Turn camera on, then Rec saves WebM. Good light helps."}
       </p>
       {err && <p style={{ fontSize: "0.5rem", color: "#ff9a9a", margin: "0.35rem 0 0" }}>{err}</p>}
       {logLines.length > 0 && (
