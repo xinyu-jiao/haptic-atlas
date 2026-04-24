@@ -445,3 +445,24 @@ input[type="range"]::-webkit-slider-thumb {
   font-weight: 600;
   color: #fff;
 }
+
+/* Session / interface: camera recording indicator */
+@keyframes camera-rec-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.camera-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff2d2d;
+  box-shadow: 0 0 6px #ff2d2d;
+  flex-shrink: 0;
+  animation: camera-rec-blink 0.9s ease-in-out infinite;
+}

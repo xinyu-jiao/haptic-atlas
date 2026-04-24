@@ -6,6 +6,7 @@ import { LEVELS, type Level } from "@/lib/types";
 import { speak } from "@/lib/speak";
 import { useVoiceCommands } from "@/lib/useVoiceCommands";
 import VoiceScreen from "@/components/VoiceScreen";
+import InterfaceCameraGuide from "@/components/InterfaceCameraGuide";
 
 export default function LevelPage() {
   const router = useRouter();
@@ -58,9 +59,11 @@ export default function LevelPage() {
       <div style={{ fontFamily: '"Press Start 2P"', fontSize: "1rem", marginBottom: "0.5rem" }}>
         CHOOSE SESSION
       </div>
-      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.5rem", marginBottom: "2rem", opacity: 0.7 }}>
+      <div style={{ fontFamily: '"Press Start 2P"', fontSize: "0.5rem", marginBottom: "1.25rem", opacity: 0.7 }}>
         SELECT LEVEL
       </div>
+
+      <InterfaceCameraGuide />
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {LEVELS.map((level) => (

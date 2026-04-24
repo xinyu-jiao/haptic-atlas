@@ -48,8 +48,6 @@ export default function SetupPage() {
     router.push("/session/active");
   }
 
-  const intensitySteps: HapticIntensity[] = ["low", "med", "high"];
-
   return (
     <VoiceScreen listening={voice.listening} supported={voice.supported} lastHeard={voice.lastHeard} onStart={voice.start} onStop={voice.stop}>
     <div className="screen">
