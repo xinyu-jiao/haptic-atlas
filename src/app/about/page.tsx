@@ -568,20 +568,27 @@ export default function AboutPage() {
         <div className="dash-divider" />
 
         <Section>
-          <div className="dash-section-label">08 / How to Read What Follows</div>
+          <div className="dash-section-label">08 / Future direction</div>
+          <p className="dash-body" style={{ margin: "0 0 1rem" }}>
+            Today the emphasis is still on{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>training and evidence</strong>: structured sessions,
+            logs, and <strong style={{ color: "#fff", fontWeight: 600 }}>route- and walk-style data</strong> (how
+            someone moves, how cues land, what gets corrected). That stack exists so we can{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>train models</strong> — turning those traces and
+            labels into something that generalizes — not as a polished “product” claim on this site, but as the
+            groundwork for a later loop where sensing and touch stay tied together.
+          </p>
           <p className="dash-body" style={{ margin: 0 }}>
-            Use the nav for the rest of this slice (order matches the bar):{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>Touch</strong> for Web Serial bench control,{" "}
-            <strong style={{ color: "#fff", fontWeight: 600 }}>Interface</strong> (pixel launcher at{" "}
-            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/interface</code>
-            ), <strong style={{ color: "#fff", fontWeight: 600 }}>Video</strong> (
-            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/video</code>
-            ), <strong style={{ color: "#fff", fontWeight: 600 }}>Sessions · Data</strong> for grouped history and
-            evidence charts on <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/history</code>
-            , <strong style={{ color: "#fff", fontWeight: 600 }}>Map · Code</strong> for walk traces, saved
-            polylines, repositories, and tech stack (see bottom of{" "}
-            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>/map</code>
-            ).
+            The longer arc is toward{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>use without a second person steering every cue</strong>
+            : a wearer could run a <strong style={{ color: "#fff", fontWeight: 600 }}>camera (or similar front sensing)</strong>
+            , <strong style={{ color: "#fff", fontWeight: 600 }}>connect straight to the belt</strong>, and get{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>closed-loop haptic feedback</strong> from a model that
+            learned from the same kind of session data — enough for{" "}
+            <strong style={{ color: "#fff", fontWeight: 600 }}>independent trips and everyday routes</strong>, with
+            safety and consent still treated as design constraints rather than afterthoughts. The paired Guide role
+            remains important for now; the point is to grow out of needing another human in the loop for every
+            outdoor or “just use it” scenario.
           </p>
         </Section>
       </div>

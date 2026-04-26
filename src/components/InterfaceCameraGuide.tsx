@@ -6,6 +6,7 @@ import { isCameraSessionRoute } from "@/lib/cameraRoutes";
 import type { ObjectDetection, DetectedObject } from "@tensorflow-models/coco-ssd";
 import type { MobileNet } from "@tensorflow-models/mobilenet";
 import { speak } from "@/lib/speak";
+import { saveWebmToLocal } from "@/lib/saveWebmToLocal";
 
 const SPEAK_COOLDOWN_MS = 5500;
 const COCO_MIN_SCORE = 0.48;
@@ -103,6 +104,7 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
   const recRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const mayAutoStartRecording = useRef(true);
+  const startRecordRef = useRef<() => void>(() => {});
   /** Set after first successful camera+stream; avoids auto re-prompt when user turns Off. */
   const dataFlowBootCompletedRef = useRef(false);
   const enableInFlightRef = useRef(false);
@@ -302,13 +304,34 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
       if (e.data.size) chunksRef.current.push(e.data);
     };
     r.onstop = () => {
-      const b = new Blob(chunksRef.current, { type: chunksRef.current[0]?.type ?? "video/webm" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(b);
-      a.download = `haptic-atlas-camera-${Date.now()}.webm`;
-      a.click();
-      URL.revokeObjectURL(a.href);
+      const type = chunksRef.current[0]?.type ?? "video/webm";
+      const chunkCopy = chunksRef.current.slice();
+      chunksRef.current = [];
+      const b = new Blob(chunkCopy, { type });
+      const fileName = `haptic-atlas-camera-${Date.now()}.webm`;
       setRecOn(false);
+      const place = placement;
+      const doAuto = autoStartRecording;
+      void (async () => {
+        try {
+          const mode = await saveWebmToLocal(b, fileName);
+          if (place === "fixed") {
+            const via = mode === "file-picker" ? "file dialog" : "download";
+            pushLog(`[data] video saved (${via}): ${fileName}`);
+          }
+        } catch (e) {
+          console.error("InterfaceCameraGuide save", e);
+          setErr("Could not save the recorded video. Try again or use another browser.");
+        }
+        if (place === "fixed" && doAuto && streamRef.current) {
+          setTimeout(() => {
+            if (!streamRef.current) return;
+            if (recRef.current?.state === "recording") return;
+            mayAutoStartRecording.current = true;
+            startRecordRef.current();
+          }, 350);
+        }
+      })();
     };
     r.start(400);
     recRef.current = r;
@@ -316,7 +339,11 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
     if (placement === "fixed" && autoStartRecording) {
       mayAutoStartRecording.current = false;
     }
-  }, [recOn, placement, autoStartRecording]);
+  }, [recOn, placement, autoStartRecording, pushLog]);
+
+  useLayoutEffect(() => {
+    startRecordRef.current = startRecord;
+  }, [startRecord]);
 
   const stopRecord = useCallback(() => {
     if (recRef.current && recRef.current.state === "recording") {
@@ -464,15 +491,27 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
             )}
             {analyzing && <span style={{ fontSize: "0.5rem", color: "rgba(200, 190, 220, 0.7)" }}>·</span>}
             {isFixed && (
-              <button
-                type="button"
-                className="pixel-btn"
-                onClick={exportSessionLog}
-                style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
-                title="Download detection log (JSON, this tab)"
-              >
-                Log
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="pixel-btn"
+                  disabled={!recOn}
+                  onClick={stopRecord}
+                  style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
+                  title="结束当前片段并保存 WebM 到本机 / Save current clip to this device (WebM)"
+                >
+                  保存
+                </button>
+                <button
+                  type="button"
+                  className="pixel-btn"
+                  onClick={exportSessionLog}
+                  style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
+                  title="下载本标签页的检测 Log（JSON）/ Download detection log (JSON)"
+                >
+                  Log
+                </button>
+              </>
             )}
           </>
         )}
@@ -488,7 +527,7 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
         }}
       >
         {isFixed
-          ? "仅在 Interface（START）与 /session 流程页显示。进入这些页会尝试自动开摄并持续录制+记检测；点 Off 结束并下载 WebM，Log 导出 JSON。About/Map 等页不显示此条。"
+          ? "仅在 Interface（START）与 /session 流程页显示。进入这些页会尝试自动开摄并持续录制+记检测；「保存」会结束当前 WebM 片段到本机（有系统对话框则可选路径，否则为下载），之后自动开下一段。点 Off 可结束。Log 导出 JSON。About/Map 等页不显示此条。"
           : "On-device detect (approx.). Turn camera on, then Rec saves WebM. Good light helps."}
       </p>
       {err && <p style={{ fontSize: "0.5rem", color: "#ff9a9a", margin: "0.35rem 0 0" }}>{err}</p>}
