@@ -22,7 +22,7 @@ const ITERATIONS: {
     version: "02",
     label: "Circuit + Control Testing",
     date: "February 2026",
-    images: ["/images/2.png", "/images/4.png", "/images/10.JPG"],
+    images: ["/images/2.png", "/images/10.JPG"],
     notes: [
       "Left/right differentiation added",
       "First BLE pairing attempt with iOS app",
@@ -33,12 +33,7 @@ const ITERATIONS: {
     version: "03",
     label: "Wearable Scenario Exploration",
     date: "March 2026",
-    images: [
-      "/images/5.png",
-      "/images/wearable-scenario-belt-back.png",
-      "/images/7.png",
-      "/images/8.png",
-    ],
+    images: ["/images/wearable-scenario-belt-back.png", "/images/7.png", "/images/8.png"],
     notes: [
       "Handheld controller replaces phone as Guide interface",
       "Multi-scenario testing in indoor and outdoor environments",
@@ -94,9 +89,9 @@ type Props = {
  */
 export default function IterationProcess({ anchorId = "iteration-process" }: Props) {
   /** Timeline thumbs — sized for Present §07 Experiments / Development */
-  const thumb = 380;
+  const thumb = 520;
   return (
-    <div id={anchorId} style={{ scrollMarginTop: "5rem" }}>
+    <div id={anchorId} className="iteration-process" style={{ scrollMarginTop: "5rem" }}>
       <div style={{ position: "relative" }}>
         <div
           style={{
@@ -109,9 +104,9 @@ export default function IterationProcess({ anchorId = "iteration-process" }: Pro
           }}
         />
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
           {ITERATIONS.map((iter, i) => (
-            <div key={iter.version} style={{ display: "flex", gap: "1.75rem", alignItems: "flex-start" }}>
+            <div key={iter.version} style={{ display: "flex", gap: "2rem", alignItems: "flex-start" }}>
               <div
                 style={{
                   width: 15,
@@ -138,12 +133,12 @@ export default function IterationProcess({ anchorId = "iteration-process" }: Pro
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem" }}>
-                    <span style={{ fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--dash-text-muted)" }}>
+                    <span style={{ fontSize: "0.88rem", letterSpacing: "0.1em", color: "var(--dash-text-muted)" }}>
                       {iter.version}
                     </span>
-                    <span style={{ fontSize: "1rem", fontWeight: 600, color: "#fff" }}>{iter.label}</span>
+                    <span style={{ fontSize: "1.22rem", fontWeight: 600, color: "#fff" }}>{iter.label}</span>
                   </div>
-                  <span style={{ fontSize: "0.7rem", color: "var(--dash-text-muted)" }}>{iter.date}</span>
+                  <span style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)" }}>{iter.date}</span>
                 </div>
                 {iter.notes.map((note) => (
                   <div key={note} className="dash-list-item">
@@ -152,7 +147,7 @@ export default function IterationProcess({ anchorId = "iteration-process" }: Pro
                   </div>
                 ))}
                 {iter.images && iter.images.length > 0 && (
-                  <div style={{ display: "flex", gap: "0.65rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", gap: "0.85rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
                     {iter.images.map((src) => (
                       <div
                         key={src}
