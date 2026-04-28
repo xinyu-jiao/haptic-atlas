@@ -498,16 +498,16 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
                   disabled={!recOn}
                   onClick={stopRecord}
                   style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
-                  title="结束当前片段并保存 WebM 到本机 / Save current clip to this device (WebM)"
+                  title="Save current WebM clip to this device"
                 >
-                  保存
+                  Save
                 </button>
                 <button
                   type="button"
                   className="pixel-btn"
                   onClick={exportSessionLog}
                   style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
-                  title="下载本标签页的检测 Log（JSON）/ Download detection log (JSON)"
+                  title="Download detection log for this tab (JSON)"
                 >
                   Log
                 </button>
@@ -517,19 +517,19 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
         )}
       </div>
 
-      <p
-        style={{
-          fontSize: isFixed ? "0.45rem" : "0.52rem",
-          lineHeight: 1.45,
-          color: "rgba(255,255,255,0.55)",
-          margin: isFixed ? "0.35rem 0 0" : "0.45rem 0 0",
-          maxWidth: "19rem",
-        }}
-      >
-        {isFixed
-          ? "仅在 Interface（START）与 /session 流程页显示。进入这些页会尝试自动开摄并持续录制+记检测；「保存」会结束当前 WebM 片段到本机（有系统对话框则可选路径，否则为下载），之后自动开下一段。点 Off 可结束。Log 导出 JSON。About/Map 等页不显示此条。"
-          : "On-device detect (approx.). Turn camera on, then Rec saves WebM. Good light helps."}
-      </p>
+      {!isFixed && (
+        <p
+          style={{
+            fontSize: "0.52rem",
+            lineHeight: 1.45,
+            color: "rgba(255,255,255,0.55)",
+            margin: "0.45rem 0 0",
+            maxWidth: "19rem",
+          }}
+        >
+          On-device detect (approx.). Turn camera on, then Rec saves WebM. Good light helps.
+        </p>
+      )}
       {err && <p style={{ fontSize: "0.5rem", color: "#ff9a9a", margin: "0.35rem 0 0" }}>{err}</p>}
       {logLines.length > 0 && (
         <div style={{ fontSize: "0.45rem", color: "rgba(200, 190, 220, 0.8)", lineHeight: 1.35, marginTop: "0.4rem" }}>
