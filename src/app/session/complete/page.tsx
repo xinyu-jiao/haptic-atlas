@@ -23,7 +23,7 @@ export default function CompletePage() {
 
   useEffect(() => {
     if (!result) {
-      router.replace("/about");
+      router.replace("/present");
       return;
     }
     const dur = formatDuration(result.duration);
@@ -33,8 +33,8 @@ export default function CompletePage() {
   const voice = useVoiceCommands({
     history: () => { speak("Opening session history"); router.push("/history"); },
     again: () => { speak("Starting new session"); reset(); router.push("/session/level"); },
-    home: () => { speak("Back to home"); reset(); router.push("/about"); },
-    back: () => { speak("Back to home"); reset(); router.push("/about"); },
+    home: () => { speak("Back to home"); reset(); router.push("/present"); },
+    back: () => { speak("Back to home"); reset(); router.push("/present"); },
   });
 
   if (!result) return null;
@@ -153,7 +153,7 @@ export default function CompletePage() {
 
       <div style={{ textAlign: "center", marginTop: "1rem" }}>
         <Link
-          href="/about"
+          href="/present"
           style={{ fontFamily: '"Press Start 2P"', fontSize: "0.45rem", color: "var(--dark)", opacity: 0.5, textDecoration: "none" }}
           onClick={() => {
             speak("Back to home");

@@ -6,7 +6,7 @@ import { isCameraSessionRoute } from "@/lib/cameraRoutes";
 
 /**
  * Renders the fixed camera strip only on `/interface` and `/session/*` so it stays one instance
- * while the user moves through the training flow, and is hidden on About, Map, Home, etc.
+ * while the user moves through the training flow, and is hidden on Present, Map, Home, etc.
  */
 export default function GlobalCameraHost() {
   const path = usePathname();

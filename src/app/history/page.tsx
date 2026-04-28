@@ -105,7 +105,7 @@ export default function SessionsAndDataPage() {
     <div className="dash-page">
       <div className="dash-container">
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginBottom: "2.5rem" }}>
-          <Link href="/about" style={{ textDecoration: "none" }}>
+          <Link href="/present" style={{ textDecoration: "none" }}>
             <button type="button" className="dash-btn" style={{ padding: "0.5rem 0.75rem", fontSize: "0.85rem" }}>
               ‹
             </button>

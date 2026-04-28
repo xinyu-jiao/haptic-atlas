@@ -97,7 +97,7 @@ const items: Array<{
 ];
 
 type Props = {
-  /** Larger type + icons for About / slides */
+  /** Larger type + icons for Present deck / slides */
   present?: boolean;
 };
 
@@ -106,10 +106,10 @@ type Props = {
  */
 export default function MeaningStrip({ present = false }: Props) {
   const row = present
-    ? { ...ROW, gridTemplateColumns: "repeat(auto-fit, minmax(14rem, 1fr))", gap: "1.75rem 2rem" as const }
+    ? { ...ROW, gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))", gap: "2rem 2.25rem" as const }
     : ROW;
-  const title = present ? { ...TITLE, fontSize: "0.95rem" } : TITLE;
-  const line = present ? { ...LINE, fontSize: "1.02rem", lineHeight: 1.5 } : LINE;
+  const title = present ? { ...TITLE, fontSize: "1.08rem" } : TITLE;
+  const line = present ? { ...LINE, fontSize: "1.12rem", lineHeight: 1.52 } : LINE;
   return (
     <div style={row} aria-label="What the mark represents">
       {items.map((item) => (
@@ -117,12 +117,12 @@ export default function MeaningStrip({ present = false }: Props) {
           <div
             style={{
               flexShrink: 0,
-              width: present ? "4.25rem" : "3.5rem",
-              minHeight: present ? "4.25rem" : "3.5rem",
+              width: present ? "5rem" : "3.5rem",
+              minHeight: present ? "5rem" : "3.5rem",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              transform: present ? "scale(1.12)" : undefined,
+              transform: present ? "scale(1.32)" : undefined,
               transformOrigin: "center center",
             }}
           >

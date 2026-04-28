@@ -30,7 +30,7 @@ export default function ProjectVideoBlock() {
         style={{
           position: "relative",
           width: "100%",
-          maxWidth: "960px",
+          maxWidth: "1120px",
           margin: "0 auto",
           paddingBottom: "56.25%",
           height: 0,

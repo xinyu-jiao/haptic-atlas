@@ -2,7 +2,7 @@
 
 /**
  * Interface — in-app training launcher (pixel UI).
- * Site entry and narrative live on /about; this route is only the session start surface.
+ * Site entry and narrative live on /present; this route is only the session start surface.
  */
 import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";

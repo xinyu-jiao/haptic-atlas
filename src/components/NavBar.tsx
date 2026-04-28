@@ -6,10 +6,10 @@ import { useState } from "react";
 import { assetUrl, LOGO_MARK_PATH } from "@/lib/assetUrl";
 
 const NAV_LINKS = [
-  { href: "/about", label: "ABOUT" },
+  { href: "/present", label: "PRESENT" },
+  { href: "/video", label: "VIDEO" },
   { href: "/touch-pad", label: "TOUCH" },
   { href: "/interface", label: "INTERFACE" },
-  { href: "/video", label: "VIDEO" },
   { href: "/history", label: "SESSIONS · DATA" },
   { href: "/map", label: "MAP · CODE" },
 ];
@@ -51,7 +51,7 @@ export default function NavBar() {
         }}
       >
         <Link
-          href="/about"
+          href="/present"
           style={{
             display: "flex",
             alignItems: "center",

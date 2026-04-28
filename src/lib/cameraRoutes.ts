@@ -1,5 +1,5 @@
 /**
- * Bottom camera dock: only on Interface (START) and the in-app session flow — not on About, Map, etc.
+ * Bottom camera dock: only on Interface (START) and the in-app session flow — not on Present, Map, etc.
  */
 export function isCameraSessionRoute(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
