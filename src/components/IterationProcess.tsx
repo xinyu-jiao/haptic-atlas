@@ -11,7 +11,7 @@ const ITERATIONS: {
     version: "01",
     label: "Early Hardware Demo",
     date: "January 2026",
-    images: ["/images/1.png", "/images/3.png"],
+    images: ["/images/early-hardware-leonardo-breadboard.png", "/images/early-hardware-drv2605-motor.png"],
     notes: [
       "Single vibration motor proof-of-concept",
       "Arduino-based prototype wired directly to belt",
@@ -33,7 +33,12 @@ const ITERATIONS: {
     version: "03",
     label: "Wearable Scenario Exploration",
     date: "March 2026",
-    images: ["/images/5.png", "/images/6.png", "/images/7.png", "/images/8.png"],
+    images: [
+      "/images/5.png",
+      "/images/wearable-scenario-belt-back.png",
+      "/images/7.png",
+      "/images/8.png",
+    ],
     notes: [
       "Handheld controller replaces phone as Guide interface",
       "Multi-scenario testing in indoor and outdoor environments",
