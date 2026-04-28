@@ -201,7 +201,7 @@ input[type="range"]::-webkit-slider-thumb {
 .dash-container {
   max-width: 960px;
   margin: 0 auto;
-  padding: 3.5rem 2.5rem 4rem;
+  padding: 3.5rem 1.35rem 4rem;
 }
 
 /* Present deck (/present): near full-bleed slide layout, large type */
@@ -209,7 +209,7 @@ input[type="range"]::-webkit-slider-thumb {
   max-width: none;
   width: 100%;
   box-sizing: border-box;
-  padding: 2.75rem clamp(0.65rem, 2vw, 1.35rem) 4.75rem;
+  padding: 2.75rem clamp(0.4rem, 1.2vw, 0.9rem) 4.75rem;
 }
 
 /* Present top hero (01 / Context) — larger than rest of deck */
@@ -269,12 +269,12 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .present-page .dash-card {
-  padding: clamp(1.5rem, 2.5vw, 2.15rem) clamp(1.35rem, 2.5vw, 2.25rem);
+  padding: clamp(1.5rem, 2.5vw, 2.15rem) clamp(0.9rem, 1.6vw, 1.5rem);
 }
 
 /* Present §07 timeline — notes inherit .dash-list-text; extra breathing room */
 .present-page .iteration-process .dash-card {
-  padding: clamp(1.65rem, 2.8vw, 2.35rem) clamp(1.5rem, 2.8vw, 2.5rem);
+  padding: clamp(1.65rem, 2.8vw, 2.35rem) clamp(0.9rem, 1.6vw, 1.5rem);
 }
 
 /* Present §04 Technical Method — lede, two-column stack, footer */
@@ -353,7 +353,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 @media (max-width: 640px) {
   .present-page .dash-container {
-    padding: 2rem clamp(0.5rem, 3vw, 0.85rem) 3.25rem;
+    padding: 2rem clamp(0.35rem, 2.5vw, 0.65rem) 3.25rem;
   }
 
   .present-page .dash-title {
@@ -375,7 +375,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 @media (max-width: 640px) {
   .dash-container {
-    padding: 2rem 1.25rem 3rem;
+    padding: 2rem 0.85rem 3rem;
   }
 }
 

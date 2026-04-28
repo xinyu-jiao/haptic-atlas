@@ -12,7 +12,7 @@ const SPEC_INNER: CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "2rem 1.35rem",
+  padding: "2rem 1.1rem",
   minHeight: 400,
 };
 
@@ -108,7 +108,7 @@ const SPEC_VARIATION_INNER: CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "2rem 1.35rem",
+  padding: "2rem 1.1rem",
   minHeight: 400,
 };
 
@@ -185,7 +185,7 @@ export default function PresentPage() {
 
         <Section>
           <div className="dash-section-label">02 / Problem + Questions</div>
-          <div className="dash-card" style={{ padding: "1.5rem 1.75rem", marginBottom: "1.75rem" }}>
+          <div className="dash-card" style={{ padding: "1.5rem 1.25rem", marginBottom: "1.75rem" }}>
             <p
               className="dash-body"
               style={{
@@ -313,7 +313,7 @@ export default function PresentPage() {
 
         <Section>
           <div className="dash-section-label">04 / Technical Method</div>
-          <div className="dash-card present-tech-method" style={{ padding: "1.65rem 1.85rem", marginBottom: 0 }}>
+          <div className="dash-card present-tech-method" style={{ padding: "1.65rem 1.5rem", marginBottom: 0 }}>
             <p className="dash-body present-tech-method-lede" style={{ lineHeight: 1.68 }}>
               <strong style={{ color: "#fff", fontWeight: 600 }}>Haptic Atlas</strong> sits alongside{" "}
               <strong style={{ color: "#fff", fontWeight: 600 }}>browser-mediated haptics</strong>,{" "}
@@ -618,7 +618,7 @@ export default function PresentPage() {
                 key={title}
                 style={{
                   background: "var(--dash-bg)",
-                  padding: "2rem 1.75rem",
+                  padding: "2rem 1.2rem",
                 }}
               >
                 <div style={{ fontSize: "1.5rem", color: "#fff", marginBottom: "1.1rem", opacity: 0.3 }}>{icon}</div>

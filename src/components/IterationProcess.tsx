@@ -22,7 +22,7 @@ const ITERATIONS: {
     version: "02",
     label: "Circuit + Control Testing",
     date: "February 2026",
-    images: ["/images/2.png", "/images/10.JPG"],
+    images: ["/images/circuit-belt-honeycomb-motors.png", "/images/10.JPG"],
     notes: [
       "Left/right differentiation added",
       "First BLE pairing attempt with iOS app",
@@ -65,11 +65,7 @@ const ITERATIONS: {
     version: "06",
     label: "Assembled Hardware Prototype",
     date: "April 2026",
-    images: [
-      "/images/iter06-fdm-plates.png",
-      "/images/iter06-wearable-overview.png",
-      "/images/iter06-internal-lattice.png",
-    ],
+    images: ["/images/iter06-internal-lattice.png", "/images/iter06-wearable-overview.png"],
     notes: [
       "Completed 3D-printed FDM shells for the handheld controller and related hardware parts",
       "Cleaned, fitted, and assembled the printed components around the electronics",
