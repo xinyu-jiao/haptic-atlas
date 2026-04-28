@@ -22,7 +22,7 @@ const ITERATIONS: {
     version: "02",
     label: "Circuit + Control Testing",
     date: "February 2026",
-    images: ["/images/2.png", "/images/4.png", "/images/9.png", "/images/10.JPG"],
+    images: ["/images/2.png", "/images/4.png", "/images/10.JPG"],
     notes: [
       "Left/right differentiation added",
       "First BLE pairing attempt with iOS app",
