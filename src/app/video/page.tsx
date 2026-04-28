@@ -19,15 +19,6 @@ export default function VideoPage() {
           </div>
         </div>
 
-        <div className="dash-card" style={{ marginBottom: "1.75rem", padding: "1.25rem 1.5rem" }}>
-          <p className="dash-body" style={{ margin: 0, lineHeight: 1.8 }}>
-            A short walkthrough so you can see the setup and flow before starting a session. The player below
-            loads a single MP4 from{" "}
-            <code style={{ fontSize: "0.82em", color: "var(--dash-text-secondary)" }}>public/videos/interface.mp4</code>
-            — add or replace that file in the project to change what plays here.
-          </p>
-        </div>
-
         <ProjectVideoBlock />
       </div>
     </div>

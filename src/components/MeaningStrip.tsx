@@ -96,30 +96,42 @@ const items: Array<{
   },
 ];
 
+type Props = {
+  /** Larger type + icons for About / slides */
+  present?: boolean;
+};
+
 /**
  * Mark meaning row: only the four graphic motifs from the brand meaning strip, copy set in the layout.
  */
-export default function MeaningStrip() {
+export default function MeaningStrip({ present = false }: Props) {
+  const row = present
+    ? { ...ROW, gridTemplateColumns: "repeat(auto-fit, minmax(14rem, 1fr))", gap: "1.75rem 2rem" as const }
+    : ROW;
+  const title = present ? { ...TITLE, fontSize: "0.95rem" } : TITLE;
+  const line = present ? { ...LINE, fontSize: "1.02rem", lineHeight: 1.5 } : LINE;
   return (
-    <div style={ROW} aria-label="What the mark represents">
+    <div style={row} aria-label="What the mark represents">
       {items.map((item) => (
         <div key={item.id} style={CELL}>
           <div
             style={{
               flexShrink: 0,
-              width: "3.5rem",
-              minHeight: "3.5rem",
+              width: present ? "4.25rem" : "3.5rem",
+              minHeight: present ? "4.25rem" : "3.5rem",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              transform: present ? "scale(1.12)" : undefined,
+              transformOrigin: "center center",
             }}
           >
             {item.icon}
           </div>
           <div style={{ minWidth: 0, paddingTop: "0.1rem" }}>
-            <p style={TITLE}>{item.title}</p>
-            <p style={{ ...LINE, marginTop: "0.4rem" }}>{item.lines[0]}</p>
-            <p style={{ ...LINE, marginTop: "0.15rem" }}>{item.lines[1]}</p>
+            <p style={title}>{item.title}</p>
+            <p style={{ ...line, marginTop: "0.4rem" }}>{item.lines[0]}</p>
+            <p style={{ ...line, marginTop: "0.15rem" }}>{item.lines[1]}</p>
           </div>
         </div>
       ))}

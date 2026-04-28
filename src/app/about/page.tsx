@@ -9,14 +9,14 @@ const SPEC_INNER: CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "1.25rem 0.75rem",
-  minHeight: 200,
+  padding: "1.5rem 1rem",
+  minHeight: 260,
 };
 
 const SPEC_LABEL: CSSProperties = {
   textAlign: "center",
   margin: 0,
-  padding: "0.6rem 0.5rem",
+  padding: "0.7rem 0.55rem",
   color: "var(--dash-text-muted)",
 };
 
@@ -25,13 +25,13 @@ const horizontalLockupDark = (
     <img
       src={assetUrl(LOGO_MARK_PATH)}
       alt=""
-      style={{ display: "block", width: 72, height: 72, objectFit: "contain", flexShrink: 0 }}
+      style={{ display: "block", width: 90, height: 90, objectFit: "contain", flexShrink: 0 }}
     />
-    <div style={{ width: 1, alignSelf: "stretch", minHeight: 64, background: "#4a4a4e", flexShrink: 0 }} aria-hidden />
+    <div style={{ width: 1, alignSelf: "stretch", minHeight: 80, background: "#4a4a4e", flexShrink: 0 }} aria-hidden />
     <div>
       <div
         style={{
-          fontSize: "0.68rem",
+          fontSize: "0.84rem",
           fontWeight: 600,
           letterSpacing: "0.12em",
           color: "#e8e0f0",
@@ -42,7 +42,7 @@ const horizontalLockupDark = (
       </div>
       <div
         style={{
-          fontSize: "0.52rem",
+          fontSize: "0.64rem",
           fontWeight: 500,
           letterSpacing: "0.16em",
           color: "#8f7ba8",
@@ -60,13 +60,13 @@ const horizontalLockupOnLight = (
     <img
       src={assetUrl(LOGO_MARK_PATH)}
       alt=""
-      style={{ display: "block", width: 64, height: 64, objectFit: "contain", flexShrink: 0 }}
+      style={{ display: "block", width: 80, height: 80, objectFit: "contain", flexShrink: 0 }}
     />
-    <div style={{ width: 1, alignSelf: "stretch", minHeight: 56, background: "#a89bb5", flexShrink: 0 }} aria-hidden />
+    <div style={{ width: 1, alignSelf: "stretch", minHeight: 70, background: "#a89bb5", flexShrink: 0 }} aria-hidden />
     <div>
       <div
         style={{
-          fontSize: "0.6rem",
+          fontSize: "0.74rem",
           fontWeight: 600,
           letterSpacing: "0.12em",
           color: "#1e1625",
@@ -77,7 +77,7 @@ const horizontalLockupOnLight = (
       </div>
       <div
         style={{
-          fontSize: "0.48rem",
+          fontSize: "0.58rem",
           fontWeight: 500,
           letterSpacing: "0.16em",
           color: "#6b5b82",
@@ -91,12 +91,12 @@ const horizontalLockupOnLight = (
 );
 
 const SPEC_SUBHEAD: CSSProperties = {
-  fontSize: "0.7rem",
+  fontSize: "0.85rem",
   fontWeight: 500,
   letterSpacing: "0.2em",
   textTransform: "uppercase",
   color: "var(--dash-text-muted)",
-  margin: "0 0 0.5rem",
+  margin: "0 0 0.65rem",
 };
 
 const SPEC_VARIATION_INNER: CSSProperties = {
@@ -105,8 +105,8 @@ const SPEC_VARIATION_INNER: CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "1.25rem 0.75rem",
-  minHeight: 200,
+  padding: "1.5rem 1rem",
+  minHeight: 260,
 };
 
 /** Horizontal lockup: mark + rule + HAPTIC / ATLAS + tagline (on black, like Application dark row). */
@@ -115,13 +115,13 @@ const horizontalLockupVariations = (
     <img
       src={assetUrl(LOGO_MARK_PATH)}
       alt=""
-      style={{ display: "block", width: 72, height: 72, objectFit: "contain", flexShrink: 0 }}
+      style={{ display: "block", width: 90, height: 90, objectFit: "contain", flexShrink: 0 }}
     />
-    <div style={{ width: 1, alignSelf: "stretch", minHeight: 88, background: "#4a4a4e", flexShrink: 0 }} aria-hidden />
+    <div style={{ width: 1, alignSelf: "stretch", minHeight: 104, background: "#4a4a4e", flexShrink: 0 }} aria-hidden />
     <div>
       <div
         style={{
-          fontSize: "0.58rem",
+          fontSize: "0.72rem",
           fontWeight: 700,
           letterSpacing: "0.16em",
           color: "#e8e0f0",
@@ -132,7 +132,7 @@ const horizontalLockupVariations = (
       </div>
       <div
         style={{
-          fontSize: "0.58rem",
+          fontSize: "0.72rem",
           fontWeight: 700,
           letterSpacing: "0.16em",
           color: "#e8e0f0",
@@ -144,7 +144,7 @@ const horizontalLockupVariations = (
       </div>
       <div
         style={{
-          fontSize: "0.45rem",
+          fontSize: "0.56rem",
           fontWeight: 500,
           letterSpacing: "0.2em",
           color: "#8f7ba8",
@@ -159,13 +159,11 @@ const horizontalLockupVariations = (
 
 export default function AboutPage() {
   return (
-    <div className="dash-page">
+    <div className="dash-page about-present">
       <div className="dash-container">
         <Section>
           <div className="dash-section-label">01 / Context</div>
-          <h1 className="dash-title" style={{ fontSize: "1.75rem", marginBottom: "1rem" }}>
-            Haptic Atlas
-          </h1>
+          <h1 className="dash-title">Haptic Atlas</h1>
           <p className="dash-body">
             Haptic Atlas explores how navigation can be learned through touch, especially for blind and
             low-vision users. While most navigation systems depend on vision or audio, this project focuses
@@ -307,7 +305,7 @@ export default function AboutPage() {
                 <img
                   src={assetUrl(MAIN_LOGO_PATH)}
                   alt="Haptic Atlas: symbol, wordmark HAPTIC ATLAS, and tagline NAVIGATE BY FEEL"
-                  style={{ display: "block", width: "100%", maxWidth: "34rem", height: "auto" }}
+                  style={{ display: "block", width: "100%", maxWidth: "46rem", height: "auto" }}
                 />
               </div>
             </div>
@@ -338,7 +336,7 @@ export default function AboutPage() {
                     <img
                       src={assetUrl(LOGO_MARK_PATH)}
                       alt="Icon: dot matrix and chevron only, full color"
-                      style={{ display: "block", width: "min(100%, 9.5rem)", height: "auto", objectFit: "contain" }}
+                      style={{ display: "block", width: "min(100%, 12rem)", height: "auto", objectFit: "contain" }}
                     />
                   </div>
                 </div>
@@ -375,7 +373,7 @@ export default function AboutPage() {
                       alt="One-color (black) mark, inverted for display on black"
                       style={{
                         display: "block",
-                        width: "min(100%, 9.5rem)",
+                        width: "min(100%, 12rem)",
                         height: "auto",
                         objectFit: "contain",
                         filter: "invert(1) brightness(1.1)",
@@ -411,9 +409,9 @@ export default function AboutPage() {
                   <div style={SPEC_INNER}>
                     <div
                       style={{
-                        width: 104,
-                        height: 104,
-                        borderRadius: 24,
+                        width: 128,
+                        height: 128,
+                        borderRadius: 28,
                         background: "linear-gradient(150deg, #5b3d7e 0%, #1a0f2a 55%, #0a040e 100%)",
                         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
                         display: "flex",
@@ -424,7 +422,7 @@ export default function AboutPage() {
                       <img
                         src={assetUrl(LOGO_MARK_PATH)}
                         alt=""
-                        style={{ width: 60, height: 45, objectFit: "contain" }}
+                        style={{ width: 74, height: 56, objectFit: "contain" }}
                       />
                     </div>
                   </div>
@@ -444,11 +442,11 @@ export default function AboutPage() {
                     <div
                       style={{
                         width: "100%",
-                        maxWidth: 320,
+                        maxWidth: 400,
                         borderRadius: 12,
                         background: "#0a0a0a",
                         border: "1px solid #2a2a2a",
-                        padding: "1.15rem 0.9rem",
+                        padding: "1.35rem 1rem",
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
@@ -469,11 +467,11 @@ export default function AboutPage() {
                     <div
                       style={{
                         width: "100%",
-                        maxWidth: 300,
+                        maxWidth: 380,
                         background: "#fff",
                         borderRadius: 10,
                         boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-                        padding: "1.1rem 0.8rem",
+                        padding: "1.25rem 0.95rem",
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",

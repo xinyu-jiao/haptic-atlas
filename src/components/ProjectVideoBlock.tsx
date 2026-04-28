@@ -1,26 +1,20 @@
 "use client";
 
-import { useMemo } from "react";
+/** Default demo: https://youtu.be/xGtBlA2bqwk — override ID via NEXT_PUBLIC_YOUTUBE_EMBED_ID if needed. */
+const DEFAULT_YOUTUBE_ID = "xGtBlA2bqwk";
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
-function resolveVideoSrc(): string {
-  const fromEnv =
-    process.env.NEXT_PUBLIC_PROJECT_VIDEO_SRC?.trim() ??
-    process.env.NEXT_PUBLIC_INTERFACE_VIDEO_SRC?.trim();
-  if (!fromEnv) {
-    return `${BASE}/videos/interface.mp4`;
-  }
-  if (fromEnv.startsWith("http://") || fromEnv.startsWith("https://")) {
-    return fromEnv;
-  }
-  const path = fromEnv.startsWith("/") ? fromEnv : `/${fromEnv}`;
-  return `${BASE}${path}`;
+function youtubeEmbedId(): string {
+  return typeof process.env.NEXT_PUBLIC_YOUTUBE_EMBED_ID === "string" && process.env.NEXT_PUBLIC_YOUTUBE_EMBED_ID.trim()
+    ? process.env.NEXT_PUBLIC_YOUTUBE_EMBED_ID.trim()
+    : DEFAULT_YOUTUBE_ID;
 }
 
-/** Standalone demo clip — default `public/videos/interface.mp4`, or set NEXT_PUBLIC_PROJECT_VIDEO_SRC. */
+/**
+ * Embedded YouTube demo (responsive 16:9).
+ */
 export default function ProjectVideoBlock() {
-  const src = useMemo(() => resolveVideoSrc(), []);
+  const id = youtubeEmbedId();
+  const embedSrc = `https://www.youtube-nocookie.com/embed/${id}`;
 
   return (
     <div
@@ -32,19 +26,35 @@ export default function ProjectVideoBlock() {
         border: "1px solid var(--dash-border)",
       }}
     >
-      <video
-        controls
-        playsInline
-        preload="metadata"
+      <div
         style={{
+          position: "relative",
           width: "100%",
-          maxHeight: "min(70vh, 520px)",
-          display: "block",
-          objectFit: "contain",
+          maxWidth: "960px",
+          margin: "0 auto",
+          paddingBottom: "56.25%",
+          height: 0,
+          overflow: "hidden",
           background: "#000",
+          borderRadius: 4,
         }}
-        src={src}
-      />
+      >
+        <iframe
+          src={embedSrc}
+          title="Haptic Atlas demo video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            border: 0,
+          }}
+        />
+      </div>
     </div>
   );
 }

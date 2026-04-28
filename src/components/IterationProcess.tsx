@@ -78,20 +78,31 @@ const ITERATIONS: {
 type Props = {
   /** Anchor id for in-page / nav deep links */
   anchorId?: string;
+  /** Larger thumbnails + shorter intro (About / slides) */
+  present?: boolean;
 };
 
 /**
  * Design / research timeline (formerly standalone Process page).
  */
-export default function IterationProcess({ anchorId = "iteration-process" }: Props) {
+export default function IterationProcess({ anchorId = "iteration-process", present = false }: Props) {
+  const thumb = present ? 248 : 180;
   return (
     <div id={anchorId} style={{ scrollMarginTop: "5rem" }}>
       <div className="dash-card" style={{ marginBottom: "2.25rem", padding: "1.25rem 1.5rem" }}>
         <p className="dash-body" style={{ margin: 0, lineHeight: 1.8 }}>
-          This timeline is <strong style={{ color: "#fff", fontWeight: 600 }}>not</strong> a software release
-          log. It tracks how hardware scenarios, control strategies, and the web layer co-evolved — including
-          dead ends, retuned motor placement, and shifts in what “counts” as a test. Images anchor specific
-          moments; notes stay short and factual.
+          {present ? (
+            <>
+              Hardware, control, and web stack evolving together — photos mark moments; bullets stay factual.
+            </>
+          ) : (
+            <>
+              This timeline is <strong style={{ color: "#fff", fontWeight: 600 }}>not</strong> a software release
+              log. It tracks how hardware scenarios, control strategies, and the web layer co-evolved — including
+              dead ends, retuned motor placement, and shifts in what “counts” as a test. Images anchor specific
+              moments; notes stay short and factual.
+            </>
+          )}
         </p>
       </div>
 
@@ -155,8 +166,8 @@ export default function IterationProcess({ anchorId = "iteration-process" }: Pro
                       <div
                         key={src}
                         style={{
-                          width: 180,
-                          height: 180,
+                          width: thumb,
+                          height: thumb,
                           border: "1px solid var(--dash-border)",
                           overflow: "hidden",
                           flexShrink: 0,
