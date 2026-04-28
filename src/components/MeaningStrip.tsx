@@ -106,7 +106,11 @@ type Props = {
  */
 export default function MeaningStrip({ present = false }: Props) {
   const row = present
-    ? { ...ROW, gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))", gap: "2rem 2.25rem" as const }
+    ? {
+        ...ROW,
+        gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+        gap: "2rem 2.25rem" as const,
+      }
     : ROW;
   const title = present ? { ...TITLE, fontSize: "1.08rem" } : TITLE;
   const line = present ? { ...LINE, fontSize: "1.12rem", lineHeight: 1.52 } : LINE;
