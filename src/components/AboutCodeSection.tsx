@@ -9,7 +9,7 @@ const REPOS: {
 }[] = [
   {
     name: "haptic-atlas",
-    desc: "Web platform — Next.js, session flow, maps, charts, optional Firestore sync, voice / long-press access, Leaflet, Recharts",
+    desc: "Web platform — Next.js, session flow, maps, charts, optional Firestore sync, voice / long-press access, getUserMedia + TensorFlow.js (Interface), Leaflet, Recharts",
     tag: "WEB",
     url: "https://github.com/xinyu-jiao/haptic-atlas",
   },
@@ -29,8 +29,11 @@ const TECH_ROWS: [string, string][] = [
   ["Leaflet", "Map / Traces"],
   ["Recharts", "Data Charts"],
   ["Geolocation API", "Route Tracking"],
+  ["getUserMedia", "Camera stream (Interface)"],
+  ["TensorFlow.js", "COCO-SSD / MobileNet (in-browser)"],
   ["Firebase Firestore", "Optional cloud sync"],
   ["Web Speech API", "Voice prompts / commands"],
+  ["Web Bluetooth API", "BLE device link"],
   ["Web Serial", "Touch pad ↔ belt"],
   ["GitHub Pages", "Static export deploy"],
 ];

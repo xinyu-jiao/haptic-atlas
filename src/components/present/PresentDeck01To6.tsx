@@ -127,7 +127,7 @@ export default function PresentDeck01To6() {
               {
                 icon: "◈",
                 title: "Web layer",
-                desc: "Next.js app: session flow, maps, charts, optional cloud sync (Firestore), voice / long-press access experiments, and embedded touch pad for lab use.",
+                desc: "Next.js app: session flow, maps, charts, optional Firestore sync, voice / long-press access, getUserMedia + TensorFlow.js on Interface, embedded touch pad (Web Serial) for lab use.",
               },
             ].map(({ icon, title, desc }) => (
               <div
@@ -183,6 +183,13 @@ export default function PresentDeck01To6() {
                     <div className="dash-label">Web layer</div>
                     <ul className="present-tech-method-list dash-body">
                       <li>Web Bluetooth API — device communication</li>
+                      <li>
+                        getUserMedia — camera stream for Interface experiments (browser-local video capture)
+                      </li>
+                      <li>
+                        TensorFlow.js — COCO-SSD (object detection) &amp; MobileNet (scene labels); runs in-browser for
+                        spoken cues
+                      </li>
                       <li>Geolocation API — walking traces</li>
                       <li>Leaflet — route maps</li>
                       <li>Recharts — data visualization</li>
