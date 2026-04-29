@@ -5,73 +5,43 @@ const ITERATIONS: {
   label: string;
   date: string;
   images?: string[];
-  notes: string[];
+  /** Short, one-screen copy for the Present scrolly */
+  summary: string;
 }[] = [
   {
     version: "01",
     label: "Early Hardware Demo",
     date: "January 2026",
     images: ["/images/early-hardware-leonardo-breadboard.png", "/images/early-hardware-drv2605-motor.png"],
-    notes: [
-      "Single vibration motor proof-of-concept",
-      "Arduino-based prototype wired directly to belt",
-      "Navigation tested over 5m straight corridor",
-    ],
+    summary: "Single-motor proof on a belt, Arduino, five-meter straight run.",
   },
   {
     version: "02",
     label: "Circuit + Control Testing",
     date: "February 2026",
     images: ["/images/circuit-belt-honeycomb-motors.png", "/images/10.JPG"],
-    notes: [
-      "Left/right differentiation added",
-      "First BLE pairing attempt with iOS app",
-      "Revised belt mounting position for clearer tactile feedback",
-    ],
+    summary: "Left/right separation, first BLE, belt position retuned for clearer haptics.",
   },
   {
     version: "03",
     label: "Wearable Scenario Exploration",
     date: "March 2026",
     images: ["/images/wearable-scenario-belt-back.png", "/images/7.png", "/images/8.png"],
-    notes: [
-      "Handheld controller replaces phone as Guide interface",
-      "Multi-scenario testing in indoor and outdoor environments",
-      "Iterative refinement of motor placement and signal patterns",
-    ],
+    summary: "Handheld Guide, indoor and outdoor; motor map and patterns iterated.",
   },
   {
     version: "04",
-    label: "System Reframing: Controller + Web Layer",
-    date: "Late March 2026",
-    notes: [
-      "Web platform launched as documentation and evidence layer",
-      "Session flow: Level → Role → Setup → Active → Result",
-      "Walk trace recording with Geolocation API; optional Firestore sync",
-      "Embedded Web Serial touch pad (vibe-belt) for desk testing of motor grid",
-    ],
-  },
-  {
-    version: "05",
     label: "Guide controller: two control surfaces",
     date: "April 2026",
     images: ["/images/s1.jpg", "/images/s2.jpg"],
-    notes: [
-      "Handheld gamepad: the Guide drives body-centered cues through a physical controller while the belt stays the haptic output, keeping live cueing off a phone-first interface.",
-      "Browser touch with live screen feedback: the motor grid is driven from a web touch layout over serial; the active cell is highlighted on the monitor in real time so desk tests show which motor is actually vibrating.",
-    ],
+    summary: "Pad for live cues; browser touch drives motors with the active cell on screen.",
   },
   {
-    version: "06",
+    version: "05",
     label: "Assembled Hardware Prototype",
     date: "April 2026",
     images: ["/images/iter06-internal-lattice.png", "/images/iter06-wearable-overview.png"],
-    notes: [
-      "Completed 3D-printed FDM shells for the handheld controller and related hardware parts",
-      "Cleaned, fitted, and assembled the printed components around the electronics",
-      "Checked board clearance, cable routing, fasteners, and hand fit",
-      "Prepared the controller and wearable setup for testing, documentation, and final review presentation",
-    ],
+    summary: "3D-printed parts fitted and assembled, checked for hand fit, ready to document.",
   },
 ];
 
@@ -81,93 +51,77 @@ type Props = {
 };
 
 /**
- * Design / research timeline — intro copy lives on the Present page above this block.
+ * Present §07: each iteration is one horizontal snap page.
+ * Intro line sits on the Present page above this block.
  */
 export default function IterationProcess({ anchorId = "iteration-process" }: Props) {
-  /** Timeline thumbs — sized for Present §07 Experiments / Development */
-  const thumb = 520;
   return (
     <div id={anchorId} className="iteration-process" style={{ scrollMarginTop: "5rem" }}>
-      <div style={{ position: "relative" }}>
-        <div
-          style={{
-            position: "absolute",
-            left: 7,
-            top: 12,
-            bottom: 12,
-            width: 1,
-            background: "var(--dash-border)",
-          }}
-        />
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          {ITERATIONS.map((iter, i) => (
-            <div key={iter.version} style={{ display: "flex", gap: "2rem", alignItems: "flex-start" }}>
-              <div
-                style={{
-                  width: 15,
-                  height: 15,
-                  background: i === ITERATIONS.length - 1 ? "#fff" : "#333",
-                  border: "1px solid",
-                  borderColor: i === ITERATIONS.length - 1 ? "#fff" : "var(--dash-border)",
-                  borderRadius: "50%",
-                  flexShrink: 0,
-                  marginTop: "1.5rem",
-                  zIndex: 1,
-                }}
-              />
-
-              <div className="dash-card" style={{ flex: 1 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    marginBottom: "1rem",
-                    flexWrap: "wrap",
-                    gap: "0.75rem",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem" }}>
-                    <span style={{ fontSize: "0.88rem", letterSpacing: "0.1em", color: "var(--dash-text-muted)" }}>
-                      {iter.version}
-                    </span>
-                    <span style={{ fontSize: "1.22rem", fontWeight: 600, color: "#fff" }}>{iter.label}</span>
-                  </div>
-                  <span style={{ fontSize: "0.85rem", color: "var(--dash-text-muted)" }}>{iter.date}</span>
+      <div
+        className="iteration-process__scroller"
+        tabIndex={0}
+        role="region"
+        aria-label="Development stages — scroll horizontally to advance"
+      >
+        {ITERATIONS.map((iter) => (
+          <section
+            key={iter.version}
+            className="iteration-process__panel"
+            aria-label={`${iter.label}, ${iter.date}`}
+          >
+            <div className="dash-card iteration-process__card">
+              <header className="iteration-process__header">
+                <div className="iteration-process__title-row">
+                  <span className="iteration-process__ver">{iter.version}</span>
+                  <h2 className="iteration-process__label">{iter.label}</h2>
                 </div>
-                {iter.notes.map((note) => (
-                  <div key={note} className="dash-list-item">
-                    <span className="dash-list-bullet">—</span>
-                    <span className="dash-list-text">{note}</span>
-                  </div>
-                ))}
-                {iter.images && iter.images.length > 0 && (
-                  <div style={{ display: "flex", gap: "0.85rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
-                    {iter.images.map((src) => (
+                <time className="iteration-process__date" dateTime={iter.date}>
+                  {iter.date}
+                </time>
+              </header>
+              <p className="iteration-process__summary">{iter.summary}</p>
+              {iter.images && iter.images.length > 0 && (
+                <div
+                  className={
+                    "iteration-process__images" +
+                    (iter.version === "03" && iter.images.length === 3
+                      ? " iteration-process__images--wearable03"
+                      : "") +
+                    (iter.version === "01" || iter.version === "05" ? " iteration-process__images--squarePair" : "")
+                  }
+                >
+                  {iter.version === "03" && iter.images.length === 3 ? (
+                    <>
+                      <div className="iteration-process__image-frame">
+                        <img src={`${BASE}${iter.images[0]}`} alt="" />
+                      </div>
+                      <div className="iteration-process__image-frame iteration-process__image-frame--stack">
+                        <div className="iteration-process__image-stack-cell">
+                          <img src={`${BASE}${iter.images[1]}`} alt="" />
+                        </div>
+                        <div className="iteration-process__image-stack-cell">
+                          <img src={`${BASE}${iter.images[2]}`} alt="" />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    iter.images.map((src) => (
                       <div
                         key={src}
-                        style={{
-                          width: thumb,
-                          height: thumb,
-                          border: "1px solid var(--dash-border)",
-                          overflow: "hidden",
-                          flexShrink: 0,
-                        }}
+                        className={
+                          "iteration-process__image-frame" +
+                          (iter.version === "01" || iter.version === "05" ? " iteration-process__image-frame--square" : "")
+                        }
                       >
-                        <img
-                          src={`${BASE}${src}`}
-                          alt=""
-                          style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                        />
+                        <img src={`${BASE}${src}`} alt="" />
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+          </section>
+        ))}
       </div>
     </div>
   );

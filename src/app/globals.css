@@ -260,6 +260,16 @@ input[type="range"]::-webkit-slider-thumb {
   min-height: min-content;
 }
 
+/* §01 — full-bleed slide: photo + left text (desktop) */
+.present-page--deck #present-01 .present-slide__inner.dash-container {
+  padding: 0;
+  max-width: none;
+  width: 100%;
+  min-height: 100%;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
 .present-slide__inner.dash-container {
   flex: 1 1 auto;
   display: flex;
@@ -278,6 +288,34 @@ input[type="range"]::-webkit-slider-thumb {
   padding-bottom: 3.5rem;
 }
 
+/* §08 — Product showcase: full-width images stacked in one column (no side-by-side) */
+.present-page .present-product-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  width: 100%;
+  max-width: min(100%, 70rem);
+  margin: 0.25rem 0 0;
+}
+
+.present-page .present-product-showcase__cell {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--dash-border);
+  background: #0a0a0a;
+  padding: clamp(0.5rem, 1.2vw, 0.85rem);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.present-page .present-product-showcase__cell img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .present-slide__block {
   width: 100%;
 }
@@ -291,15 +329,24 @@ input[type="range"]::-webkit-slider-thumb {
 
 .present-page .present-hero .dash-title {
   font-size: clamp(2.4rem, 6vw, 4.15rem);
-  letter-spacing: 0.05em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   line-height: 1.08;
   margin-bottom: 1.65rem;
 }
 
+/* Lockup: title stays on one horizontal line; scales down on narrow viewports */
+.present-page .present-hero .present-hero__title {
+  white-space: nowrap;
+  font-size: clamp(1.5rem, 5.2vw, 4.15rem);
+}
+
 .present-page .present-hero .dash-body {
   font-size: clamp(1.18rem, 2.35vw, 1.72rem);
-  line-height: 1.58;
+  font-weight: 400;
+  line-height: 1.64;
   max-width: 62rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* §01 Context — split paragraphs, comfortable measure */
@@ -314,16 +361,6 @@ input[type="range"]::-webkit-slider-thumb {
 .present-page .present-hero__copy .dash-body {
   max-width: none;
   text-wrap: pretty;
-}
-
-/* §01 — full-bleed slide: photo + left text (desktop) */
-.present-page--deck #present-01 .present-slide__inner.dash-container {
-  padding: 0;
-  max-width: none;
-  width: 100%;
-  min-height: 100%;
-  justify-content: stretch;
-  align-items: stretch;
 }
 
 .present-hero--cover {
@@ -423,6 +460,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .present-page .dash-title {
   font-size: clamp(1.85rem, 4.2vw, 3rem);
+  font-weight: 500;
   letter-spacing: 0.06em;
   margin-bottom: 1.35rem;
 }
@@ -435,7 +473,9 @@ input[type="range"]::-webkit-slider-thumb {
 
 .present-page .dash-body {
   font-size: clamp(1.05rem, 1.9vw, 1.4rem);
-  line-height: 1.62;
+  font-weight: 400;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .present-page .dash-label {
@@ -461,50 +501,501 @@ input[type="range"]::-webkit-slider-thumb {
   padding: clamp(1.5rem, 2.5vw, 2.15rem) clamp(0.9rem, 1.6vw, 1.5rem);
 }
 
-/* Present §07 timeline — notes inherit .dash-list-text; extra breathing room */
-.present-page .iteration-process .dash-card {
-  padding: clamp(1.65rem, 2.8vw, 2.35rem) clamp(0.9rem, 1.6vw, 1.5rem);
+/* Present §07 — Experiments: horizontal snap strip (one page per iteration) */
+.present-page .iteration-process__scroller {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-height: min(80dvh, 52rem);
+  max-height: min(90dvh, 62rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--dash-border);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  outline: none;
 }
 
-/* Present §04 Technical Method — lede, two-column stack, footer */
+.present-page .iteration-process__scroller:focus-visible {
+  box-shadow: 0 0 0 1px var(--dash-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .present-page .iteration-process__scroller {
+    scroll-snap-type: none;
+  }
+}
+
+.present-page .iteration-process__panel {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: clamp(0.4rem, 1.2vw, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.present-page .iteration-process__card {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: clamp(0.65rem, 1.4vw, 1.1rem) clamp(0.5rem, 1.2vw, 1.1rem);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.present-page .iteration-process__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--dash-border);
+  flex-shrink: 0;
+}
+
+.present-page .iteration-process__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.present-page .iteration-process__ver {
+  font-size: clamp(0.9rem, 1.4vw, 1.02rem);
+  letter-spacing: 0.12em;
+  color: var(--dash-text-muted);
+  font-weight: 500;
+}
+
+.present-page .iteration-process__label {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.present-page .iteration-process__date {
+  font-size: clamp(0.88rem, 1.35vw, 1.02rem);
+  color: var(--dash-text-muted);
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.present-page .iteration-process__summary {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.04rem, 1.9vw, 1.4rem);
+  line-height: 1.45;
+  color: var(--dash-text-secondary);
+  text-wrap: pretty;
+  max-width: 50rem;
+  flex-shrink: 0;
+}
+
+/* Image band fills remaining space in each panel; same band height, contain (no crop) */
+.present-page .iteration-process__images {
+  flex: 1 1 auto;
+  min-height: min(52dvh, 32rem);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(0.45rem, 1.2vw, 0.85rem);
+  width: 100%;
+  min-width: 0;
+}
+
+.present-page .iteration-process__image-frame {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--dash-border);
+  background: #0a0a0a;
+  box-sizing: border-box;
+  padding: clamp(0.2rem, 0.6vw, 0.45rem);
+}
+
+.present-page .iteration-process__image-frame img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* §03 Wearable: col1 = one photo; col2 = one frame, two photos stacked — same outer size as col1 */
+.present-page .iteration-process__images--wearable03 {
+  align-items: stretch;
+  padding-bottom: 0.35rem;
+  box-sizing: border-box;
+}
+
+.present-page .iteration-process__image-frame--stack {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: clamp(0.35rem, 0.9vw, 0.55rem);
+  padding: clamp(0.2rem, 0.6vw, 0.45rem);
+}
+
+/* §03 right column: stack 2+3 very tight; extra padding below so the lower photo is not cut off */
+.present-page .iteration-process__images--wearable03 .iteration-process__image-frame--stack {
+  gap: 0.06rem;
+  padding: 0.1rem 0.2rem 0.5rem;
+  min-height: 0;
+  overflow: visible;
+}
+
+.present-page .iteration-process__images--wearable03 .iteration-process__image-stack-cell {
+  overflow: visible;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0.08rem 0.05rem 0.2rem;
+}
+
+.present-page .iteration-process__images--wearable03 .iteration-process__image-stack-cell img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.present-page .iteration-process__image-stack-cell {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.present-page .iteration-process__image-stack-cell img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* 01 + 05 — two large square tiles (cover) */
+.present-page .iteration-process__images--squarePair {
+  min-height: min(66dvh, 44rem);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.45rem, 1.1vw, 0.8rem);
+}
+
+@media (min-width: 900px) {
+  .present-page .iteration-process__images--squarePair {
+    min-height: min(72dvh, 48rem);
+  }
+}
+
+.present-page .iteration-process__images--squarePair .iteration-process__image-frame--square {
+  flex: 0 0 auto;
+  width: min(calc(50% - 0.45rem), 45vw, 32rem);
+  aspect-ratio: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: clamp(0.06rem, 0.25vw, 0.12rem);
+}
+
+.present-page .iteration-process__images--squarePair .iteration-process__image-frame--square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .present-page .iteration-process__images--squarePair .iteration-process__image-frame--square {
+    width: min(calc(50% - 0.45rem), 40vw, 38rem);
+  }
+}
+
+@media (min-width: 900px) {
+  .present-page .iteration-process__images {
+    min-height: min(58dvh, 36rem);
+  }
+}
+
+/* Present §03 — References: horizontal snap strip, one large figure per view */
+.present-page .present-ref-carousel {
+  width: 100%;
+  margin: 0;
+}
+
+.present-page .present-ref-carousel__hint {
+  margin: 0 0 0.75rem !important;
+  font-size: clamp(0.86rem, 1.25vw, 0.98rem);
+  line-height: 1.45 !important;
+  color: var(--dash-text-muted) !important;
+}
+
+.present-page .present-ref-carousel__scroller {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  max-width: min(100%, 72rem);
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--dash-border);
+  background: #0a0a0a;
+  border-radius: 2px;
+  outline: none;
+}
+
+.present-page .present-ref-carousel__scroller:focus-visible {
+  box-shadow: 0 0 0 2px var(--dash-border);
+}
+
+.present-page .present-ref-carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  margin: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  box-sizing: border-box;
+  padding: clamp(1rem, 2.4vw, 1.45rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.85rem, 1.5vw, 1.15rem);
+  min-height: 0;
+}
+
+.present-page .present-ref-carousel__slide:not(:last-child) {
+  border-right: 1px solid var(--dash-border);
+}
+
+.present-page .present-ref-carousel__imgWrap {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 0;
+}
+
+.present-page .present-ref-carousel__imgWrap img {
+  width: 100%;
+  height: auto;
+  max-height: min(82dvh, 56rem);
+  object-fit: contain;
+  object-position: top center;
+  display: block;
+}
+
+.present-page .present-ref-carousel__caption {
+  flex-shrink: 0;
+  margin: 0 !important;
+  font-size: clamp(1rem, 1.55vw, 1.05rem);
+  line-height: 1.55 !important;
+  color: var(--dash-text-muted) !important;
+}
+
+/* Present §04 — full-bleed hero band (same language as §01): cover image + scrim + text column */
+.present-page--deck #present-04 .present-slide__inner.dash-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.present-page--deck #present-04 .present-slide__block > .dash-section-label,
+.present-page--deck #present-04 .present-tech-method-lede,
+.present-page--deck #present-04 .present-tech-method-footer {
+  padding-left: clamp(0.9rem, 1.6vw, 1.5rem);
+  padding-right: clamp(0.9rem, 1.6vw, 1.5rem);
+}
+
 .present-page .present-tech-method {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.35rem, 2.8vw, 2rem);
+  gap: clamp(1.15rem, 2.4vw, 1.75rem);
 }
 
 .present-page .present-tech-method-lede {
   margin: 0 !important;
-  padding-bottom: clamp(1.15rem, 2.2vw, 1.65rem);
+  padding-bottom: clamp(1.05rem, 2vw, 1.5rem);
   border-bottom: 1px solid var(--dash-border);
 }
 
-.present-page .present-tech-method-grid {
+/* Hero strip: full image at natural aspect ratio (no cover crop); scrim → black on the right */
+.present-page .present-tech-method-hero {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 1.65rem);
-  align-items: stretch;
+  grid-template: 1fr / 1fr;
+  place-items: stretch;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 0;
+  background: #0a0a0a;
 }
 
-@media (max-width: 768px) {
-  .present-page .present-tech-method-grid {
-    grid-template-columns: 1fr;
+.present-page .present-tech-method-hero__bg {
+  grid-area: 1 / 1;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+  line-height: 0;
+}
+
+.present-page .present-tech-method-hero__bgImg {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: top;
+}
+
+.present-page .present-tech-method-hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    95deg,
+    rgba(10, 10, 10, 0) 0%,
+    rgba(10, 10, 10, 0.06) 22%,
+    rgba(10, 10, 10, 0.38) 44%,
+    rgba(10, 10, 10, 0.78) 62%,
+    #0a0a0a 80%,
+    #0a0a0a 100%
+  );
+  pointer-events: none;
+}
+
+.present-page .present-tech-method-hero__text {
+  grid-area: 1 / 1;
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  justify-self: end;
+  width: 100%;
+  max-width: min(28rem, 88vw);
+  padding: clamp(1.35rem, 2.2vh, 2rem) clamp(0.95rem, 1.6vw, 1.5rem) clamp(1.5rem, 2.4vh, 2.25rem)
+    clamp(0.95rem, 1.4vw, 1.35rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1.1rem, 2vw, 1.5rem);
+}
+
+.present-page .present-tech-method-hero__panels {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.15rem, 2.2vw, 1.65rem);
+}
+
+.present-page .present-tech-method-hero__panel .dash-label {
+  margin-bottom: 0.55rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.present-page .present-tech-method-hero__panel .dash-body {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.present-page .present-tech-method-hero__panel .present-tech-method-list li {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.present-page .present-tech-method-hero__panel .present-tech-method-list li::before {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.present-page .present-tech-method-hero__caption {
+  margin: 0;
+  font-size: clamp(0.76rem, 1.1vw, 0.84rem);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.45);
+  padding-top: 0.15rem;
+}
+
+.present-page .present-tech-method-footer {
+  margin: 0 !important;
+  padding-top: clamp(1.15rem, 2.2vw, 1.65rem);
+  border-top: 1px solid var(--dash-border);
+}
+
+/* §04 narrow: image at natural height, then solid text block */
+@media (max-width: 900px) {
+  .present-page .present-tech-method-hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .present-page .present-tech-method-hero__bg {
+    flex-shrink: 0;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .present-page .present-tech-method-hero__scrim {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.45) 48%, #0a0a0a 100%);
+  }
+
+  .present-page .present-tech-method-hero__text {
+    align-self: stretch;
+    justify-self: stretch;
+    max-width: none;
+    background: #0a0a0a;
+    padding: 1.35rem clamp(0.9rem, 1.6vw, 1.5rem) 1.75rem;
+    gap: 1.15rem;
+  }
+
+  .present-page .present-tech-method-hero__caption {
+    color: var(--dash-text-muted);
   }
 }
 
-.present-page .present-tech-method-panel {
-  background: var(--dash-card);
-  border: 1px solid var(--dash-border);
-  padding: clamp(1.2rem, 2.4vw, 1.65rem);
-  min-width: 0;
-}
-
-.present-page .present-tech-method-panel .dash-label {
-  margin-bottom: 0.7rem;
-}
-
-.present-page .present-tech-method-panel .dash-body {
-  margin: 0 !important;
+.present-page .present-tech-method-hero__panel .present-tech-method-list {
+  margin: 0.45rem 0 0;
 }
 
 .present-page .present-tech-method-list {
@@ -534,12 +1025,6 @@ input[type="range"]::-webkit-slider-thumb {
   background: var(--dash-text-muted);
 }
 
-.present-page .present-tech-method-footer {
-  margin: 0 !important;
-  padding-top: clamp(1rem, 2vw, 1.4rem);
-  border-top: 1px solid var(--dash-border);
-}
-
 @media (max-width: 640px) {
   .present-page .dash-container {
     padding: 2rem clamp(0.35rem, 2.5vw, 0.65rem) 3.25rem;
@@ -564,6 +1049,10 @@ input[type="range"]::-webkit-slider-thumb {
 
   .present-page .present-hero .dash-title {
     font-size: 2.05rem;
+  }
+
+  .present-page .present-hero .dash-title.present-hero__title {
+    font-size: clamp(1.3rem, 5.2vw, 2.05rem);
   }
 
   .present-page .present-hero .dash-body {
