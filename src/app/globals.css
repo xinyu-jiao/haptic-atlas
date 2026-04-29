@@ -778,6 +778,23 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 0.08rem 0.05rem 0.2rem;
 }
 
+.present-page .iteration-process__images--wearable03 .iteration-process__image-stack-cell:nth-child(2) {
+  flex: 1.12 1 0;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 0.12rem;
+}
+
+.present-page .iteration-process__images--wearable03 .iteration-process__image-stack-cell:nth-child(2) img {
+  object-position: center top;
+  transform: translateY(-3%);
+}
+
+.present-page .iteration-process__images--wearable03 .iteration-process__image-stack-cell:first-child {
+  flex: 0.88 1 0;
+}
+
 .present-page .iteration-process__images--wearable03 .iteration-process__image-stack-cell img {
   width: auto;
   height: auto;
