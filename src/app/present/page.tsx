@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import IterationProcess from "@/components/IterationProcess";
 import PresentDeck01To6 from "@/components/present/PresentDeck01To6";
+import PresentFindings from "@/components/present/PresentFindings";
 import PresentProductShowcase from "@/components/present/PresentProductShowcase";
 import PresentSlide from "@/components/present/PresentSlide";
 
@@ -28,26 +29,10 @@ export default function PresentPage() {
           </Section>
         </PresentSlide>
 
-        <PresentSlide id="present-09">
+        <PresentSlide id="present-09" flow>
           <Section>
             <div className="dash-section-label">09 / Findings and Open Directions</div>
-            <p className="dash-body" style={{ margin: "0 0 1rem" }}>
-              The project shows that touch-based navigation is not only a hardware problem. It is also a training and data
-              problem. Each session can produce useful records: route traces, timing, corrections, help requests, and notes
-              about how the user responded to haptic cues.
-            </p>
-            <p className="dash-body" style={{ margin: "0 0 1rem" }}>
-              In the current system, this data helps make the non-visual experience visible and reviewable. In a future
-              version, these session records could also be used to train AI models. The model could learn from repeated
-              navigation sessions and gradually predict what kind of haptic cue should be sent to the belt in different
-              spatial situations.
-            </p>
-            <p className="dash-body" style={{ margin: 0 }}>
-              The longer-term direction is to reduce dependence on a human guide. Instead of someone manually sending every
-              cue, the belt could connect with sensing systems, such as a camera or location input, and use an AI model to
-              generate haptic feedback more independently. This is not a finished claim yet, but an open direction: using
-              training data to move from guided practice toward more independent use of the wearable belt.
-            </p>
+            <PresentFindings />
           </Section>
         </PresentSlide>
       </div>
