@@ -55,17 +55,6 @@ const SLIDES: Slide[] = [
     ),
   },
   {
-    key: "waist-anatomy",
-    src: "/images/references-waist-anatomy-wearable.png",
-    alt:
-      "Anatomical survey of body sites for wearables: MRI cross-sections and waist emphasis for belt-based tactile devices and navigation.",
-    caption: (
-      <span>
-        Related context: body sites and waist region for belt-style tactile wearables and spatial navigation cues.
-      </span>
-    ),
-  },
-  {
     key: "origami-actuator",
     src: "/images/references-origami-actuator-figure.png",
     alt:
@@ -86,6 +75,30 @@ const SLIDES: Slide[] = [
       <span>
         Survey overview: electrical stimulation for haptic feedback in HCI (arXiv:2504.21477v2, May 2025) — diverse
         wearable form factors and stimulation interfaces for context.
+      </span>
+    ),
+  },
+  {
+    key: "waist-anatomy",
+    src: "/images/references-waist-anatomy-wearable.png",
+    alt:
+      "Anatomical survey of body sites for wearables: MRI cross-sections and waist emphasis for belt-based tactile devices and navigation.",
+    caption: (
+      <span>
+        Related context: body sites and waist region for belt-style tactile wearables and spatial navigation cues.
+      </span>
+    ),
+  },
+  {
+    key: "guide-belt-product",
+    src: "/images/references-guide-belt-current-product.png",
+    alt:
+      "Collage titled Current Product and Guide Belt: street vision and path overlay, indoor navigation tests, torso with harness and control box, waist heatmaps, PSPNet segmentation panels, knolled components with Insta360 camera and belt, full-body wear photos, and belt mechanism with microcontroller.",
+    caption: (
+      <span>
+        Related system collage: a &quot;Guide Belt&quot; style product combining camera / segmentation (e.g. PSPNet
+        pathing) with waist-mounted haptic hardware and user testing — shown as prior-work context for vision-assisted
+        navigation belts, distinct from this project&apos;s current prototype stack.
       </span>
     ),
   },
