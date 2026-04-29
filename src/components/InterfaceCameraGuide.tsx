@@ -1,8 +1,6 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect, useLayoutEffect } from "react";
-import { usePathname } from "next/navigation";
-import { isCameraSessionRoute } from "@/lib/cameraRoutes";
 import type { ObjectDetection, DetectedObject } from "@tensorflow-models/coco-ssd";
 import type { MobileNet } from "@tensorflow-models/mobilenet";
 import { speak } from "@/lib/speak";
@@ -109,7 +107,6 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
   const dataFlowBootCompletedRef = useRef(false);
   const enableInFlightRef = useRef(false);
   const phaseRef = useRef<Phase>("idle");
-  const pathname = usePathname();
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [err, setErr] = useState<string | null>(null);
@@ -251,7 +248,7 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
       scheduleLoop(v);
       if (placement === "fixed") {
         dataFlowBootCompletedRef.current = true;
-        pushLog("[data] training flow: camera on — continuous capture (detect + WebM) until you tap Off.");
+        pushLog("[data] camera on — tap Rec to record WebM; detection runs while preview is on.");
       }
     } catch (e) {
       console.error("CameraGuide enable", e);
@@ -266,20 +263,6 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
       enableInFlightRef.current = false;
     }
   }, [loadModels, scheduleLoop, clearLoop, placement, pushLog]);
-
-  /** From Interface (START) or any /session/*: auto-open camera once so the same stream+record run through the whole flow. */
-  useEffect(() => {
-    if (placement !== "fixed") return;
-    if (dataFlowBootCompletedRef.current) return;
-    if (!isCameraSessionRoute(pathname)) return;
-    const t = setTimeout(() => {
-      if (dataFlowBootCompletedRef.current) return;
-      if (phaseRef.current !== "idle") return;
-      if (enableInFlightRef.current) return;
-      void enable();
-    }, 900);
-    return () => clearTimeout(t);
-  }, [pathname, placement, enable]);
 
   const startRecord = useCallback(() => {
     const s = streamRef.current;
@@ -453,28 +436,24 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
         </div>
         {phase === "ready" && (
           <>
-            {!isFixed && (
-              <>
-                <button
-                  type="button"
-                  className="pixel-btn"
-                  disabled={recOn}
-                  onClick={startRecord}
-                  style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem" }}
-                >
-                  Rec
-                </button>
-                <button
-                  type="button"
-                  className="pixel-btn"
-                  disabled={!recOn}
-                  onClick={stopRecord}
-                  style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem" }}
-                >
-                  Stop
-                </button>
-              </>
-            )}
+            <button
+              type="button"
+              className="pixel-btn"
+              disabled={recOn}
+              onClick={startRecord}
+              style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem", fontFamily: '"Press Start 2P", monospace' }}
+            >
+              Rec
+            </button>
+            <button
+              type="button"
+              className="pixel-btn"
+              disabled={!recOn}
+              onClick={stopRecord}
+              style={{ fontSize: "0.45rem", padding: "0.4rem 0.5rem", fontFamily: '"Press Start 2P", monospace' }}
+            >
+              Stop
+            </button>
             {recOn && (
               <div
                 style={{
@@ -491,33 +470,35 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
             )}
             {analyzing && <span style={{ fontSize: "0.5rem", color: "rgba(200, 190, 220, 0.7)" }}>·</span>}
             {isFixed && (
-              <>
-                <button
-                  type="button"
-                  className="pixel-btn"
-                  disabled={!recOn}
-                  onClick={stopRecord}
-                  style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
-                  title="Save current WebM clip to this device"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  className="pixel-btn"
-                  onClick={exportSessionLog}
-                  style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
-                  title="Download detection log for this tab (JSON)"
-                >
-                  Log
-                </button>
-              </>
+              <button
+                type="button"
+                className="pixel-btn"
+                onClick={exportSessionLog}
+                style={{ fontSize: "0.4rem", padding: "0.32rem 0.45rem" }}
+                title="Download detection log for this tab (JSON)"
+              >
+                Log
+              </button>
             )}
           </>
         )}
       </div>
 
-      {!isFixed && (
+      {isFixed ? (
+        <p
+          style={{
+            fontSize: "0.5rem",
+            lineHeight: 1.45,
+            color: "rgba(255,255,255,0.5)",
+            margin: "0.35rem 0 0",
+            maxWidth: "19rem",
+          }}
+        >
+          Tap <strong style={{ color: "rgba(255,255,255,0.75)" }}>Camera</strong> to allow the camera, then{" "}
+          <strong style={{ color: "rgba(255,255,255,0.75)" }}>Rec</strong> to save WebM. Long-press the page for voice
+          commands (mic) — not started automatically.
+        </p>
+      ) : (
         <p
           style={{
             fontSize: "0.52rem",

@@ -24,10 +24,7 @@ export default function CompletePage() {
   useEffect(() => {
     if (!result) {
       router.replace("/present");
-      return;
     }
-    const dur = formatDuration(result.duration);
-    speak(`Session complete. Time: ${dur}. Consistency: ${result.consistency} percent. ${result.badges.length} badges earned.`);
   }, [result, router]);
 
   const voice = useVoiceCommands({

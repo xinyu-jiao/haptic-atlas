@@ -11,5 +11,5 @@ import { isCameraSessionRoute } from "@/lib/cameraRoutes";
 export default function GlobalCameraHost() {
   const path = usePathname();
   if (!isCameraSessionRoute(path)) return null;
-  return <InterfaceCameraGuide placement="fixed" autoStartRecording />;
+  return <InterfaceCameraGuide placement="fixed" autoStartRecording={false} />;
 }
