@@ -1,4 +1,4 @@
-/** §09 — Findings: structured layout (steps + cards) for the closing slide. */
+/** §09 — Findings: closing slide (compact). */
 export default function PresentFindings() {
   return (
     <div className="present-findings">
@@ -10,16 +10,13 @@ export default function PresentFindings() {
           <article className="present-findings__card">
             <div className="dash-label present-findings__cardTitle">Findings</div>
             <p className="dash-body present-findings__body">
-              The project shows that touch-based navigation is not only a hardware problem. It is also a training and data
-              problem. Each session can produce useful records: route traces, timing, corrections, help requests, and notes
-              about how the user responded to haptic cues.
+              Touch navigation is as much about training and session data as hardware. Each run can log routes, timing,
+              corrections, and how people respond to cues—making the non-visual path reviewable.
             </p>
             <ul className="present-findings__chips" aria-label="Examples of session records">
-              <li>Route traces</li>
-              <li>Timing</li>
+              <li>Routes & timing</li>
               <li>Corrections</li>
-              <li>Help requests</li>
-              <li>Notes on cues</li>
+              <li>Cue response</li>
             </ul>
           </article>
         </li>
@@ -30,10 +27,8 @@ export default function PresentFindings() {
           <article className="present-findings__card">
             <div className="dash-label present-findings__cardTitle">From records to models</div>
             <p className="dash-body present-findings__body">
-              In the current system, this data helps make the non-visual experience visible and reviewable. In a future
-              version, these session records could also be used to train AI models. The model could learn from repeated
-              navigation sessions and gradually predict what kind of haptic cue should be sent to the belt in different
-              spatial situations.
+              Those records already support review. Next, the same data can train <strong>AI models</strong>—learning from
+              repeated sessions to predict which belt cues fit different spatial situations.
             </p>
           </article>
         </li>
@@ -44,10 +39,9 @@ export default function PresentFindings() {
           <article className="present-findings__card present-findings__card--open">
             <div className="dash-label present-findings__cardTitle">Open direction</div>
             <p className="dash-body present-findings__body">
-              The longer-term direction is to reduce dependence on a human guide. Instead of someone manually sending every
-              cue, the belt could connect with sensing systems, such as a camera or location input, and use an AI model to
-              generate haptic feedback more independently. This is not a finished claim yet, but an open direction: using
-              training data to move from guided practice toward more independent use of the wearable belt.
+              Longer term: less reliance on a human guide—pair the belt with sensing (vision, location, …) and let an{" "}
+              <strong>AI model</strong> map context to haptic output for more independent wear. A direction, not a finished
+              claim.
             </p>
           </article>
         </li>

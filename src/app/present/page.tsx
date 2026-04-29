@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import IterationProcess from "@/components/IterationProcess";
 import PresentDeck01To6 from "@/components/present/PresentDeck01To6";
 import PresentFindings from "@/components/present/PresentFindings";
+import PresentLogoDesign from "@/components/present/PresentLogoDesign";
 import PresentProductShowcase from "@/components/present/PresentProductShowcase";
 import PresentSlide from "@/components/present/PresentSlide";
 
@@ -13,25 +13,23 @@ export default function PresentPage() {
 
         <PresentSlide id="present-07" flow>
           <Section>
-            <div className="dash-section-label">07 / Experiments / Development</div>
-            <p className="dash-body" style={{ marginBottom: "1.25rem", maxWidth: "42rem" }}>
-              Each full-width page in the strip below is one build step; scroll this section horizontally to move
-              through the sequence.
-            </p>
-            <IterationProcess />
+            <div className="dash-section-label">07 / Product showcase</div>
+            <PresentProductShowcase />
           </Section>
         </PresentSlide>
 
         <PresentSlide id="present-08" flow>
           <Section>
-            <div className="dash-section-label">08 / Product showcase</div>
-            <PresentProductShowcase />
+            <div className="dash-section-label" id="logo-design">
+              08 / Logo design
+            </div>
+            <PresentLogoDesign />
           </Section>
         </PresentSlide>
 
         <PresentSlide id="present-09" flow>
           <Section>
-            <div className="dash-section-label">09 / Findings and Open Directions</div>
+            <div className="dash-section-label">09 / Findings</div>
             <PresentFindings />
           </Section>
         </PresentSlide>

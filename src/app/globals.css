@@ -929,15 +929,15 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--dash-text-muted) !important;
 }
 
-/* Present §04 — full-bleed hero band (same language as §01): cover image + scrim + text column */
-.present-page--deck #present-04 .present-slide__inner.dash-container {
+/* Present §06 Technical Method — full-bleed hero band: cover image + scrim + text column */
+.present-page--deck #present-06 .present-slide__inner.dash-container {
   padding-left: 0;
   padding-right: 0;
 }
 
-.present-page--deck #present-04 .present-slide__block > .dash-section-label,
-.present-page--deck #present-04 .present-tech-method-lede,
-.present-page--deck #present-04 .present-tech-method-footer {
+.present-page--deck #present-06 .present-slide__block > .dash-section-label,
+.present-page--deck #present-06 .present-tech-method-lede,
+.present-page--deck #present-06 .present-tech-method-footer {
   padding-left: clamp(0.9rem, 1.6vw, 1.5rem);
   padding-right: clamp(0.9rem, 1.6vw, 1.5rem);
 }
@@ -1158,6 +1158,115 @@ input[type="range"]::-webkit-slider-thumb {
   .dash-container {
     padding: 2rem 0.85rem 3rem;
   }
+}
+
+/* §08 Logo — vertical spec: primary → 3-col variations → 3-col application → meaning panel */
+.present-page--deck #present-08 .dash-section-label {
+  margin-bottom: 0.65rem;
+}
+
+.present-page--deck #present-08.present-slide--flow .present-slide__inner--flow {
+  padding-top: clamp(0.45rem, 1vh, 0.75rem);
+  padding-bottom: 0.85rem;
+}
+
+.present-page .present-logo-spec {
+  margin: 0;
+  border: 1px solid var(--dash-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, var(--dash-bg) 10%);
+  padding: clamp(0.28rem, 0.65vw, 0.48rem);
+  max-width: min(100%, 76rem);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.08rem, 0.28vw, 0.16rem);
+}
+
+.present-page .present-logo-spec__intro {
+  margin: 0 0 0.04rem !important;
+  max-width: 44rem;
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  line-height: 1.32 !important;
+}
+
+.present-page .present-logo-spec h2 {
+  margin: 0;
+}
+
+.present-page .present-logo-spec__block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.present-page .present-logo-spec__block:not(.present-logo-spec__block--primary) {
+  gap: 0.04rem;
+}
+
+.present-page .present-logo-spec__block--primary .present-logo-spec__subhead {
+  text-align: center;
+  margin-bottom: 0.06rem;
+}
+
+.present-page .present-logo-spec__block:not(.present-logo-spec__block--primary) .present-logo-spec__subhead {
+  margin: 0 0 0.04rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+}
+
+.present-page .present-logo-spec__subhead {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dash-text-muted);
+  margin: 0 0 0.32rem;
+  line-height: 1.35;
+}
+
+.present-page .present-logo-spec__primaryFrame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.42rem 0 0.05rem;
+  min-height: 0;
+}
+
+.present-page .present-logo-spec__primaryFrame img {
+  display: block;
+  width: 100%;
+  max-width: min(100%, 82rem);
+  height: auto;
+  max-height: min(62dvh, 32rem);
+  object-fit: contain;
+}
+
+.present-page .present-logo-spec__meaningPanel {
+  position: relative;
+  margin-top: 0.05rem;
+  border: 1px solid var(--dash-border);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: clamp(0.42rem, 0.75vw, 0.58rem) clamp(0.35rem, 0.65vw, 0.52rem) clamp(0.18rem, 0.45vw, 0.3rem);
+  min-width: 0;
+}
+
+.present-page .present-logo-spec__meaningLabel {
+  position: absolute;
+  top: clamp(0.24rem, 0.5vw, 0.32rem);
+  left: clamp(0.35rem, 0.65vw, 0.5rem);
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dash-text-muted);
+}
+
+.present-page .present-logo-spec__meaningBody {
+  padding-top: 0.28rem;
+  min-width: 0;
 }
 
 /* Present / Logo spec: grid rows stack on narrow viewports */

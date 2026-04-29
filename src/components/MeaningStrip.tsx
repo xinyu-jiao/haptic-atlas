@@ -99,43 +99,60 @@ const items: Array<{
 type Props = {
   /** Larger type + icons for Present deck / slides */
   present?: boolean;
+  /** Dense layout so the logo spec fits one viewport (use with present) */
+  compact?: boolean;
 };
 
 /**
  * Mark meaning row: only the four graphic motifs from the brand meaning strip, copy set in the layout.
  */
-export default function MeaningStrip({ present = false }: Props) {
-  const row = present
+export default function MeaningStrip({ present = false, compact = false }: Props) {
+  const dense = present && compact;
+  const row = dense
     ? {
         ...ROW,
         gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-        gap: "2.35rem 2.5rem" as const,
+        gap: "0.18rem 0.28rem" as const,
       }
-    : ROW;
-  const title = present ? { ...TITLE, fontSize: "1.28rem" } : TITLE;
-  const line = present ? { ...LINE, fontSize: "1.34rem", lineHeight: 1.52 } : LINE;
+    : present
+      ? {
+          ...ROW,
+          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+          gap: "2.35rem 2.5rem" as const,
+        }
+      : ROW;
+  const title = dense
+    ? { ...TITLE, fontSize: "0.68rem", letterSpacing: "0.08em" }
+    : present
+      ? { ...TITLE, fontSize: "1.28rem" }
+      : TITLE;
+  const line = dense
+    ? { ...LINE, fontSize: "0.64rem", lineHeight: 1.32 }
+    : present
+      ? { ...LINE, fontSize: "1.34rem", lineHeight: 1.52 }
+      : LINE;
   return (
     <div style={row} aria-label="What the mark represents">
       {items.map((item) => (
-        <div key={item.id} style={CELL}>
+        <div key={item.id} style={{ ...CELL, gap: dense ? "0.18rem" : "0.85rem" }}>
           <div
             style={{
               flexShrink: 0,
-              width: present ? "6.25rem" : "3.5rem",
-              minHeight: present ? "6.25rem" : "3.5rem",
+              width: dense ? "2.1rem" : present ? "6.25rem" : "3.5rem",
+              minHeight: dense ? "2.1rem" : present ? "6.25rem" : "3.5rem",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              transform: present ? "scale(1.5)" : undefined,
+              transform: dense ? "scale(0.78)" : present ? "scale(1.5)" : undefined,
               transformOrigin: "center center",
             }}
           >
             {item.icon}
           </div>
-          <div style={{ minWidth: 0, paddingTop: "0.1rem" }}>
+          <div style={{ minWidth: 0, paddingTop: dense ? 0 : "0.1rem" }}>
             <p style={title}>{item.title}</p>
-            <p style={{ ...line, marginTop: "0.4rem" }}>{item.lines[0]}</p>
-            <p style={{ ...line, marginTop: "0.15rem" }}>{item.lines[1]}</p>
+            <p style={{ ...line, marginTop: dense ? "0.12rem" : "0.4rem" }}>{item.lines[0]}</p>
+            <p style={{ ...line, marginTop: dense ? "0.04rem" : "0.15rem" }}>{item.lines[1]}</p>
           </div>
         </div>
       ))}
