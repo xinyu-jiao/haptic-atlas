@@ -160,29 +160,65 @@ const horizontalLockupVariations = (
   </>
 );
 
+/** One full-viewport slide (or tall flow block for long content). */
+function PresentSlide({ id, flow = false, children }: { id?: string; flow?: boolean; children: ReactNode }) {
+  return (
+    <article
+      id={id}
+      className={flow ? "present-slide present-slide--flow" : "present-slide"}
+    >
+      <div
+        className={
+          "present-slide__inner dash-container" + (flow ? " present-slide__inner--flow" : "")
+        }
+      >
+        {children}
+      </div>
+    </article>
+  );
+}
+
 export default function PresentPage() {
   return (
-    <div className="dash-page present-page">
-      <div className="dash-container">
-        <div className="present-hero">
-          <Section>
-            <div className="dash-section-label">01 / Context</div>
-            <h1 className="dash-title">Haptic Atlas</h1>
-            <p className="dash-body">
-              Haptic Atlas explores how navigation can be learned through touch, especially for blind and
-              low-vision users. While most navigation systems depend on vision or audio, this project focuses
-              on{" "}
-              <strong style={{ color: "#fff", fontWeight: 600 }}>haptic cues as a spatial language</strong>{" "}
-              that can be felt on the body. Rather than treating touch as a simple alert, the project asks how
-              tactile feedback can be{" "}
-              <strong style={{ color: "#fff", fontWeight: 600 }}>trained, repeated, and understood</strong> as
-              part of movement through space.
-            </p>
-          </Section>
-        </div>
+    <div className="dash-page present-page present-page--deck">
+      <div className="present-deck">
+        <PresentSlide id="present-01">
+          <div className="present-hero present-hero--cover">
+            <div className="present-hero__bg" aria-hidden>
+              <img
+                className="present-hero__bgImg"
+                src={assetUrl("/images/present-context-hero-bg.png")}
+                alt=""
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
+              <div className="present-hero__scrim" />
+            </div>
+            <div className="present-hero__text">
+              <div className="dash-section-label">01 / Context</div>
+              <h1 className="dash-title">Haptic Atlas</h1>
+              <div className="present-hero__copy">
+                <p className="dash-body" style={{ margin: 0 }}>
+                  Haptic Atlas explores how navigation can be learned through touch, especially for blind and low-vision
+                  users.
+                </p>
+                <p className="dash-body" style={{ margin: 0 }}>
+                  While most navigation systems depend on vision or audio, this project focuses on{" "}
+                  <strong style={{ color: "#fff", fontWeight: 600 }}>haptic cues as a spatial language</strong> that can be
+                  felt on the body.
+                </p>
+                <p className="dash-body" style={{ margin: 0 }}>
+                  Rather than treating touch as a simple alert, the project asks how tactile feedback can be{" "}
+                  <strong style={{ color: "#fff", fontWeight: 600 }}>trained, repeated, and understood</strong> as part
+                  of movement through space.
+                </p>
+              </div>
+            </div>
+          </div>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-02">
         <Section>
           <div className="dash-section-label">02 / Problem + Questions</div>
           <div className="dash-card" style={{ padding: "1.5rem 1.25rem", marginBottom: "1.75rem" }}>
@@ -230,9 +266,9 @@ export default function PresentPage() {
             </div>
           </div>
         </Section>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-03">
         <Section>
           <div className="dash-section-label">03 / References &amp; Related Work</div>
           <p className="dash-body" style={{ margin: "0 0 1.25rem" }}>
@@ -258,10 +294,10 @@ export default function PresentPage() {
           >
             <img
               src={assetUrl("/images/bioelastic-haptic-related-work.png")}
-              alt="Fig. 1 from Nature (2024): multisensory wearable haptic array — skin mechanoreceptors, transducer design, flexible array on the arm, Bluetooth to smartphone, application context."
+              alt="Nature (2024) Fig. 1, panels a–g: skin mechanoreceptors; indentation, shear, and vibrotactile interaction; bioelastic electromagnetic actuator; hexagonal array on skin; device with Bluetooth and battery; system diagram; application scenario."
               style={{
                 width: "100%",
-                maxWidth: "min(100%, 92vw)",
+                maxWidth: "min(100%, 60rem)",
                 height: "auto",
                 display: "block",
                 margin: "0 auto",
@@ -302,15 +338,16 @@ export default function PresentPage() {
                 Bioelastic state recovery for haptic sensory substitution
               </a>
               <div style={{ marginTop: "0.55rem", fontWeight: 400 }}>
-                Fig. 1 — Multisensory feedback with a battery-powered array of biointegrated, bistable transducers
-                (illustration from the article linked above; contrast with this project&apos;s belt prototype).
+                Fig. 1 — Full figure from the paper (panels a–g): from skin mechanoreceptors and actuator mechanics to
+                a wearable array, Bluetooth link, and example use. Shown for related-work context; this project uses a
+                lower-fidelity belt prototype.
               </div>
             </figcaption>
           </figure>
         </Section>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-04">
         <Section>
           <div className="dash-section-label">04 / Technical Method</div>
           <div className="dash-card present-tech-method" style={{ padding: "1.65rem 1.5rem", marginBottom: 0 }}>
@@ -366,9 +403,9 @@ export default function PresentPage() {
             </p>
           </div>
         </Section>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-05" flow>
         <Section>
           <div className="dash-section-label" id="logo-design">
             05 / Logo design
@@ -583,9 +620,9 @@ export default function PresentPage() {
             </div>
           </div>
         </Section>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-06">
         <Section>
           <div className="dash-section-label">06 / System Components</div>
           <div
@@ -632,9 +669,9 @@ export default function PresentPage() {
             ))}
           </div>
         </Section>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-07" flow>
         <Section>
           <div className="dash-section-label">07 / Experiments / Development</div>
           <p className="dash-body" style={{ marginBottom: "1.75rem" }}>
@@ -651,9 +688,9 @@ export default function PresentPage() {
           </p>
           <IterationProcess />
         </Section>
+        </PresentSlide>
 
-        <div className="dash-divider" />
-
+        <PresentSlide id="present-08">
         <Section>
           <div className="dash-section-label">08 / Findings and Open Directions</div>
           <p className="dash-body" style={{ margin: "0 0 1rem" }}>
@@ -687,11 +724,12 @@ export default function PresentPage() {
             <strong style={{ color: "#fff", fontWeight: 600 }}>wearable belt</strong>.
           </p>
         </Section>
+        </PresentSlide>
       </div>
     </div>
   );
 }
 
 function Section({ children }: { children: ReactNode }) {
-  return <div style={{ marginBottom: "1.35rem" }}>{children}</div>;
+  return <div className="present-slide__block">{children}</div>;
 }
