@@ -8,6 +8,9 @@ import { saveTraceToCloud, loadTracesFromCloud, deleteTraceFromCloud } from "@/l
 import type { TraceRecord, TracePosition } from "@/lib/types";
 
 const MapView = dynamic(() => import("@/components/map/TraceMap"), { ssr: false });
+const MAX_TRACE_POINTS = 2200;
+const MIN_TRACE_INTERVAL_MS = 1200;
+const MIN_TRACE_MOVE_METERS = 1.5;
 
 function haversineMeters(a: TracePosition, b: TracePosition): number {
   const R = 6371000;
@@ -84,11 +87,18 @@ export default function MapPage() {
 
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
+        const next: TracePosition = { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: pos.timestamp };
         setAccuracy(Math.round(pos.coords.accuracy));
-        setPositions((prev) => [
-          ...prev,
-          { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: pos.timestamp },
-        ]);
+        setPositions((prev) => {
+          const last = prev[prev.length - 1];
+          if (last) {
+            const dt = next.ts - last.ts;
+            const moved = haversineMeters(last, next);
+            if (dt < MIN_TRACE_INTERVAL_MS && moved < MIN_TRACE_MOVE_METERS) return prev;
+          }
+          const appended = [...prev, next];
+          return appended.length > MAX_TRACE_POINTS ? appended.slice(-MAX_TRACE_POINTS) : appended;
+        });
       },
       (err) => {
         setGeoError(`Location error: ${err.message}`);

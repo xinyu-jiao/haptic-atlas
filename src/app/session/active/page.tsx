@@ -15,10 +15,23 @@ import {
 import type { TracePosition } from "@/lib/types";
 
 const MapView = dynamic(() => import("@/components/map/TraceMap"), { ssr: false });
+const MAX_LIVE_TRACE_POINTS = 1800;
+const MIN_TRACE_INTERVAL_MS = 1200;
+const MIN_TRACE_MOVE_METERS = 1.5;
 
 function driftConsistency(current: number): number {
   const delta = (Math.random() - 0.45) * 2.5;
   return Math.max(20, Math.min(100, current + delta));
+}
+
+function traceDistanceMeters(a: TracePosition, b: TracePosition): number {
+  const R = 6371000;
+  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
+  const x =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((a.lat * Math.PI) / 180) * Math.cos((b.lat * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
 }
 
 export default function ActivePage() {
@@ -53,10 +66,17 @@ export default function ActivePage() {
 
     geoWatchRef.current = navigator.geolocation.watchPosition(
       (pos) => {
-        setPositions((prev) => [
-          ...prev,
-          { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: pos.timestamp },
-        ]);
+        const next: TracePosition = { lat: pos.coords.latitude, lng: pos.coords.longitude, ts: pos.timestamp };
+        setPositions((prev) => {
+          const last = prev[prev.length - 1];
+          if (last) {
+            const dt = next.ts - last.ts;
+            const moved = traceDistanceMeters(last, next);
+            if (dt < MIN_TRACE_INTERVAL_MS && moved < MIN_TRACE_MOVE_METERS) return prev;
+          }
+          const appended = [...prev, next];
+          return appended.length > MAX_LIVE_TRACE_POINTS ? appended.slice(-MAX_LIVE_TRACE_POINTS) : appended;
+        });
       },
       () => {},
       { enableHighAccuracy: true, maximumAge: 2000 }

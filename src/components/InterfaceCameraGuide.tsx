@@ -10,6 +10,7 @@ const SPEAK_COOLDOWN_MS = 5500;
 const COCO_MIN_SCORE = 0.48;
 const IMAGENET_MIN = 0.1;
 const LOOP_MS = 1200;
+const RECORD_SEGMENT_MS = 45_000;
 
 const lastKeyTime = new Map<string, number>();
 
@@ -100,6 +101,8 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
   const mnetRef = useRef<MobileNet | null>(null);
   const tickInFlight = useRef(false);
   const recRef = useRef<MediaRecorder | null>(null);
+  const recSegmentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const keepRecordingRef = useRef(false);
   const chunksRef = useRef<Blob[]>([]);
   const mayAutoStartRecording = useRef(true);
   const startRecordRef = useRef<() => void>(() => {});
@@ -133,8 +136,46 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
     }
   }, []);
 
+  const clearRecSegmentTimer = useCallback(() => {
+    if (recSegmentTimerRef.current) {
+      clearTimeout(recSegmentTimerRef.current);
+      recSegmentTimerRef.current = null;
+    }
+  }, []);
+
+  const releaseModels = useCallback(() => {
+    const coco = cocoRef.current as { dispose?: () => void } | null;
+    const mnet = mnetRef.current as { dispose?: () => void } | null;
+    try {
+      coco?.dispose?.();
+    } catch {
+      /* ignore model disposal errors */
+    }
+    try {
+      mnet?.dispose?.();
+    } catch {
+      /* ignore model disposal errors */
+    }
+    cocoRef.current = null;
+    mnetRef.current = null;
+    tickInFlight.current = false;
+    void import("@tensorflow/tfjs")
+      .then((tf) => {
+        try {
+          tf.disposeVariables();
+        } catch {
+          /* best-effort */
+        }
+      })
+      .catch(() => {
+        /* best-effort */
+      });
+  }, []);
+
   const stopStream = useCallback(() => {
     clearLoop();
+    clearRecSegmentTimer();
+    keepRecordingRef.current = false;
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     if (videoRef.current) videoRef.current.srcObject = null;
@@ -149,7 +190,11 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
     setAnalyzing(false);
     setPhase("idle");
     mayAutoStartRecording.current = true;
-  }, [clearLoop]);
+    releaseModels();
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  }, [clearLoop, clearRecSegmentTimer, releaseModels]);
 
   const loadModels = useCallback(async () => {
     if (cocoRef.current && mnetRef.current) return;
@@ -282,11 +327,13 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
       return;
     }
     chunksRef.current = [];
+    keepRecordingRef.current = true;
     const r = new MediaRecorder(s, { mimeType: mime, videoBitsPerSecond: 2_000_000 });
     r.ondataavailable = (e) => {
       if (e.data.size) chunksRef.current.push(e.data);
     };
     r.onstop = () => {
+      clearRecSegmentTimer();
       const type = chunksRef.current[0]?.type ?? "video/webm";
       const chunkCopy = chunksRef.current.slice();
       chunksRef.current = [];
@@ -313,26 +360,45 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
             mayAutoStartRecording.current = true;
             startRecordRef.current();
           }, 350);
+          return;
+        }
+        if (keepRecordingRef.current && streamRef.current) {
+          setTimeout(() => {
+            if (!keepRecordingRef.current || !streamRef.current) return;
+            if (recRef.current?.state === "recording") return;
+            startRecordRef.current();
+          }, 220);
         }
       })();
     };
     r.start(400);
     recRef.current = r;
     setRecOn(true);
+    clearRecSegmentTimer();
+    recSegmentTimerRef.current = setTimeout(() => {
+      if (recRef.current?.state === "recording") {
+        if (placement === "fixed") {
+          pushLog("[data] segment reached 45s; saving and continuing to keep memory stable.");
+        }
+        recRef.current.stop();
+      }
+    }, RECORD_SEGMENT_MS);
     if (placement === "fixed" && autoStartRecording) {
       mayAutoStartRecording.current = false;
     }
-  }, [recOn, placement, autoStartRecording, pushLog]);
+  }, [recOn, placement, autoStartRecording, pushLog, clearRecSegmentTimer]);
 
   useLayoutEffect(() => {
     startRecordRef.current = startRecord;
   }, [startRecord]);
 
   const stopRecord = useCallback(() => {
+    keepRecordingRef.current = false;
+    clearRecSegmentTimer();
     if (recRef.current && recRef.current.state === "recording") {
       recRef.current.stop();
     }
-  }, []);
+  }, [clearRecSegmentTimer]);
 
   const fixedAuto = placement === "fixed" && autoStartRecording;
   useEffect(() => {
@@ -496,7 +562,7 @@ export default function InterfaceCameraGuide({ placement = "inline", autoStartRe
         >
           Tap <strong style={{ color: "rgba(255,255,255,0.75)" }}>Camera</strong> to allow the camera, then{" "}
           <strong style={{ color: "rgba(255,255,255,0.75)" }}>Rec</strong> to save WebM. Long-press the page for voice
-          commands (mic) — not started automatically.
+          commands (mic) — not started automatically. Tap Off to release stream + model memory.
         </p>
       ) : (
         <p
